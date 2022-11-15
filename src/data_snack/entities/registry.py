@@ -1,13 +1,12 @@
 from dataclasses import dataclass
 from typing import List, Text
 
-from marshmallow.schema import SchemaMeta
-
 from . import EntityType
+from ..serializers import Serializer
 
 
 @dataclass
 class EntityRegistry:
     entity: EntityType
-    schema: SchemaMeta
+    serializer: Serializer
     keys: List[Text]

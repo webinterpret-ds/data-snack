@@ -1,1 +1,1 @@
-from .snack import Snack
+from .snack import Snack, EntityWrap
