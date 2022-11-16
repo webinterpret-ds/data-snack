@@ -1,5 +1,5 @@
-from dataclasses import dataclass
 from typing import TypeVar
+from pydantic.dataclasses import dataclass
 
 
 @dataclass

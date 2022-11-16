@@ -79,8 +79,8 @@ class Snack:
             self._build_record_key(type_name, entity)
             for entity in entities
         ]
-        if self.connection.set_many(dict(zip(keys, records))):
-            return keys
+        if result := self.connection.set_many(dict(zip(keys, records))):
+            return result
 
     def keys(self, cls: EntityType) -> List[bytes]:
         return self.connection.keys(pattern=f'{cls.__name__}-*')
