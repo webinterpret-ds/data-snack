@@ -7,9 +7,10 @@ This is a basic example explaining how to define new, save and retrieve your ent
 ### 1. Define entities
 The first thing you need to do is to define an `Entity`. Entities are used to define a common structure of the objects stores in your database.
 They provide a schema for fields and their types. The schema is used to validate the data whenever you are trying to save it.
+`Snack` is using `pydantic` for type validation of entity fields.
 
 ```python
-from dataclasses import dataclass
+from pydantic.dataclasses import dataclass
 from typing import Text
 from data_snack.entities import Entity
 
