@@ -1,13 +1,13 @@
 from dataclasses import dataclass
 from abc import ABC, abstractmethod
-from typing import Union, List
+from typing import Union, List, Type
 
-from ..entities import EntityType, Entity
+from ..entities import Entity
 
 
 @dataclass
 class Serializer(ABC):
-    entity_type: EntityType
+    entity_type: Type[Entity]
 
     @abstractmethod
     def serialize(self, entity: Union[Entity, List[Entity]], many: bool = False) -> Union[bytes, List[bytes]]:

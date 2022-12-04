@@ -108,10 +108,10 @@ data = [Car(**v) for v in df.to_dict(orient="records")]
 
 Or you can use a predefined helper function that will do that for you.
 Function `set_dataframe` and `get_dataframe` provides an interface that allows you to save and load data frames object
-that follows the schema defined by your entity. 
+that follows the schema defined by your entity.
 
 ```python
-from data_snack.utils.data_frame import set_dataframe, get_dataframe
+from data_snack.wrap.data_frame import set_dataframe, get_dataframe
 
 set_dataframe(car_wrap, df)
 # ['Car-1', 'Car-2', 'Car-3', 'Car-4']

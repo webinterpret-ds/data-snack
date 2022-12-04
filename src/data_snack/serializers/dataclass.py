@@ -14,7 +14,7 @@ def _serialize(entity: Entity) -> bytes:
 @dataclass
 class DataclassSerializer(Serializer):
     def __post_init__(self):
-        self.entity_fields = list(self.entity_type.__dataclass_fields__.keys())
+        self.entity_fields = list(self.entity_type.__dataclass_fields__.keys())  # noqa
 
     def _serialize(self, entity: Entity) -> bytes:
         entity_fields = entity.__dict__
