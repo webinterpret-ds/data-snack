@@ -21,5 +21,5 @@ class MemcachedConnection(Connection):
         failed_keys = self.connection.set_many(values)
         return list(set(values.keys()) - set(failed_keys))
 
-    def keys(self, pattern: Text) -> List[bytes]:
+    def keys(self, pattern: Text) -> List[Text]:
         raise NotImplemented()

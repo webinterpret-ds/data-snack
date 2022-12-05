@@ -15,19 +15,19 @@ def _build_key(type_name: Text, *keys: Text):
 @dataclass
 class Snack:
     """
-    A core interface
+    A core interface handling saving and reading Entities from db.
     """
 
     connection: Connection
     registry: Dict[Text, EntityRegistry] = field(default_factory=dict)
 
-    def register_entity(self, cls: Type[Entity], key_fields: List[Text], serializer: Serializer = None):
+    def register_entity(self, cls: Type[Entity], key_fields: List[Text], serializer: Serializer = None) -> None:
         """
+        Registers new Entity type to Snack.
 
-        :param cls:
-        :param key_fields:
-        :param serializer:
-        :return:
+        :param cls: Entity type
+        :param key_fields: a list of fields that will be used to define Entity key
+        :param serializer: Serializer that is used to compress and decompress entities before saving in db
         """
         type_name = cls.__name__
 
@@ -52,10 +52,11 @@ class Snack:
 
     def create_wrap(self, cls: Type[Entity], wrap_type: Type["Wrap"] = EntityWrap) -> "Wrap":
         """
+        Creates a Wrap object for selected Entity type.
 
-        :param cls:
-        :param wrap_type:
-        :return:
+        :param cls: Entity type
+        :param wrap_type: `Wrap` type, by default it uses `EntityWrap`, but any other `Wrap` can be used
+        :return: created Wrap object
         """
         return wrap_type(self, cls)
 
@@ -71,7 +72,7 @@ class Snack:
 
     def set(self, entity: Entity) -> Optional[Text]:
         """
-        Sets provided Entity object in db.
+        Sets provided `Entity` object in db.
         Notice the entity stored in the db will be overwritten,
         so make sure all the combined keys are unique for each entity.
 
@@ -86,10 +87,10 @@ class Snack:
 
     def get(self, cls: Type[Entity], key_values: List[Text]) -> Entity:
         """
-        Gets ane entity of `cls` type from db based on provided key values.
+        Gets ane entity of `Entity` type from db based on provided key values.
         Notice, key is represented as a list of strings, since one Entity can have multiple key fields.
 
-        :param cls: Entity type
+        :param cls: `Entity` type
         :param key_values: a list of key values representing the entity
         :return: a retrieved Entity object
         """
@@ -102,9 +103,9 @@ class Snack:
 
     def get_many(self, cls: Type[Entity], keys_values: List[List[Text]]) -> List[Entity]:
         """
-        Gets list of Entity objects from db based on provided list of keys.
+        Gets list of `Entity` objects from db based on provided list of keys.
 
-        :param cls: Entity type
+        :param cls: `Entity` type
         :param keys_values: list of keys, each list defines a set key values for one Entity object
         :return: a list of retrieved Entity objects
         """
@@ -115,9 +116,10 @@ class Snack:
 
     def set_many(self, entities: List[Entity]) -> List[Text]:
         """
+        Saves multiple `Entity` objects in db.
 
-        :param entities:
-        :return:
+        :param entities: a list of Entity objects
+        :return: a list of keys generated for saved objects
         """
         type_name = entities[0].__class__.__name__
         records = self._get_serializer(type_name).serialize(entities, many=True)
@@ -128,10 +130,11 @@ class Snack:
         if result := self.connection.set_many(dict(zip(keys, records))):
             return result
 
-    def keys(self, cls: Type[Entity]) -> List[bytes]:
+    def keys(self, cls: Type[Entity]) -> List[Text]:
         """
+        Gets a list of keys for a given Entity type.
 
-        :param cls:
-        :return:
+        :param cls: Entity type
+        :return: a list of keys
         """
         return self.connection.keys(pattern=f'{cls.__name__}-*')

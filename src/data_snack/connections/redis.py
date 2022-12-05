@@ -20,5 +20,5 @@ class RedisConnection(Connection):
     def set_many(self, values: Dict[Text, Text]):
         return self.connection.mset(values)
 
-    def keys(self, pattern: Text) -> List[bytes]:
+    def keys(self, pattern: Text) -> List[Text]:
         return self.connection.keys(pattern)

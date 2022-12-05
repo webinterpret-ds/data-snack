@@ -22,11 +22,11 @@ class EntityWrap(Wrap):
     def set(self, entity: Entity) -> Optional[Text]:
         return self.snack.set(entity)
 
-    def get(self, key: List[Text]) -> Entity:
-        return self.snack.get(self.entity_type, key)
+    def get(self, key_values: List[Text]) -> Entity:
+        return self.snack.get(self.entity_type, key_values)
 
-    def get_many(self, keys: List[List[Text]]) -> List[Entity]:
-        return self.snack.get_many(self.entity_type, keys)
+    def get_many(self, keys_values: List[List[Text]]) -> List[Entity]:
+        return self.snack.get_many(self.entity_type, keys_values)
 
     def set_many(self, entities: List[Entity]) -> List[Text]:
         return self.snack.set_many(entities)
