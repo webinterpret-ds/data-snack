@@ -13,6 +13,7 @@ class EntityWrap(Wrap):
 
     @property
     def entity_type_name(self) -> Text:
+        """Class name of the Entity used by the Wrap"""
         return self._entity_type_name
 
     def __post_init__(self):

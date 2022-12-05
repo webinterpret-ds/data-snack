@@ -4,6 +4,7 @@ import pandas as pd
 import pytest
 
 from data_snack import Snack, DataFrameWrap
+from data_snack.wrap.exceptions import DataFrameMissingKeyColumn
 from tests.data_snack.conftest import Car
 
 
@@ -24,6 +25,12 @@ def data_df(example_entities: List[Car]) -> pd.DataFrame:
 def index_df(data_df: pd.DataFrame) -> pd.DataFrame:
     """Data frame containing only columns assigned as `keys` for given entity."""
     return data_df[['index']]
+
+
+@pytest.fixture
+def wrong_index_df(data_df: pd.DataFrame) -> pd.DataFrame:
+    """Data frame containing only columns assigned as `keys` for given entity."""
+    return data_df[['brand']]
 
 
 def test_set_dataframe(
@@ -58,3 +65,13 @@ def test_get_dataframe(
     # connection is called with a list of entity keys
     expected_keys = ("Car-"+index_df['index']).tolist()
     wrap_dataframe.snack.connection.connection.mget.assert_called_with(expected_keys)
+
+
+def test_get_dataframe_missing_columns(
+        wrap_dataframe: DataFrameWrap,
+        wrong_index_df: pd.DataFrame
+) -> None:
+    """Testing reading a data frame, but the input data frame is missing required columns."""
+
+    with pytest.raises(DataFrameMissingKeyColumn):
+        wrap_dataframe.get_dataframe(wrong_index_df)

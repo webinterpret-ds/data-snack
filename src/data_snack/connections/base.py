@@ -8,7 +8,7 @@ class Connection(Protocol):
     If you want to create a custom connection to a db for your choosing,
     create a new class that follows this protocol.
     """
-    connection: Any()
+    connection: Any
 
     @abstractmethod
     def get(self, key: Text) -> bytes:
