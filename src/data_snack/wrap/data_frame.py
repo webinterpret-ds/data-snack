@@ -30,10 +30,10 @@ class DataFrameWrap(EntityWrap):
         :param df: a data frame containing columns with entity keys
         :return: a full data frame containing all retrieved entities
         """
-        required_key_columns = self.snack.registry[self.entity_type_name].keys
+        required_key_columns = self.snack.registry[self.entity_type_name].key_fields
         if missing_columns := set(required_key_columns) - set(df.columns):
             raise DataFrameMissingKeyColumn(f"Provided data frame is missing columns: {missing_columns}")
 
-        keys = self.snack.registry[self.entity_type_name].keys
+        keys = self.snack.registry[self.entity_type_name].key_fields
         data = self.get_many(df[keys].values.tolist())
         return pd.DataFrame(data)

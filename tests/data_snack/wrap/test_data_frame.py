@@ -11,7 +11,7 @@ from tests.data_snack.conftest import Car
 @pytest.fixture
 def wrap_dataframe(snack: Snack) -> DataFrameWrap:
     """`DataFrameWrap` object created for the `Car` entity."""
-    snack.register_entity(Car, keys=['index'])
+    snack.register_entity(Car, key_fields=['index'])
     return snack.create_wrap(Car, DataFrameWrap)
 
 

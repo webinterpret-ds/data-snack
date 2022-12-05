@@ -10,18 +10,18 @@ from tests.data_snack.conftest import Car
 
 @pytest.fixture
 def snack_car(snack: Snack) -> Snack:
-    snack.register_entity(Car, keys=['index'])
+    snack.register_entity(Car, key_fields=['index'])
     return snack
 
 
 def test_register_entity(snack: Snack) -> None:
-    snack.register_entity(Car, keys=['index'])
+    snack.register_entity(Car, key_fields=['index'])
     registry = snack.registry.get('Car')
     assert type(registry) is EntityRegistry
     assert registry.entity_type == Car
     assert type(registry.serializer) is DataclassSerializer
     assert registry.serializer.entity_type is Car
-    assert registry.keys == ['index']
+    assert registry.key_fields == ['index']
 
 
 def test_create_wrap(snack_car: Snack) -> None:

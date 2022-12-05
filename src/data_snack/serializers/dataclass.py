@@ -21,7 +21,7 @@ class DataclassSerializer(Serializer):
         values = [entity_fields[field] for field in self.entity_fields]
         return zlib.compress(str(values).encode())
 
-    def serialize(self, entity: Union[Entity, List[Entity]], many: bool=False) -> Union[bytes, List[bytes]]:
+    def serialize(self, entity: Union[Entity, List[Entity]], many: bool = False) -> Union[bytes, List[bytes]]:
         return [self._serialize(e) for e in entity] if many else self._serialize(entity)
 
     def _deserialize(self, data: bytes) -> Entity:

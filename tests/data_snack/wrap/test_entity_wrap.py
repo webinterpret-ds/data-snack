@@ -8,7 +8,7 @@ from tests.data_snack.conftest import Car
 
 @pytest.fixture
 def wrap_car(snack: Snack) -> EntityWrap:
-    snack.register_entity(Car, keys=['index'])
+    snack.register_entity(Car, key_fields=['index'])
     return snack.create_wrap(Car)
 
 

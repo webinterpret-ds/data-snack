@@ -63,5 +63,5 @@ def entity_registry():
     return EntityRegistry(
         entity_type=Car,
         serializer=DataclassSerializer(Car),
-        keys=["index"]
+        key_fields=["index"]
     )

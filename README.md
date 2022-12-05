@@ -13,6 +13,11 @@ Data Snack can be easily installed using pypi repository.
 pip install data_snack
 ```
 
+# Core concepts
+- `Entity` - defines a schema of single object stored in db
+- `key values`
+- `key` - 
+
 # Usage
 This examples shows a basic usage of defining an entity and using `Snack` to save and load it from the cache.
 More examples can be found in the [Examples](examples/examples.md) section.
@@ -53,7 +58,7 @@ For each entity we specify a list of fields that will be used to define keys whe
 from data_snack import Snack
 from data_snack.connections.redis import RedisConnection
 snack = Snack(connection=RedisConnection(redis_connection))  # create instance
-snack.register_entity(Person, keys=['index'])  # register your entity
+snack.register_entity(Person, key_fields=['index'])  # register your entity
 ```
 
 ### 4. Save and load your entities using Snack
@@ -68,6 +73,39 @@ snack.set_many([Person("1", "John"), Person("2", "Anna")])
 # ['Person-1', 'Person-2']
 entities = snack.get_many(CarEntity, [["1"], ["2"]])
 # [Person(index='1', name='John'), Person(index='2', name='Anna')]
+```
+
+# Documentation
+## Access documentation
+WIP. Documentation will be hosted on github pages.
+
+## Setup documentation
+Setup documentation directory
+```bash
+mkdir docs
+cd docs
+```
+Create documentation scaffold. Make sure to select an option with separated directories for `source` and `build`.
+```bash
+sphinx-quickstart
+```
+Update `extensions` in `docs/source/conf.py`.
+```python
+extensions = ['sphinx.ext.autodoc', 'sphinx.ext.napoleon']
+```
+
+## Update apidoc documentation
+Before you start make sure to import project `src` directory at the very top of `docs/source/conf.py` file.
+```python
+import sys
+import os
+sys.path.insert(0, os.path.abspath(os.path.join('..', '..', 'src')))
+```
+
+Update the scaffold and generate the html docs.
+```bash
+sphinx-apidoc -o ./source ../src/data_snack
+make html
 ```
 
 # Contact
