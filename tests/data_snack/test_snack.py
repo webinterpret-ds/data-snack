@@ -36,11 +36,17 @@ def test_create_custom_wrap(snack_car: Snack) -> None:
     assert type(wrap) is DataFrameWrap
 
 
-def test_set(snack_car: Snack, example_entity: Car) -> None:
+def test_set(snack_car: Snack, example_entity: Car, example_entity_hash: bytes) -> None:
+    expected_key = "Car-1"
     snack_car.connection.connection.set.return_value = True
 
     key = snack_car.set(entity=example_entity)
-    assert key == "Car-1"
+    assert key == expected_key
+
+    snack_car.connection.connection.set.assert_called_with(
+        expected_key,
+        example_entity_hash
+    )
 
 
 def test_get(snack_car: Snack, example_entity: Car, example_entity_hash: bytes) -> None:

@@ -16,7 +16,7 @@ def wrap_dataframe(snack: Snack) -> DataFrameWrap:
 
 @pytest.fixture
 def data_df(example_entities: List[Car]) -> pd.DataFrame:
-    """`Data frame` containing all data: both keys and field values of the entity."""
+    """Data frame containing all data: both keys and field values of the entity."""
     return pd.DataFrame(example_entities)
 
 
