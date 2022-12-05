@@ -7,16 +7,25 @@ It uses an `Entity` objects to define a schema for your data. `Snack` provides a
 for automatically serializing and storing entities in a cache database of you choice. 
 General interface that allows you to use different backends: redis, memcached.
 
+## Features
+
+- `Entity` objects are stored in a compress form to reduce memory usage.
+- `Snack` is using `Entity` fields to define a unique key to represent an object stored in the db.
+- `Snack` is supporting batch saving and reading data to achieve high performance.
+
+## Core concepts
+- `Entity` - a class defines a schema of single object stored in db
+- `key fields` - a list of fields (defined as a list of `str` values)
+  that will be used to create a key for a given `Entity` object.
+- `key values` - a list of values for `key fields` from given `Entity`
+- `key` - a `str` value created for a given Entity
+    - created in a format: `<Entity type name>-<key value 1>_<key value 2>...<key value N>`
+
 ## Install
 Data Snack can be easily installed using pypi repository.
 ```bash
 pip install data_snack
 ```
-
-# Core concepts
-- `Entity` - defines a schema of single object stored in db
-- `key values`
-- `key` - 
 
 # Usage
 This examples shows a basic usage of defining an entity and using `Snack` to save and load it from the cache.
