@@ -8,7 +8,7 @@ from .base import Connection
 class RedisConnection(Connection):
     connection: "Redis"
 
-    def get(self, key: Text) -> Text:
+    def get(self, key: Text) -> bytes:
         return self.connection.get(key)
 
     def set(self, key: Text, value: Text) -> bool:

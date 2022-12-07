@@ -8,7 +8,7 @@ from .base import Connection
 class MemcachedConnection(Connection):
     connection: "Client"
 
-    def get(self, key: Text) -> Text:
+    def get(self, key: Text) -> bytes:
         return self.connection.get(key)
 
     def set(self, key: Text, value: Text) -> bool:
@@ -22,4 +22,4 @@ class MemcachedConnection(Connection):
         return list(set(values.keys()) - set(failed_keys))
 
     def keys(self, pattern: Text) -> List[Text]:
-        raise NotImplemented()
+        raise NotImplementedError()

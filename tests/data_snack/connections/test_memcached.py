@@ -47,8 +47,7 @@ def test_set_many(connection: MemcachedConnection) -> None:
     connection.connection.set_many.assert_called_with({"key1": "value1", "key2": "value2"})
 
 
-@pytest.mark.xfail(raises=NotImplemented)
 def test_keys(connection: MemcachedConnection) -> None:
     """Testing getting a list of keys based on a provided text query."""
-    with pytest.raises(Exception):
+    with pytest.raises(NotImplementedError):
         connection.keys("*")
