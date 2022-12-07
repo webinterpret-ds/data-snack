@@ -50,15 +50,15 @@ class Snack:
             key_fields=key_fields
         )
 
-    def create_wrap(self, cls: Type[Entity], wrap_type: Type["Wrap"] = EntityWrap) -> "Wrap":
+    def create_wrap(self, entity_type: Type[Entity], wrap_type: Type["Wrap"] = EntityWrap) -> "Wrap":
         """
         Creates a Wrap object for selected Entity type.
 
-        :param cls: Entity type
+        :param entity_type: Entity type
         :param wrap_type: `Wrap` type, by default it uses `EntityWrap`, but any other `Wrap` can be used
         :return: created Wrap object
         """
-        return wrap_type(self, cls)
+        return wrap_type(self, entity_type)
 
     def _get_serializer(self, type_name: Text) -> Serializer:
         return self.registry[type_name].serializer

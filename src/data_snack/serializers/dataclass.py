@@ -7,10 +7,6 @@ from data_snack.entities import Entity
 from data_snack.serializers.base import Serializer
 
 
-def _serialize(entity: Entity) -> bytes:
-    return zlib.compress(str(list(entity.__dict__.values())).encode())
-
-
 @dataclass
 class DataclassSerializer(Serializer):
     def __post_init__(self):
