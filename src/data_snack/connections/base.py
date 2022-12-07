@@ -10,7 +10,6 @@ class Connection(Protocol):
     """
     connection: Any
 
-    @abstractmethod
     def get(self, key: Text) -> bytes:
         """
         Reads data from db based on provided key.
@@ -20,7 +19,6 @@ class Connection(Protocol):
         """
         ...
 
-    @abstractmethod
     def set(self, key: Text, value: Union[Text, bytes]) -> bool:
         """
         Saves given value using provided key.
@@ -31,7 +29,6 @@ class Connection(Protocol):
         """
         ...
 
-    @abstractmethod
     def get_many(self, keys: List[Text]) -> Dict[Text, bytes]:
         """
         Reads multiple values from db based on provided list of keys.
@@ -41,10 +38,9 @@ class Connection(Protocol):
         """
         ...
 
-    @abstractmethod
     def set_many(self, values: Dict[Text, Union[Text, bytes]]) -> List[Text]:
         """
-        Saves multiple saves in db
+        Saves multiple values in db
 
         :param values: a dictionary containing keys and corresponding values
         :return: a list of keys succesfully saved in db

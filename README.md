@@ -35,7 +35,9 @@ More examples can be found in the [Examples](examples/examples.md) section.
 ### 1. Define entities
 The first thing you need to do is to define an `Entity`.
 Entities are used to define a common structure of the objects stores in your database.
-`Snack` is using `pydantic` for type validation of entity fields.
+
+We are recommending adding data validation to your entities. 
+The easiest way is using `pydantic` for type validation of all entity fields.
 
 ```python
 from pydantic.dataclasses import dataclass
