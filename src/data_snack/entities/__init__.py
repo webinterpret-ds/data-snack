@@ -1,2 +1,2 @@
-from .entity import Entity, EntityType
+from .entity import Entity
 from .registry import EntityRegistry

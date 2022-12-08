@@ -1,10 +1,9 @@
-from typing import TypeVar
-from pydantic.dataclasses import dataclass
+from abc import ABC
+from dataclasses import dataclass
+from typing import Any
 
 
 @dataclass
-class Entity:
-    ...
-
-
-EntityType = TypeVar('EntityType', bound=Entity)
+class Entity(ABC):
+    def __init__(self, *args: Any, **kwargs: Any):
+        ...

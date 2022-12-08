@@ -7,6 +7,20 @@ It uses an `Entity` objects to define a schema for your data. `Snack` provides a
 for automatically serializing and storing entities in a cache database of you choice. 
 General interface that allows you to use different backends: redis, memcached.
 
+## Features
+
+- `Entity` objects are stored in a compress form to reduce memory usage.
+- `Snack` is using `Entity` fields to define a unique key to represent an object stored in the db.
+- `Snack` is supporting batch saving and reading data to achieve high performance.
+
+## Core concepts
+- `Entity` - a class defines a schema of single object stored in db
+- `key fields` - a list of fields (defined as a list of `str` values)
+  that will be used to create a key for a given `Entity` object.
+- `key values` - a list of values for `key fields` from given `Entity`
+- `key` - a `str` value created for a given Entity
+    - created in a format: `<Entity type name>-<key value 1>_<key value 2>...<key value N>`
+
 ## Install
 Data Snack can be easily installed using pypi repository.
 ```bash
@@ -21,7 +35,9 @@ More examples can be found in the [Examples](examples/examples.md) section.
 ### 1. Define entities
 The first thing you need to do is to define an `Entity`.
 Entities are used to define a common structure of the objects stores in your database.
-`Snack` is using `pydantic` for type validation of entity fields.
+
+We are recommending adding data validation to your entities. 
+The easiest way is using `pydantic` for type validation of all entity fields.
 
 ```python
 from pydantic.dataclasses import dataclass
@@ -53,7 +69,7 @@ For each entity we specify a list of fields that will be used to define keys whe
 from data_snack import Snack
 from data_snack.connections.redis import RedisConnection
 snack = Snack(connection=RedisConnection(redis_connection))  # create instance
-snack.register_entity(Person, keys=['index'])  # register your entity
+snack.register_entity(Person, key_fields=['index'])  # register your entity
 ```
 
 ### 4. Save and load your entities using Snack
@@ -68,6 +84,39 @@ snack.set_many([Person("1", "John"), Person("2", "Anna")])
 # ['Person-1', 'Person-2']
 entities = snack.get_many(CarEntity, [["1"], ["2"]])
 # [Person(index='1', name='John'), Person(index='2', name='Anna')]
+```
+
+# Documentation
+## Access documentation
+WIP. Documentation will be hosted on github pages.
+
+## Setup documentation
+Setup documentation directory
+```bash
+mkdir docs
+cd docs
+```
+Create documentation scaffold. Make sure to select an option with separated directories for `source` and `build`.
+```bash
+sphinx-quickstart
+```
+Update `extensions` in `docs/source/conf.py`.
+```python
+extensions = ['sphinx.ext.autodoc', 'sphinx.ext.napoleon']
+```
+
+## Update apidoc documentation
+Before you start make sure to import project `src` directory at the very top of `docs/source/conf.py` file.
+```python
+import sys
+import os
+sys.path.insert(0, os.path.abspath(os.path.join('..', '..', 'src')))
+```
+
+Update the scaffold and generate the html docs.
+```bash
+sphinx-apidoc -o ./source ../src/data_snack
+make html
 ```
 
 # Contact
