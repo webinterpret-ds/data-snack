@@ -4,6 +4,7 @@ import pytest
 
 from data_snack import Snack, EntityWrap, DataFrameWrap
 from data_snack.entities import EntityRegistry
+from data_snack.exceptions import EntityAlreadyRegistered
 from data_snack.serializers import DataclassSerializer
 from tests.data_snack.conftest import Car
 
@@ -22,6 +23,12 @@ def test_register_entity(snack: Snack) -> None:
     assert type(registry.serializer) is DataclassSerializer
     assert registry.serializer.entity_type is Car
     assert registry.key_fields == ['index']
+
+
+def test_register_entity_duplicated(snack_car: Snack) -> None:
+    """Testing if exception is risen if Entity duplicated"""
+    with pytest.raises(EntityAlreadyRegistered):
+        snack_car.register_entity(Car, key_fields=['index'])
 
 
 def test_create_wrap(snack_car: Snack) -> None:

@@ -1,7 +1,7 @@
 import ast
 import zlib
 from dataclasses import dataclass
-from typing import Union, List
+from typing import Union, List, get_type_hints
 
 from data_snack.entities import Entity
 from data_snack.serializers.base import Serializer
@@ -10,7 +10,7 @@ from data_snack.serializers.base import Serializer
 @dataclass
 class DataclassSerializer(Serializer):
     def __post_init__(self):
-        self.entity_fields = list(self.entity_type.__dataclass_fields__.keys())  # noqa
+        self.entity_fields = list(get_type_hints(self.entity_type).keys())
 
     def _serialize(self, entity: Entity) -> bytes:
         entity_fields = entity.__dict__

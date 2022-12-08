@@ -47,7 +47,6 @@ class Connection(Protocol):
         """
         ...
 
-    @abstractmethod
     def keys(self, pattern: Text) -> List[Text]:
         """
         Retrieves keys from db that follows given pattern.

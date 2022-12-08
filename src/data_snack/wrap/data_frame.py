@@ -18,6 +18,7 @@ class DataFrameWrap(EntityWrap):
         :param df: a data frame with entities in a tabular form
         :return: a list of keys created for entities
         """
+        # TODO: Add fields validation for df
         data = [self.entity_type(**v) for v in df.to_dict(orient="records")]
         return self.set_many(data)
 
