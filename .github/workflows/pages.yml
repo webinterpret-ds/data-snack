@@ -3,7 +3,6 @@ on:
   push:
     branches:
     - main
-    - DS-2166-setup-sphinx-documentation
 jobs:
   build:
     runs-on: ubuntu-latest
