@@ -43,7 +43,7 @@ class Connection(Protocol):
         Saves multiple values in db
 
         :param values: a dictionary containing keys and corresponding values
-        :return: a list of keys succesfully saved in db
+        :return: a list of keys successfully saved in db
         """
         ...
 

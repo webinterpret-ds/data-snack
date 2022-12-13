@@ -1,15 +1,12 @@
 from dataclasses import dataclass, field
-from typing import Text, Dict, List, Optional, Type
+from typing import Text, Dict, List, Optional, Type, get_type_hints
 
+from .key_factory import KeyFactory, key_factory
 from .wrap import EntityWrap
 from .connections import Connection
 from .entities import EntityRegistry, Entity
 from .exceptions import EntityAlreadyRegistered, WrongKeyValue
 from .serializers import Serializer, DataclassSerializer
-
-
-def _build_key(type_name: Text, *keys: Text):
-    return f"{type_name}-{'_'.join(keys)}"
 
 
 @dataclass
@@ -20,16 +17,17 @@ class Snack:
 
     connection: Connection
     registry: Dict[Text, EntityRegistry] = field(default_factory=dict)
+    key_factory: KeyFactory = field(default=key_factory)
 
-    def register_entity(self, cls: Type[Entity], key_fields: List[Text], serializer: Serializer = None) -> None:
+    def register_entity(self, entity_type: Type[Entity], key_fields: List[Text], serializer: Serializer = None) -> None:
         """
         Registers new Entity type to Snack.
 
-        :param cls: Entity type
+        :param entity_type: Entity type
         :param key_fields: a list of fields that will be used to define Entity key
         :param serializer: Serializer that is used to compress and decompress entities before saving in db
         """
-        type_name = cls.__name__
+        type_name = entity_type.__name__
 
         if type_name in self.registry:
             raise EntityAlreadyRegistered(f"Entity {type_name} is already registered")
@@ -38,14 +36,14 @@ class Snack:
             raise WrongKeyValue("Entity keys cannot be empty")
 
         for key in key_fields:
-            if key not in cls.__dataclass_fields__.keys():
+            if key not in get_type_hints(entity_type).keys():
                 raise WrongKeyValue(f"Key {key} not found in entity definition.")
 
         if not serializer:
-            serializer = DataclassSerializer(cls)
+            serializer = DataclassSerializer(entity_type)
 
         self.registry[type_name] = EntityRegistry(
-            entity_type=cls,
+            entity_type=entity_type,
             serializer=serializer,
             key_fields=key_fields
         )
@@ -68,7 +66,7 @@ class Snack:
             getattr(entity, key)
             for key in self.registry[type_name].key_fields
         ]
-        return _build_key(type_name, *key_values)
+        return self.key_factory(type_name, *key_values)
 
     def set(self, entity: Entity) -> Optional[Text]:
         """
@@ -95,7 +93,7 @@ class Snack:
         :return: a retrieved Entity object
         """
         type_name = cls.__name__
-        _key = _build_key(type_name, *key_values)
+        _key = self.key_factory(type_name, *key_values)
         if value := self.connection.get(_key):
             return self._get_serializer(type_name).deserialize(value)
         else:
@@ -110,7 +108,7 @@ class Snack:
         :return: a list of retrieved Entity objects
         """
         type_name = cls.__name__
-        _keys = [_build_key(type_name, *key_values) for key_values in keys_values]
+        _keys = [self.key_factory(type_name, *key_values) for key_values in keys_values]
         records = list(self.connection.get_many(_keys).values())
         return self._get_serializer(type_name).deserialize(records, many=True)
 
