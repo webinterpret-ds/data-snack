@@ -24,8 +24,8 @@ class MemcachedConnection(Connection):
         failed_keys = self.connection.set_many(values)
         return list(set(values.keys()) - set(failed_keys))
 
-    def delete_many(self, keys: List[Text]) -> bool:
-        return self.connection.delete_many(keys, noreply=False)  # always returns True
+    def delete_many(self, keys: List[Text]) -> bool:  # always returns True. How should we approach this?
+        return self.connection.delete_many(keys, noreply=False)
 
     def keys(self, pattern: Text) -> List[Text]:
         raise NotImplementedError()

@@ -101,6 +101,22 @@ class Snack:
         else:
             raise KeyError(f"Key {_key} not found.")
 
+    def delete(self, cls: Type[Entity], key_values: List[Text]) -> bool:
+        """
+        Deletes one entity of `Entity` type from db based on provided key values.
+        Notice, key is represented as a list of strings, since one Entity can have multiple key fields.
+
+        :param cls: `Entity` type
+        :param key_values: a list of key values representing the entity
+        :return: True if data were deleted
+        """
+        type_name = cls.__name__
+        _key = _build_key(type_name, *key_values)
+        if self.connection.delete(_key):
+            return True
+        else:
+            raise KeyError(f"Failed to delete key {_key}.")
+
     def get_many(self, cls: Type[Entity], keys_values: List[List[Text]]) -> List[Entity]:
         """
         Gets list of `Entity` objects from db based on provided list of keys.
@@ -129,6 +145,18 @@ class Snack:
         ]
         if result := self.connection.set_many(dict(zip(keys, records))):
             return result
+
+    def delete_many(self, cls: Type[Entity], keys_values: List[List[Text]]) -> bool:
+        """
+        Deletes multiple `Entity` objects in db.
+
+        :param cls: `Entity` type
+        :param keys_values: list of keys, each list defines a set key values for one Entity object
+        :return: True if data were deleted
+        """
+        type_name = cls.__name__
+        _keys = [_build_key(type_name, *key_values) for key_values in keys_values]
+        return self.connection.delete_many(_keys)
 
     def keys(self, cls: Type[Entity]) -> List[Text]:
         """
