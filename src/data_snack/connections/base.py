@@ -1,4 +1,3 @@
-from abc import abstractmethod
 from typing import Protocol, Text, List, Dict, Union, Any
 
 
@@ -29,6 +28,15 @@ class Connection(Protocol):
         """
         ...
 
+    def delete(self, key: Text) -> bool:
+        """
+        Deletes value for provided key.
+
+        :param key: unique data identifier
+        :return: True if data were deleted
+        """
+        ...
+
     def get_many(self, keys: List[Text]) -> Dict[Text, bytes]:
         """
         Reads multiple values from db based on provided list of keys.
@@ -44,6 +52,15 @@ class Connection(Protocol):
 
         :param values: a dictionary containing keys and corresponding values
         :return: a list of keys succesfully saved in db
+        """
+        ...
+
+    def delete_many(self, keys: List[Text]) -> bool:
+        """
+        Deletes values for provided keys.
+
+        :param keys: a list of keys
+        :return: True if data were deleted
         """
         ...
 
