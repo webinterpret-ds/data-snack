@@ -1,4 +1,4 @@
-from typing import Protocol, Text, List, Dict, Union, Any
+from typing import Protocol, Text, List, Dict, Union, Any, Optional
 
 
 class Connection(Protocol):
@@ -18,12 +18,13 @@ class Connection(Protocol):
         """
         ...
 
-    def set(self, key: Text, value: Union[Text, bytes]) -> bool:
+    def set(self, key: Text, value: Union[Text, bytes], expire: int = 0) -> bool:
         """
         Saves given value using provided key.
 
         :param key: unique data identifier
         :param value: value saved in db
+        :param expire: optional int, number of seconds until the item is expired, or zero for no expiry
         :return: True if data was saved
         """
         ...
@@ -46,11 +47,12 @@ class Connection(Protocol):
         """
         ...
 
-    def set_many(self, values: Dict[Text, Union[Text, bytes]]) -> List[Text]:
+    def set_many(self, values: Dict[Text, Union[Text, bytes]], expire: int = 0) -> List[Text]:
         """
         Saves multiple values in db
 
         :param values: a dictionary containing keys and corresponding values
+        :param expire: optional int, number of seconds until the item is expired, or zero for no expiry
         :return: a list of keys succesfully saved in db
         """
         ...

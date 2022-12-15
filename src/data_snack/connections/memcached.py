@@ -11,8 +11,8 @@ class MemcachedConnection(Connection):
     def get(self, key: Text) -> bytes:
         return self.connection.get(key)
 
-    def set(self, key: Text, value: Text) -> bool:
-        return self.connection.set(key, value)
+    def set(self, key: Text, value: Text, expire: int = 0) -> bool:
+        return self.connection.set(key, value, expire=expire)
 
     def delete(self, key: Text) -> bool:
         return self.connection.delete(key, noreply=False)
@@ -20,8 +20,8 @@ class MemcachedConnection(Connection):
     def get_many(self, keys: List[Text]) -> Dict[Text, bytes]:
         return self.connection.get_many(keys)
 
-    def set_many(self, values: Dict[Text, Text]) -> List[Text]:
-        failed_keys = self.connection.set_many(values)
+    def set_many(self, values: Dict[Text, Text], expire: int = 0) -> List[Text]:
+        failed_keys = self.connection.set_many(values, expire=expire)
         return list(set(values.keys()) - set(failed_keys))
 
     def delete_many(self, keys: List[Text]) -> bool:  # always returns True. How should we approach this?
