@@ -1,4 +1,5 @@
 from typing import List
+from unittest.mock import call
 
 import pandas as pd
 import pytest
@@ -38,15 +39,18 @@ def test_set_dataframe(
 ) -> None:
     """Testing saving a data frame containing entities data to the database."""
     expected_keys = ("Car-"+data_df['index']).tolist()
-    wrap_dataframe.snack.connection.connection.mset.return_value = expected_keys
+    wrap_dataframe.snack.connection.connection.set.side_effect = expected_keys
 
     # keys are returned unmodified
-    keys = wrap_dataframe.set_dataframe(data_df)
+    keys = wrap_dataframe.set_dataframe(data_df, 100)
     assert keys == expected_keys
 
     # connection is called with a dict containing keys and hashed entities built based on the data frame values
     expected_payload = dict(zip(expected_keys, example_entities_hashes))
-    wrap_dataframe.snack.connection.connection.mset.assert_called_with(expected_payload)
+
+    wrap_dataframe.snack.connection.connection.set.assert_has_calls(
+        [call(k, v, ex=100) for k, v in expected_payload.items()]
+    )
 
 
 def test_get_dataframe(
@@ -72,6 +76,5 @@ def test_get_dataframe_missing_columns(
         wrong_index_df: pd.DataFrame
 ) -> None:
     """Testing reading a data frame, but the input data frame is missing required columns."""
-
     with pytest.raises(DataFrameMissingKeyColumn):
         wrap_dataframe.get_dataframe(wrong_index_df)

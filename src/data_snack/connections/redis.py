@@ -23,7 +23,7 @@ class RedisConnection(Connection):
         return dict(zip(keys, self.connection.mget(keys)))
 
     def set_many(self, values: Dict[Text, Text], expire: int = 0) -> List[Text]:
-        return [k for k, v in values if self.set(k, v, expire)]  # .mset() does not provide expire functionality
+        return [k for k, v in values.items() if self.set(k, v, expire)]  # .mset() does not provide expire functionality
 
     def delete_many(self, keys: List[Text]) -> bool:
         n_deleted = self.connection.delete(*keys)

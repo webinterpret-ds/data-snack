@@ -1,4 +1,4 @@
-from unittest.mock import MagicMock
+from unittest.mock import MagicMock, call
 
 import pytest
 
@@ -21,6 +21,15 @@ def test_get(connection: RedisConnection) -> None:
 
 
 def test_set(connection: RedisConnection) -> None:
+    """Testing setting a single value based for the provided key."""
+    connection.connection.set.return_value = "key"
+
+    result = connection.set("key", "value")
+    assert result == "key"
+    connection.connection.set.assert_called_with("key", "value", ex=None)
+
+
+def test_set_expire(connection: RedisConnection) -> None:
     """Testing setting a single value based for the provided key."""
     connection.connection.set.return_value = "key"
 
@@ -52,10 +61,21 @@ def test_set_many(connection: RedisConnection) -> None:
     connection.connection.set.side_effect = ["key1", "key2"]
     set_mapping = {"key1": "value1", "key2": "value2"}
 
-    result = connection.set_many(set_mapping, 100)
+    result = connection.set_many(set_mapping)
     assert set(result) == {"key1", "key2"}
-    for k, v in set_mapping:
-        connection.connection.set.assert_called_with(k, v, ex=100)
+    assert connection.connection.set.call_count == 2
+    connection.connection.set.assert_has_calls([call(k, v, ex=None) for k, v in set_mapping.items()])
+
+
+def test_set_many_expire(connection: RedisConnection) -> None:
+    """Testing setting multiple values with expire flag. Values are provided in a form of a dictionary."""
+    connection.connection.set.side_effect = ["key2", "key1"]
+    set_mapping = {"key1": "value1", "key2": "value2"}
+
+    result = connection.set_many(set_mapping, expire=100)
+    assert set(result) == {"key1", "key2"}
+    assert connection.connection.set.call_count == 2
+    connection.connection.set.assert_has_calls([call(k, v, ex=100) for k, v in set_mapping.items()])
 
 
 def test_delete_many(connection: RedisConnection) -> None:
