@@ -16,13 +16,13 @@ def read_file(filename):
 
 
 def read_requirements(filename):
-    contents = read_file(filename).strip('\n')
-    return contents.split('\n') if contents else []
+    contents = read_file(filename).strip("\n")
+    return contents.split("\n") if contents else []
 
 
 setuptools.setup(
-    name='data_snack',
-    test_suite='tests',
-    install_requires=read_requirements('requirements.txt'),
-    entry_points={}
+    name="data_snack",
+    test_suite="tests",
+    install_requires=read_requirements("requirements.txt"),
+    entry_points={},
 )

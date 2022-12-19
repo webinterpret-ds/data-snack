@@ -1,5 +1,5 @@
 from abc import ABC
-from typing import Text, List, Optional, Any
+from typing import Any, List, Optional, Text
 
 from data_snack.entities import Entity
 

@@ -1,7 +1,8 @@
 from dataclasses import dataclass, field
-from typing import Text, List, Optional, Type
+from typing import List, Optional, Text, Type
 
 from data_snack.entities import Entity
+
 from .base import Wrap
 
 

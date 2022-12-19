@@ -1,4 +1,4 @@
-from typing import Protocol, Text, List, Dict, Union, Any, Optional
+from typing import Any, Dict, List, Optional, Protocol, Text, Union
 
 
 class Connection(Protocol):
@@ -7,6 +7,7 @@ class Connection(Protocol):
     If you want to create a custom connection to a db for your choosing,
     create a new class that follows this protocol.
     """
+
     connection: Any
 
     def get(self, key: Text) -> bytes:
@@ -47,7 +48,9 @@ class Connection(Protocol):
         """
         ...
 
-    def set_many(self, values: Dict[Text, Union[Text, bytes]], expire: int = 0) -> List[Text]:
+    def set_many(
+        self, values: Dict[Text, Union[Text, bytes]], expire: int = 0
+    ) -> List[Text]:
         """
         Saves multiple values in db
 

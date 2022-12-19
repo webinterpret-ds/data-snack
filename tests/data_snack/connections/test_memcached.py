@@ -82,7 +82,9 @@ def test_delete_many(connection: MemcachedConnection) -> None:
 
     result = connection.delete_many(["key1", "key2"])
     assert result
-    connection.connection.delete_many.assert_called_with(["key1", "key2"], noreply=False)
+    connection.connection.delete_many.assert_called_with(
+        ["key1", "key2"], noreply=False
+    )
 
 
 def test_keys(connection: MemcachedConnection) -> None:

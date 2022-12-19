@@ -3,19 +3,19 @@ from unittest.mock import call
 
 import pytest
 
-from data_snack import Snack, EntityWrap
+from data_snack import EntityWrap, Snack
 from tests.data_snack.conftest import Car
 
 
 @pytest.fixture
 def wrap_car(snack: Snack) -> EntityWrap:
-    snack.register_entity(Car, key_fields=['index'])
+    snack.register_entity(Car, key_fields=["index"])
     return snack.create_wrap(Car)
 
 
 def test_entity_type_name(wrap_car: EntityWrap):
     """Testing getting name of wrapped Entity."""
-    assert wrap_car.entity_type_name == 'Car'
+    assert wrap_car.entity_type_name == "Car"
 
 
 def test_get(wrap_car: EntityWrap, example_entity: Car, example_entity_hash: bytes):
@@ -34,9 +34,7 @@ def test_set(wrap_car: EntityWrap, example_entity: Car, example_entity_hash: byt
     result = wrap_car.set(example_entity, 100)
     assert result == expected_key
     wrap_car.snack.connection.connection.set.assert_called_with(
-        expected_key,
-        example_entity_hash,
-        ex=100
+        expected_key, example_entity_hash, ex=100
     )
 
 
@@ -48,7 +46,11 @@ def test_delete(wrap_car: EntityWrap, example_entity: Car, example_entity_hash: 
     assert deleted
 
 
-def test_get_many(wrap_car: EntityWrap, example_entities: List[Car], example_entities_hashes: List[bytes]):
+def test_get_many(
+    wrap_car: EntityWrap,
+    example_entities: List[Car],
+    example_entities_hashes: List[bytes],
+):
     """Testing getting multiple Entity objects based of the provided list of keys."""
     wrap_car.snack.connection.connection.mget.return_value = example_entities_hashes
 
@@ -56,7 +58,11 @@ def test_get_many(wrap_car: EntityWrap, example_entities: List[Car], example_ent
     assert entities == example_entities
 
 
-def test_set_many(wrap_car: EntityWrap, example_entities: List[Car], example_entities_hashes: List[bytes]):
+def test_set_many(
+    wrap_car: EntityWrap,
+    example_entities: List[Car],
+    example_entities_hashes: List[bytes],
+):
     """Testing setting multiple Entity objects based of the provided list of keys."""
     expected_keys = ["Car-1", "Car-2"]
     wrap_car.snack.connection.connection.set.side_effect = expected_keys
@@ -64,10 +70,16 @@ def test_set_many(wrap_car: EntityWrap, example_entities: List[Car], example_ent
     keys = wrap_car.set_many(example_entities, 100)
     assert keys == expected_keys
     expected_payload = dict(zip(expected_keys, example_entities_hashes))
-    wrap_car.snack.connection.connection.set.assert_has_calls([call(k, v, ex=100) for k, v in expected_payload.items()])
+    wrap_car.snack.connection.connection.set.assert_has_calls(
+        [call(k, v, ex=100) for k, v in expected_payload.items()]
+    )
 
 
-def test_delete_many(wrap_car: EntityWrap, example_entities: List[Car], example_entities_hashes: List[bytes]):
+def test_delete_many(
+    wrap_car: EntityWrap,
+    example_entities: List[Car],
+    example_entities_hashes: List[bytes],
+):
     """Testing deleting multiple Entity objects based of the provided list of keys."""
     deleted_keys = ["Car-1", "Car-2"]
     wrap_car.snack.connection.connection.delete.return_value = 2
