@@ -7,7 +7,6 @@ class Connection(Protocol):
     If you want to create a custom connection to a db for your choosing,
     create a new class that follows this protocol.
     """
-
     connection: Any
 
     def get(self, key: Text) -> bytes:
@@ -56,7 +55,7 @@ class Connection(Protocol):
 
         :param values: a dictionary containing keys and corresponding values
         :param expire: optional int, number of seconds until the items are expired, or zero for no expiry
-        :return: a list of keys succesfully saved in db
+        :return: a list of keys successfully saved in db
         """
         ...
 

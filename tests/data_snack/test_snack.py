@@ -3,9 +3,12 @@ from unittest.mock import call
 
 import pytest
 
+from data_snack import Snack, EntityWrap, DataFrameWrap
+from data_snack.connections import Connection
 from data_snack import DataFrameWrap, EntityWrap, Snack
 from data_snack.entities import EntityRegistry
 from data_snack.exceptions import EntityAlreadyRegistered
+from data_snack.key_factory import key_factory_cluster
 from data_snack.serializers import DataclassSerializer
 from tests.data_snack.conftest import Car
 
@@ -13,6 +16,13 @@ from tests.data_snack.conftest import Car
 @pytest.fixture
 def snack_car(snack: Snack) -> Snack:
     snack.register_entity(Car, key_fields=["index"])
+    return snack
+
+
+@pytest.fixture
+def snack_factory_key_cluster(db_connection: Connection) -> Snack:
+    snack = Snack(connection=db_connection, key_factory=key_factory_cluster)
+    snack.register_entity(Car, key_fields=['index'])
     return snack
 
 
@@ -33,6 +43,16 @@ def test_register_entity_duplicated(snack_car: Snack) -> None:
         snack_car.register_entity(Car, key_fields=["index"])
 
 
+def test_snack_custom_factory_key(
+        snack_factory_key_cluster: Snack, example_entity: Car, example_entity_hash: bytes
+) -> None:
+    """Testing using custom key_factory_cluster"""
+    _snack = snack_factory_key_cluster
+    _snack.connection.connection.get.return_value = example_entity_hash
+    _snack.get(Car, ["1"])
+    _snack.connection.connection.get.assert_called_with("{Car}-1")
+
+
 def test_create_wrap(snack_car: Snack) -> None:
     wrap = snack_car.create_wrap(Car)
     assert type(wrap) is EntityWrap
@@ -50,6 +70,7 @@ def test_get(snack_car: Snack, example_entity: Car, example_entity_hash: bytes) 
 
     entity = snack_car.get(Car, ["1"])
     assert entity == example_entity
+    snack_car.connection.connection.get.assert_called_with("Car-1")
 
 
 def test_delete(snack_car: Snack, example_entity: Car) -> None:
@@ -66,7 +87,9 @@ def test_set(snack_car: Snack, example_entity: Car, example_entity_hash: bytes) 
     key = snack_car.set(entity=example_entity, expire=100)
     assert key == expected_key
     snack_car.connection.connection.set.assert_called_with(
-        expected_key, example_entity_hash, ex=100
+        expected_key,
+        example_entity_hash,
+        ex=100
     )
 
 
