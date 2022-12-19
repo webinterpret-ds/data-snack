@@ -78,11 +78,31 @@ You are ready to save and load data using `Snack`.
 ```python
 snack.set(Person("1", "John"))
 # 'Person-1'
-snack.get(Person, ["1"])
+entity = snack.get(Person, ["1"])
 # Person(index='1', name='John')
 snack.set_many([Person("1", "John"), Person("2", "Anna")])
 # ['Person-1', 'Person-2']
-entities = snack.get_many(CarEntity, [["1"], ["2"]])
+entities = snack.get_many(Person, [["1"], ["2"]])
+# [Person(index='1', name='John'), Person(index='2', name='Anna')]
+```
+
+#### 4.1 Set expire time for entities
+You can also specify number of seconds until the item is expired using `Snack`.
+
+```python
+snack.set(Person("1", "John"), expire=100)
+# 'Person-1'
+snack.set_many([Person("1", "John"), Person("2", "Anna")], expire=100)
+# ['Person-1', 'Person-2']
+```
+
+### 5. Delete your entities using Snack
+After you're done with your data you can delete it using `Snack`.
+
+```python
+snack.delete(Person, ["1"])
+# Person(index='1', name='John')
+snack.delete_many(Person, [["1"], ["2"]])
 # [Person(index='1', name='John'), Person(index='2', name='Anna')]
 ```
 
@@ -121,3 +141,4 @@ make html
 
 # Contact
 Plugin was created by the Data Science team from [Webinterpret](https://www.webinterpret.com/).
+
