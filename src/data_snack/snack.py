@@ -70,19 +70,20 @@ class Snack:
         ]
         return _build_key(type_name, *key_values)
 
-    def set(self, entity: Entity) -> Optional[Text]:
+    def set(self, entity: Entity, expire: int = 0) -> Optional[Text]:
         """
         Sets provided `Entity` object in db.
         Notice the entity stored in the db will be overwritten,
         so make sure all the combined keys are unique for each entity.
 
         :param entity: an entity to save
+        :param expire: optional int, number of seconds until the item is expired, or zero for no expiry
         :return: on success returns key used for the object, None on fail
         """
         type_name = entity.__class__.__name__
         key = self._build_record_key(type_name, entity)
         record = self._get_serializer(type_name).serialize(entity)
-        if self.connection.set(key, record):
+        if self.connection.set(key, record, expire):
             return key
 
     def get(self, cls: Type[Entity], key_values: List[Text]) -> Entity:
@@ -130,11 +131,12 @@ class Snack:
         records = list(self.connection.get_many(_keys).values())
         return self._get_serializer(type_name).deserialize(records, many=True)
 
-    def set_many(self, entities: List[Entity]) -> List[Text]:
+    def set_many(self, entities: List[Entity], expire: int = 0) -> List[Text]:
         """
         Saves multiple `Entity` objects in db.
 
         :param entities: a list of Entity objects
+        :param expire: optional int, number of seconds until the items are expired, or zero for no expiry
         :return: a list of keys generated for saved objects
         """
         type_name = entities[0].__class__.__name__
@@ -143,7 +145,7 @@ class Snack:
             self._build_record_key(type_name, entity)
             for entity in entities
         ]
-        if result := self.connection.set_many(dict(zip(keys, records))):
+        if result := self.connection.set_many(dict(zip(keys, records)), expire):
             return result
 
     def delete_many(self, cls: Type[Entity], keys_values: List[List[Text]]) -> bool:

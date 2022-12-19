@@ -21,11 +21,12 @@ class Wrap(ABC):
         """
         ...
 
-    def set(self, entity: Entity) -> Optional[Text]:
+    def set(self, entity: Entity, expire: int = 0) -> Optional[Text]:
         """
         Saves given entity in db.
 
         :param entity: an entity
+        :param expire: optional int, number of seconds until the item is expired, or zero for no expiry
         :return: a key to saved entity
         """
         ...
@@ -48,11 +49,12 @@ class Wrap(ABC):
         """
         ...
 
-    def set_many(self, entities: List[Entity]) -> List[Text]:
+    def set_many(self, entities: List[Entity], expire: int = 0) -> List[Text]:
         """
         Saves multiple `Entity` objects in db.
 
         :param entities: a list of Entity objects
+        :param expire: optional int, number of seconds until the items are expired, or zero for no expiry
         :return: a list of keys generated for saved objects
         """
         ...

@@ -23,8 +23,8 @@ class EntityWrap(Wrap):
 
         return self.snack.get(self.entity_type, key_values)
 
-    def set(self, entity: Entity) -> Optional[Text]:
-        return self.snack.set(entity)
+    def set(self, entity: Entity, expire: int = 0) -> Optional[Text]:
+        return self.snack.set(entity, expire)
 
     def delete(self, key_values: List[Text]) -> bool:
         return self.snack.delete(self.entity_type, key_values)
@@ -32,8 +32,8 @@ class EntityWrap(Wrap):
     def get_many(self, keys_values: List[List[Text]]) -> List[Entity]:
         return self.snack.get_many(self.entity_type, keys_values)
 
-    def set_many(self, entities: List[Entity]) -> List[Text]:
-        return self.snack.set_many(entities)
+    def set_many(self, entities: List[Entity], expire: int = 0) -> List[Text]:
+        return self.snack.set_many(entities, expire)
 
     def delete_many(self, keys_values: List[List[Text]]) -> bool:
         return self.snack.delete_many(self.entity_type, keys_values)
