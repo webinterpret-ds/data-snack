@@ -3,9 +3,8 @@ from unittest.mock import call
 
 import pytest
 
-from data_snack import Snack, EntityWrap, DataFrameWrap
-from data_snack.connections import Connection
 from data_snack import DataFrameWrap, EntityWrap, Snack
+from data_snack.connections import Connection
 from data_snack.entities import EntityRegistry
 from data_snack.exceptions import EntityAlreadyRegistered
 from data_snack.key_factory import key_factory_cluster
@@ -22,7 +21,7 @@ def snack_car(snack: Snack) -> Snack:
 @pytest.fixture
 def snack_factory_key_cluster(db_connection: Connection) -> Snack:
     snack = Snack(connection=db_connection, key_factory=key_factory_cluster)
-    snack.register_entity(Car, key_fields=['index'])
+    snack.register_entity(Car, key_fields=["index"])
     return snack
 
 
@@ -44,7 +43,7 @@ def test_register_entity_duplicated(snack_car: Snack) -> None:
 
 
 def test_snack_custom_factory_key(
-        snack_factory_key_cluster: Snack, example_entity: Car, example_entity_hash: bytes
+    snack_factory_key_cluster: Snack, example_entity: Car, example_entity_hash: bytes
 ) -> None:
     """Testing using custom key_factory_cluster"""
     _snack = snack_factory_key_cluster
@@ -87,9 +86,7 @@ def test_set(snack_car: Snack, example_entity: Car, example_entity_hash: bytes) 
     key = snack_car.set(entity=example_entity, expire=100)
     assert key == expected_key
     snack_car.connection.connection.set.assert_called_with(
-        expected_key,
-        example_entity_hash,
-        ex=100
+        expected_key, example_entity_hash, ex=100
     )
 
 

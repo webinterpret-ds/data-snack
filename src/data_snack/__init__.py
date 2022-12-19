@@ -1,2 +1,3 @@
 from .snack import Snack
-from .wrap import DataFrameWrap, EntityWrap
+from .wrap import EntityWrap
+from .wrap import DataFrameWrap

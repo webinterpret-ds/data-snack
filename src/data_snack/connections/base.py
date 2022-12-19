@@ -1,4 +1,4 @@
-from typing import Any, Dict, List, Optional, Protocol, Text, Union
+from typing import Any, Dict, List, Protocol, Text, Union
 
 
 class Connection(Protocol):
@@ -7,6 +7,7 @@ class Connection(Protocol):
     If you want to create a custom connection to a db for your choosing,
     create a new class that follows this protocol.
     """
+
     connection: Any
 
     def get(self, key: Text) -> bytes:

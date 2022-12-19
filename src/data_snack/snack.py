@@ -1,12 +1,10 @@
 from dataclasses import dataclass, field
-from typing import Text, Dict, List, Optional, Type, get_type_hints
-from typing import Dict, List, Optional, Text, Type
+from typing import Dict, List, Optional, Text, Type, get_type_hints
 
-from .key_factory import KeyFactory, key_factory
-from .wrap import EntityWrap
 from .connections import Connection
 from .entities import Entity, EntityRegistry
 from .exceptions import EntityAlreadyRegistered, WrongKeyValue
+from .key_factory import KeyFactory, key_factory
 from .serializers import DataclassSerializer, Serializer
 from .wrap import EntityWrap
 
@@ -21,7 +19,12 @@ class Snack:
     registry: Dict[Text, EntityRegistry] = field(default_factory=dict)
     key_factory: KeyFactory = field(default=key_factory)
 
-    def register_entity(self, entity_type: Type[Entity], key_fields: List[Text], serializer: Serializer = None) -> None:
+    def register_entity(
+        self,
+        entity_type: Type[Entity],
+        key_fields: List[Text],
+        serializer: Serializer = None,
+    ) -> None:
         """
         Registers new Entity type to Snack.
 
@@ -45,9 +48,7 @@ class Snack:
             serializer = DataclassSerializer(entity_type)
 
         self.registry[type_name] = EntityRegistry(
-            entity_type=entity_type,
-            serializer=serializer,
-            key_fields=key_fields
+            entity_type=entity_type, serializer=serializer, key_fields=key_fields
         )
 
     def create_wrap(
@@ -67,8 +68,7 @@ class Snack:
 
     def _build_record_key(self, type_name: Text, entity: Entity) -> Text:
         key_values = [
-            getattr(entity, key)
-            for key in self.registry[type_name].key_fields
+            getattr(entity, key) for key in self.registry[type_name].key_fields
         ]
         return self.key_factory(type_name, *key_values)
 
@@ -114,7 +114,7 @@ class Snack:
         :return: True if data were deleted
         """
         type_name = cls.__name__
-        _key = _build_key(type_name, *key_values)
+        _key = self.key_factory(type_name, *key_values)
         if self.connection.delete(_key):
             return True
         else:
