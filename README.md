@@ -133,6 +133,11 @@ import os
 sys.path.insert(0, os.path.abspath(os.path.join('..', '..', 'src')))
 ```
 
+Since documentation is using additional modules to than base `data-snack`, we need to install additional requirements:
+```bash
+pip install -r docs/requirements.txt
+```
+
 Update the scaffold and generate the html docs.
 ```bash
 sphinx-apidoc -o ./source ../src/data_snack
