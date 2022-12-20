@@ -79,7 +79,7 @@ class Snack:
         so make sure all the combined keys are unique for each entity.
 
         :param entity: an entity to save
-        :param expire: optional int, number of seconds until the item is expired, or zero for no expiry
+        :param expire: number of seconds until the item is expired, or zero for no expiry
         :return: on success returns key used for the object, None on fail
         """
         type_name = entity.__class__.__name__
@@ -140,7 +140,7 @@ class Snack:
         Saves multiple `Entity` objects in db.
 
         :param entities: a list of Entity objects
-        :param expire: optional int, number of seconds until the items are expired, or zero for no expiry
+        :param expire: number of seconds until the items are expired, or zero for no expiry
         :return: a list of keys generated for saved objects
         """
         type_name = entities[0].__class__.__name__

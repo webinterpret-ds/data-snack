@@ -16,7 +16,7 @@ class DataFrameWrap(EntityWrap):
         Each row in the data frame defines a single Entity that will be saved in the db.
 
         :param df: a data frame with entities in a tabular form
-        :param expire: optional int, number of seconds until the item is expired, or zero for no expiry
+        :param expire: number of seconds until the item is expired, or zero for no expiry
         :return: a list of keys created for entities
         """
         # TODO: Add fields validation for df

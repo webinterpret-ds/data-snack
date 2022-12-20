@@ -49,11 +49,12 @@ def test_delete(connection: RedisConnection) -> None:
 
 def test_get_many(connection: RedisConnection) -> None:
     """Testing getting multiple values based on a provided list of keys."""
+    keys = ["key1", "key2"]
     connection.connection.mget.return_value = ["value1", "value2"]
 
-    result = connection.get_many(["key1", "key2"])
+    result = connection.get_many(keys)
     assert result == {"key1": "value1", "key2": "value2"}
-    connection.connection.mget.assert_called_with(["key1", "key2"])
+    connection.connection.mget.assert_called_with(keys)
 
 
 def test_set_many(connection: RedisConnection) -> None:
@@ -84,11 +85,12 @@ def test_set_many_expire(connection: RedisConnection) -> None:
 
 def test_delete_many(connection: RedisConnection) -> None:
     """Testing deleting multiple values based on a provided list of keys."""
+    keys = ["key1", "key2"]
     connection.connection.delete.return_value = 2
 
-    result = connection.delete_many(["key1", "key2"])
+    result = connection.delete_many(keys)
     assert result
-    connection.connection.delete.assert_called_with(*["key1", "key2"])
+    connection.connection.delete.assert_called_with(*keys)
 
 
 def test_keys(connection: RedisConnection) -> None:

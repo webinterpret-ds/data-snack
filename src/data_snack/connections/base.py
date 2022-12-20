@@ -25,7 +25,7 @@ class Connection(Protocol):
 
         :param key: unique data identifier
         :param value: value saved in db
-        :param expire: optional int, number of seconds until the item is expired, or zero for no expiry
+        :param expire: number of seconds until the item is expired, or zero for no expiry
         :return: True if data was saved
         """
         ...
@@ -55,7 +55,7 @@ class Connection(Protocol):
         Saves multiple values in db
 
         :param values: a dictionary containing keys and corresponding values
-        :param expire: optional int, number of seconds until the items are expired, or zero for no expiry
+        :param expire: number of seconds until the items are expired, or zero for no expiry
         :return: a list of keys successfully saved in db
         """
         ...
