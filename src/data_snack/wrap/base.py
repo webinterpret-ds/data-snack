@@ -1,17 +1,36 @@
-from abc import ABC
-from typing import Text, List, Optional, Any
+from abc import ABC, abstractmethod
+from dataclasses import dataclass
+from typing import Text, List, Optional, Any, Type, Protocol
 
 from data_snack.entities import Entity
 
 
+class SnackProtocol(Protocol):
+    def set(self, entity: Entity) -> Optional[Text]:
+        ...
+
+    def get(self, cls: Type[Entity], key_values: List[Text]) -> Entity:
+        ...
+
+    def get_many(self, cls: Type[Entity], keys_values: List[List[Text]]) -> List[Entity]:
+        ...
+
+    def set_many(self, entities: List[Entity]) -> List[Text]:
+        ...
+
+    def keys(self, cls: Type[Entity]) -> List[bytes]:
+        ...
+
+
+@dataclass
 class Wrap(ABC):
     """
     Wraps are used to provide a simplified interface for accessing `Snack` for one, selected type of `Entity`.
     """
+    snack: SnackProtocol
+    entity_type: Type[Entity]
 
-    def __init__(self, *args: Any, **kwargs: Any):
-        ...
-
+    @abstractmethod
     def set(self, entity: Entity) -> Optional[Text]:
         """
         Saves given entity in db.
@@ -21,6 +40,7 @@ class Wrap(ABC):
         """
         ...
 
+    @abstractmethod
     def get(self, key_values: List[Text]) -> Entity:
         """
         Reads entities from db based on provided key values.
@@ -30,6 +50,7 @@ class Wrap(ABC):
         """
         ...
 
+    @abstractmethod
     def get_many(self, keys_values: List[List[Text]]) -> List[Entity]:
         """
         Gets list of `Entity` objects from db based on provided list of keys.
@@ -39,6 +60,7 @@ class Wrap(ABC):
         """
         ...
 
+    @abstractmethod
     def set_many(self, entities: List[Entity]) -> List[Text]:
         """
         Saves multiple `Entity` objects in db.
@@ -48,6 +70,7 @@ class Wrap(ABC):
         """
         ...
 
+    @abstractmethod
     def keys(self) -> List[bytes]:
         """
         Reads a list of keys available in db for given `Entity` type.

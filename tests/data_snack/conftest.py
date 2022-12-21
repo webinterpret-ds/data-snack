@@ -2,7 +2,7 @@ from typing import Text, List
 from unittest.mock import MagicMock
 
 import pytest
-from pydantic.dataclasses import dataclass
+from dataclasses import dataclass
 
 from data_snack import Snack
 from data_snack.connections import Connection
