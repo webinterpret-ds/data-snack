@@ -7,8 +7,6 @@ from .base import Wrap
 
 @dataclass
 class EntityWrap(Wrap):
-    snack: "Snack"
-    entity_type: Type[Entity]
     _entity_type_name: Text = field(init=False)
 
     @property
