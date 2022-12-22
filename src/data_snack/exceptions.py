@@ -1,4 +1,3 @@
-
 class EntityAlreadyRegistered(Exception):
     ...
 

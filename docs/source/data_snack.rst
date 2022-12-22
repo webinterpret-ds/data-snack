@@ -23,6 +23,14 @@ data\_snack.exceptions module
    :undoc-members:
    :show-inheritance:
 
+data\_snack.key\_factory module
+-------------------------------
+
+.. automodule:: data_snack.key_factory
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 data\_snack.snack module
 ------------------------
 

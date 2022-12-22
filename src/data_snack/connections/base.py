@@ -1,5 +1,4 @@
-from abc import abstractmethod
-from typing import Protocol, Text, List, Dict, Union, Any
+from typing import Any, Dict, List, Protocol, Text, Union
 
 
 class Connection(Protocol):
@@ -8,6 +7,7 @@ class Connection(Protocol):
     If you want to create a custom connection to a db for your choosing,
     create a new class that follows this protocol.
     """
+
     connection: Any
 
     def get(self, key: Text) -> bytes:
@@ -19,13 +19,23 @@ class Connection(Protocol):
         """
         ...
 
-    def set(self, key: Text, value: Union[Text, bytes]) -> bool:
+    def set(self, key: Text, value: Union[Text, bytes], expire: int = 0) -> bool:
         """
         Saves given value using provided key.
 
         :param key: unique data identifier
         :param value: value saved in db
+        :param expire: number of seconds until the item is expired, or zero for no expiry
         :return: True if data was saved
+        """
+        ...
+
+    def delete(self, key: Text) -> bool:
+        """
+        Deletes value for provided key.
+
+        :param key: unique data identifier
+        :return: True if data were deleted
         """
         ...
 
@@ -44,6 +54,15 @@ class Connection(Protocol):
 
         :param values: a dictionary containing keys and corresponding values
         :return: a list of keys successfully saved in db
+        """
+        ...
+
+    def delete_many(self, keys: List[Text]) -> bool:
+        """
+        Deletes values for provided keys.
+
+        :param keys: a list of keys
+        :return: True if data were deleted
         """
         ...
 

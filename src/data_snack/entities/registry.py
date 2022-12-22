@@ -1,8 +1,8 @@
 from dataclasses import dataclass
 from typing import List, Text, Type
 
-from . import Entity
 from ..serializers import Serializer
+from . import Entity
 
 
 @dataclass
