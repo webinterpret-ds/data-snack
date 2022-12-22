@@ -92,8 +92,6 @@ You can also specify number of seconds until the item is expired using `Snack`.
 ```python
 snack.set(Person("1", "John"), expire=100)
 # 'Person-1'
-snack.set_many([Person("1", "John"), Person("2", "Anna")], expire=100)
-# ['Person-1', 'Person-2']
 ```
 
 ### 5. Delete your entities using Snack
