@@ -59,28 +59,12 @@ def test_get_many(connection: RedisConnection) -> None:
 
 def test_set_many(connection: RedisConnection) -> None:
     """Testing setting multiple values. Values are provided in a form of a dictionary."""
-    connection.connection.set.side_effect = ["key1", "key2"]
+    connection.connection.mset.return_value = ["key1", "key2"]
     set_mapping = {"key1": "value1", "key2": "value2"}
 
     result = connection.set_many(set_mapping)
     assert set(result) == {"key1", "key2"}
-    assert connection.connection.set.call_count == 2
-    connection.connection.set.assert_has_calls(
-        [call(k, v, ex=None) for k, v in set_mapping.items()]
-    )
-
-
-def test_set_many_expire(connection: RedisConnection) -> None:
-    """Testing setting multiple values with expire flag. Values are provided in a form of a dictionary."""
-    connection.connection.set.side_effect = ["key2", "key1"]
-    set_mapping = {"key1": "value1", "key2": "value2"}
-
-    result = connection.set_many(set_mapping, expire=100)
-    assert set(result) == {"key1", "key2"}
-    assert connection.connection.set.call_count == 2
-    connection.connection.set.assert_has_calls(
-        [call(k, v, ex=100) for k, v in set_mapping.items()]
-    )
+    connection.connection.mset.assert_called_with(set_mapping)
 
 
 def test_delete_many(connection: RedisConnection) -> None:

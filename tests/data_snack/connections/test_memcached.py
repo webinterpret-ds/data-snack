@@ -63,17 +63,7 @@ def test_set_many(connection: MemcachedConnection) -> None:
 
     result = connection.set_many(set_mapping)
     assert set(result) == {"key1", "key2"}
-    connection.connection.set_many.assert_called_with(set_mapping, expire=0)
-
-
-def test_set_many_expire(connection: MemcachedConnection) -> None:
-    """Testing setting multiple values with expire flag. Values are provided in a form of a dictionary."""
-    connection.connection.set_many.return_value = []
-    set_mapping = {"key1": "value1", "key2": "value2"}
-
-    result = connection.set_many(set_mapping, 100)
-    assert set(result) == {"key1", "key2"}
-    connection.connection.set_many.assert_called_with(set_mapping, expire=100)
+    connection.connection.set_many.assert_called_with(set_mapping)
 
 
 def test_delete_many(connection: MemcachedConnection) -> None:

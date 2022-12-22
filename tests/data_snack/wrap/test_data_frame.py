@@ -41,18 +41,15 @@ def test_set_dataframe(
 ) -> None:
     """Testing saving a data frame containing entities data to the database."""
     expected_keys = ("Car-" + data_df["index"]).tolist()
-    wrap_dataframe.snack.connection.connection.set.side_effect = expected_keys
+    wrap_dataframe.snack.connection.connection.mset.return_value = expected_keys
 
     # keys are returned unmodified
-    keys = wrap_dataframe.set_dataframe(data_df, 100)
+    keys = wrap_dataframe.set_dataframe(data_df)
     assert keys == expected_keys
 
     # connection is called with a dict containing keys and hashed entities built based on the data frame values
     expected_payload = dict(zip(expected_keys, example_entities_hashes))
-
-    wrap_dataframe.snack.connection.connection.set.assert_has_calls(
-        [call(k, v, ex=100) for k, v in expected_payload.items()]
-    )
+    wrap_dataframe.snack.connection.connection.mset.assert_called_with(expected_payload)
 
 
 def test_get_dataframe(

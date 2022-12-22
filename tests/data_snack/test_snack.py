@@ -103,14 +103,12 @@ def test_set_many(
     snack_car: Snack, example_entities: List[Car], example_entities_hashes: List[bytes]
 ) -> None:
     expected_keys = ["Car-1", "Car-2"]
-    snack_car.connection.connection.set.side_effect = expected_keys
+    snack_car.connection.connection.mset.return_value = expected_keys
 
-    keys = snack_car.set_many(example_entities, 100)
+    keys = snack_car.set_many(example_entities)
     assert keys == expected_keys
     expected_payload = dict(zip(expected_keys, example_entities_hashes))
-    snack_car.connection.connection.set.assert_has_calls(
-        [call(k, v, ex=100) for k, v in expected_payload.items()]
-    )
+    snack_car.connection.connection.mset.assert_called_with(expected_payload)
 
 
 def test_delete_many(

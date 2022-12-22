@@ -65,14 +65,12 @@ def test_set_many(
 ):
     """Testing setting multiple Entity objects based of the provided list of keys."""
     expected_keys = ["Car-1", "Car-2"]
-    wrap_car.snack.connection.connection.set.side_effect = expected_keys
+    wrap_car.snack.connection.connection.mset.return_value = expected_keys
 
-    keys = wrap_car.set_many(example_entities, 100)
+    keys = wrap_car.set_many(example_entities)
     assert keys == expected_keys
     expected_payload = dict(zip(expected_keys, example_entities_hashes))
-    wrap_car.snack.connection.connection.set.assert_has_calls(
-        [call(k, v, ex=100) for k, v in expected_payload.items()]
-    )
+    wrap_car.snack.connection.connection.mset.assert_called_with(expected_payload)
 
 
 def test_delete_many(
