@@ -115,10 +115,7 @@ class Snack:
         """
         type_name = cls.__name__
         _key = self.key_factory(type_name, *key_values)
-        if self.connection.delete(_key):
-            return True
-        else:
-            raise KeyError(f"Failed to delete key {_key}.")
+        return self.connection.delete(_key)
 
     def get_many(
         self, cls: Type[Entity], keys_values: List[List[Text]]

@@ -131,7 +131,7 @@ import os
 sys.path.insert(0, os.path.abspath(os.path.join('..', '..', 'src')))
 ```
 
-Since documentation is using additional modules to than base `data-snack`, we need to install additional requirements:
+Since documentation uses additional modules (other than base `data-snack`), we need to install additional requirements:
 ```bash
 pip install -r docs/requirements.txt
 ```
