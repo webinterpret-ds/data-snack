@@ -20,8 +20,8 @@ class MemcachedConnection(Connection):
     def get_many(self, keys: List[Text]) -> Dict[Text, bytes]:
         return self.connection.get_many(keys)
 
-    def set_many(self, values: Dict[Text, Text], expire: int = 0) -> List[Text]:
-        failed_keys = self.connection.set_many(values, expire=expire)
+    def set_many(self, values: Dict[Text, Text]) -> List[Text]:
+        failed_keys = self.connection.set_many(values)
         return list(set(values.keys()) - set(failed_keys))
 
     def delete_many(

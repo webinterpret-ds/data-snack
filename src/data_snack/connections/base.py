@@ -48,14 +48,11 @@ class Connection(Protocol):
         """
         ...
 
-    def set_many(
-        self, values: Dict[Text, Union[Text, bytes]], expire: int = 0
-    ) -> List[Text]:
+    def set_many(self, values: Dict[Text, Union[Text, bytes]]) -> List[Text]:
         """
         Saves multiple values in db
 
         :param values: a dictionary containing keys and corresponding values
-        :param expire: number of seconds until the items are expired, or zero for no expiry
         :return: a list of keys successfully saved in db
         """
         ...

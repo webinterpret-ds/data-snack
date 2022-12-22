@@ -49,12 +49,11 @@ class Wrap(ABC):
         """
         ...
 
-    def set_many(self, entities: List[Entity], expire: int = 0) -> List[Text]:
+    def set_many(self, entities: List[Entity]) -> List[Text]:
         """
         Saves multiple `Entity` objects in db.
 
         :param entities: a list of Entity objects
-        :param expire: number of seconds until the items are expired, or zero for no expiry
         :return: a list of keys generated for saved objects
         """
         ...

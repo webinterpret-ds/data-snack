@@ -135,18 +135,17 @@ class Snack:
         records = list(self.connection.get_many(_keys).values())
         return self._get_serializer(type_name).deserialize(records, many=True)
 
-    def set_many(self, entities: List[Entity], expire: int = 0) -> List[Text]:
+    def set_many(self, entities: List[Entity]) -> List[Text]:
         """
         Saves multiple `Entity` objects in db.
 
         :param entities: a list of Entity objects
-        :param expire: number of seconds until the items are expired, or zero for no expiry
         :return: a list of keys generated for saved objects
         """
         type_name = entities[0].__class__.__name__
         records = self._get_serializer(type_name).serialize(entities, many=True)
         keys = [self._build_record_key(type_name, entity) for entity in entities]
-        if result := self.connection.set_many(dict(zip(keys, records)), expire):
+        if result := self.connection.set_many(dict(zip(keys, records))):
             return result
 
     def delete_many(self, cls: Type[Entity], keys_values: List[List[Text]]) -> bool:
