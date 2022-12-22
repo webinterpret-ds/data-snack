@@ -20,9 +20,15 @@ def read_requirements(filename):
     return contents.split("\n") if contents else []
 
 
+EXTRAS_REQUIRE = {
+    "dynamic_entity": ["data_snack_dynamic_entity"],
+}
+
+
 setuptools.setup(
     name="data_snack",
     test_suite="tests",
     install_requires=read_requirements("requirements.txt"),
+    extras_require=EXTRAS_REQUIRE,
     entry_points={},
 )
