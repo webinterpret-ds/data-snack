@@ -12,7 +12,7 @@ class Wrap(ABC):
     def __init__(self, *args: Any, **kwargs: Any):
         ...
 
-    def get(self, key_values: List[Text]) -> Entity:
+    def get(self, key_values: List[Any]) -> Entity:
         """
         Reads entities from db based on provided key values.
 
@@ -31,7 +31,7 @@ class Wrap(ABC):
         """
         ...
 
-    def delete(self, key_values: List[Text]) -> Entity:
+    def delete(self, key_values: List[Any]) -> Entity:
         """
         Reads entities from db based on provided key values.
 
@@ -40,7 +40,7 @@ class Wrap(ABC):
         """
         ...
 
-    def get_many(self, keys_values: List[List[Text]]) -> List[Entity]:
+    def get_many(self, keys_values: List[List[Any]]) -> List[Entity]:
         """
         Gets list of `Entity` objects from db based on provided list of keys.
 
@@ -58,7 +58,7 @@ class Wrap(ABC):
         """
         ...
 
-    def delete_many(self, keys_values: List[List[Text]]) -> bool:
+    def delete_many(self, keys_values: List[List[Any]]) -> bool:
         """
         Deletes list of `Entity` objects from db based on provided list of keys.
 

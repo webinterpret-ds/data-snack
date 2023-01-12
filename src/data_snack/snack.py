@@ -1,5 +1,5 @@
 from dataclasses import dataclass, field
-from typing import Dict, List, Optional, Text, Type, get_type_hints
+from typing import Dict, List, Optional, Text, Type, Any, get_type_hints
 
 from .connections import Connection
 from .entities import Entity, EntityRegistry
@@ -88,7 +88,7 @@ class Snack:
         if self.connection.set(key, record, expire):
             return key
 
-    def get(self, cls: Type[Entity], key_values: List[Text]) -> Entity:
+    def get(self, cls: Type[Entity], key_values: List[Any]) -> Entity:
         """
         Gets ane entity of `Entity` type from db based on provided key values.
         Notice, key is represented as a list of strings, since one Entity can have multiple key fields.
@@ -104,7 +104,7 @@ class Snack:
         else:
             raise KeyError(f"Key {_key} not found.")
 
-    def delete(self, cls: Type[Entity], key_values: List[Text]) -> bool:
+    def delete(self, cls: Type[Entity], key_values: List[Any]) -> bool:
         """
         Deletes one entity of `Entity` type from db based on provided key values.
         Notice, key is represented as a list of strings, since one Entity can have multiple key fields.
@@ -118,7 +118,7 @@ class Snack:
         return self.connection.delete(_key)
 
     def get_many(
-        self, cls: Type[Entity], keys_values: List[List[Text]]
+        self, cls: Type[Entity], keys_values: List[List[Any]]
     ) -> List[Entity]:
         """
         Gets list of `Entity` objects from db based on provided list of keys.
@@ -145,7 +145,7 @@ class Snack:
         if result := self.connection.set_many(dict(zip(keys, records))):
             return result
 
-    def delete_many(self, cls: Type[Entity], keys_values: List[List[Text]]) -> bool:
+    def delete_many(self, cls: Type[Entity], keys_values: List[List[Any]]) -> bool:
         """
         Deletes multiple `Entity` objects in db.
 

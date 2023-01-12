@@ -1,5 +1,5 @@
 from dataclasses import dataclass, field
-from typing import List, Optional, Text, Type
+from typing import List, Optional, Text, Type, Any
 
 from data_snack.entities import Entity
 
@@ -20,23 +20,23 @@ class EntityWrap(Wrap):
     def __post_init__(self):
         self._entity_type_name = self.entity_type.__name__
 
-    def get(self, key_values: List[Text]) -> Entity:
+    def get(self, key_values: List[Any]) -> Entity:
 
         return self.snack.get(self.entity_type, key_values)
 
     def set(self, entity: Entity, expire: int = 0) -> Optional[Text]:
         return self.snack.set(entity, expire)
 
-    def delete(self, key_values: List[Text]) -> bool:
+    def delete(self, key_values: List[Any]) -> bool:
         return self.snack.delete(self.entity_type, key_values)
 
-    def get_many(self, keys_values: List[List[Text]]) -> List[Entity]:
+    def get_many(self, keys_values: List[List[Any]]) -> List[Entity]:
         return self.snack.get_many(self.entity_type, keys_values)
 
     def set_many(self, entities: List[Entity]) -> List[Text]:
         return self.snack.set_many(entities)
 
-    def delete_many(self, keys_values: List[List[Text]]) -> bool:
+    def delete_many(self, keys_values: List[List[Any]]) -> bool:
         return self.snack.delete_many(self.entity_type, keys_values)
 
     def keys(self) -> List[bytes]:
