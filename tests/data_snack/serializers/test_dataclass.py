@@ -1,15 +1,27 @@
 from typing import List
 
+import numpy as np
+
 from data_snack.serializers import DataclassSerializer
 from tests.data_snack.conftest import Car
+import pytest
 
 
+@pytest.mark.parametrize(
+    "entity_instance, entity_hash",
+    [
+        (Car(index="1", brand="dummy"), b'x\x9c\x8bV7T\xd7QPO)\xcd\xcd\xadT\x8f\x05\x00\x1aq\x03\xfe'),
+        (Car(index="1", brand=None), b"x\x9c\x8bV7T\xd7Q\xf0\xcb\xcfK\x8d\x05\x00\x10\x12\x03\x14"),
+        # note: serialize converts np.nan to None
+        (Car(index="1", brand=np.nan), b"x\x9c\x8bV7T\xd7Q\xf0\xcb\xcfK\x8d\x05\x00\x10\x12\x03\x14"),
+    ]
+)
 def test_serialize(
-    serializer: DataclassSerializer, example_entity: Car, example_entity_hash: bytes
+    serializer: DataclassSerializer, entity_instance: Car, entity_hash: bytes
 ) -> None:
     """Testing serializing (compressing) a single entity."""
-    entity_hash = serializer.serialize(entity=example_entity)
-    assert entity_hash == example_entity_hash
+    entity_hash = serializer.serialize(entity=entity_instance)
+    assert entity_hash == entity_hash
 
 
 def test_serialize_multi(

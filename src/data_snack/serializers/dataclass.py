@@ -3,6 +3,8 @@ import zlib
 from dataclasses import dataclass
 from typing import List, Union, get_type_hints
 
+import pandas as pd
+
 from data_snack.entities import Entity
 from data_snack.serializers.base import Serializer
 
@@ -14,7 +16,7 @@ class DataclassSerializer(Serializer):
 
     def _serialize(self, entity: Entity) -> bytes:
         entity_fields = entity.__dict__
-        values = [entity_fields[field] for field in self.entity_fields]
+        values = [entity_fields[field] if pd.notnull(entity_fields[field]) else None for field in self.entity_fields]
         return zlib.compress(str(values).encode())
 
     def serialize(
