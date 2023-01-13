@@ -2,6 +2,7 @@ from typing import List
 
 from data_snack.serializers import DataclassSerializer
 from tests.data_snack.conftest import Car
+import pytest
 
 
 def test_serialize(
@@ -22,12 +23,21 @@ def test_serialize_multi(
     assert entities_hashes == example_entities_hashes
 
 
+@pytest.mark.parametrize(
+    "entity_instance, entity_hash",
+    [
+        (Car(index="1", brand="dummy"), b'x\x9c\x8bV7T\xd7QPO)\xcd\xcd\xadT\x8f\x05\x00\x1aq\x03\xfe'),
+        (Car(index="1", brand=None), b"x\x9c\x8bV7T\xd7Q\xf0\xcb\xcfK\x8d\x05\x00\x10\x12\x03\x14"),
+        # note: the hash below is for brand=np.nan
+        (Car(index="1", brand=None), b"x\x9c\x8bV7T\xd7QP\xcfK\xccS\x8f\x05\x00\x12\x0f\x03\x0f"),
+    ]
+)
 def test_deserialize(
-    serializer: DataclassSerializer, example_entity: Car, example_entity_hash: bytes
+    serializer: DataclassSerializer, entity_instance: Car, entity_hash: bytes
 ) -> None:
     """Testing deserializing (decompressing) a single entity."""
-    entity = serializer.deserialize(data=example_entity_hash)
-    assert entity == example_entity
+    entity = serializer.deserialize(data=entity_hash)
+    assert entity == entity_instance
 
 
 def test_deserialize_multi(

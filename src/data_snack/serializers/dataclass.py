@@ -23,7 +23,9 @@ class DataclassSerializer(Serializer):
         return [self._serialize(e) for e in entity] if many else self._serialize(entity)
 
     def _deserialize(self, data: bytes) -> Entity:
-        return self.entity_type(*ast.literal_eval(zlib.decompress(data).decode()))
+        before_clean = ast.literal_eval(zlib.decompress(data).decode().replace(r"nan", "None"))
+        clean = [x if x != "None" else None for x in before_clean]
+        return self.entity_type(*clean)
 
     def deserialize(
         self, data: Union[bytes, List[bytes]], many: bool = False

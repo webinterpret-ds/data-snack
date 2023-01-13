@@ -1,5 +1,4 @@
 from typing import List
-from unittest.mock import call
 
 import pytest
 
@@ -72,6 +71,12 @@ def test_get(snack_car: Snack, example_entity: Car, example_entity_hash: bytes) 
     snack_car.connection.connection.get.assert_called_with("Car-1")
 
 
+def test_get_raises_key_error(snack_car: Snack, example_entity: Car) -> None:
+    snack_car.connection.connection.get.return_value = None
+    with pytest.raises(KeyError):
+        snack_car.get_many(Car, [["1"]])
+
+
 def test_delete(snack_car: Snack, example_entity: Car) -> None:
     snack_car.connection.connection.delete.return_value = 1
 
@@ -97,6 +102,12 @@ def test_get_many(
 
     entities = snack_car.get_many(Car, [["1"], ["2"]])
     assert entities == example_entities
+
+
+def test_get_many_raises_key_error(snack_car: Snack, example_entities: List[Car]) -> None:
+    snack_car.connection.connection.mget.return_value = {}
+    with pytest.raises(KeyError):
+        snack_car.get_many(Car, [["1"], ["2"]])
 
 
 def test_set_many(

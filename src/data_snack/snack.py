@@ -130,6 +130,8 @@ class Snack:
         type_name = cls.__name__
         _keys = [self.key_factory(type_name, *key_values) for key_values in keys_values]
         records = list(self.connection.get_many(_keys).values())
+        if not records:
+            raise KeyError(f"None of requested keys found.")
         return self._get_serializer(type_name).deserialize(records, many=True)
 
     def set_many(self, entities: List[Entity]) -> List[Text]:

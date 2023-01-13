@@ -1,4 +1,5 @@
-from typing import List, Text
+from dataclasses import field
+from typing import List, Text, Optional
 from unittest.mock import MagicMock
 
 import pytest
@@ -14,7 +15,7 @@ from data_snack.serializers import DataclassSerializer
 @dataclass
 class Car(Entity):
     index: Text
-    brand: Text
+    brand: Optional[Text] = field(default=None)
 
 
 @pytest.fixture
