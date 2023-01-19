@@ -9,4 +9,3 @@ from . import Entity
 class EntityRegistry:
     entity_type: Type[Entity]
     serializer: Serializer
-    key_fields: List[Text]
