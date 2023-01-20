@@ -4,7 +4,7 @@ from data_snack.entities import Entity
 
 
 def _define_meta(cls: Type[Entity], keys: List[str], excluded_fields: List[str]) -> Type[Entity]:
-    if cls.Meta.keys or cls.Meta.excluded_fields:
+    if cls.Meta.keys:
         raise ValueError(f"{cls.__name__}.Meta has been set already.")
     elif wrong_fields := [x for x in keys + excluded_fields if x not in list(get_type_hints(cls))]:
         raise LookupError(f"{wrong_fields} not found in '{cls.__name__}' class fields.")
@@ -14,19 +14,16 @@ def _define_meta(cls: Type[Entity], keys: List[str], excluded_fields: List[str])
 
 
 def set_entity_meta(
-    cls: Type[Entity] = None, /, *, keys: List[str] = None, excluded_fields: List[str] = None
+    cls: Type[Entity] = None, /, *, keys: List[str], excluded_fields: List[str] = None
 ) -> Callable[[Type[Entity]], Type[Entity]]:
     """
-    Sets `Meta` for `Entity`. Once set Meta can not be reset again. `Meta` is set if its `keys` or `excluded_fields`
-    are non empty lists. It is possible to call it as a function on predefined Entity class, then cls argument has to be
-    provided.
+    Sets `Meta` for `Entity`. Once set Meta can not be set again. `Meta` is set if at least its `keys` is a non empty
+    list. It is possible to call it as a function on predefined Entity class, then `cls` argument has to be provided.
     :param cls: class for which `Meta` is set
     :param keys: desired `Entity.Meta.keys`
     :param excluded_fields: desired `Entity.Meta.excluded_fields`
     :return: Entity with well defined Meta
     """
-    if keys is None:
-        keys = []
     if excluded_fields is None:
         excluded_fields = []
 

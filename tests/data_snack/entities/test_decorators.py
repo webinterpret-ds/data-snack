@@ -85,27 +85,6 @@ def test_set_entity_meta_as_func_reset() -> None:
         set_entity_meta(PredefinedDummyEntity, keys=["wannabe_key_2"])
 
 
-def test_set_entity_meta_dummy_set() -> None:
-    @set_entity_meta
-    class DummyEntity(Entity):
-        included: int
-
-    assert DummyEntity.Meta.keys == []
-    assert DummyEntity.Meta.excluded_fields == []
-
-
-def test_set_entity_meta_as_func_dummy_set() -> None:
-    @dataclass
-    class PredefinedDummyEntity(Entity):
-        key_1: int
-
-    set_entity_meta(PredefinedDummyEntity)
-    set_entity_meta(PredefinedDummyEntity)
-
-    assert PredefinedDummyEntity.Meta.keys == []
-    assert PredefinedDummyEntity.Meta.excluded_fields == []
-
-
 def test_set_entity_meta_instance_meta() -> None:
     keys = ["key"]
     excluded_fields = ["excluded"]
