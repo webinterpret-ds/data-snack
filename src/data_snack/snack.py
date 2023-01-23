@@ -35,9 +35,6 @@ class Snack:
         if type_name in self.registry:
             raise EntityAlreadyRegistered(f"Entity {type_name} is already registered")
 
-        if not entity_type.get_keys():
-            raise WrongKeyValue("Entity keys cannot be empty")
-
         if not serializer:
             serializer = DataclassSerializer(entity_type)
 
