@@ -13,32 +13,31 @@ from tests.data_snack.conftest import Car
 
 @pytest.fixture
 def snack_car(snack: Snack) -> Snack:
-    snack.register_entity(Car, key_fields=["index"])
+    snack.register_entity(Car)
     return snack
 
 
 @pytest.fixture
 def snack_factory_key_cluster(db_connection: Connection) -> Snack:
     snack = Snack(connection=db_connection, key_factory=key_factory_cluster)
-    snack.register_entity(Car, key_fields=["index"])
+    snack.register_entity(Car)
     return snack
 
 
 def test_register_entity(snack: Snack) -> None:
-    snack.register_entity(Car, key_fields=["index"])
+    snack.register_entity(Car)
 
     registry = snack.registry.get("Car")
     assert type(registry) is EntityRegistry
     assert registry.entity_type == Car
     assert type(registry.serializer) is DataclassSerializer
     assert registry.serializer.entity_type is Car
-    assert registry.key_fields == ["index"]
 
 
 def test_register_entity_duplicated(snack_car: Snack) -> None:
     """Testing if exception is risen if Entity duplicated"""
     with pytest.raises(EntityAlreadyRegistered):
-        snack_car.register_entity(Car, key_fields=["index"])
+        snack_car.register_entity(Car)
 
 
 def test_snack_custom_factory_key(

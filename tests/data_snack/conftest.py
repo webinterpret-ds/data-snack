@@ -17,6 +17,10 @@ class Car(Entity):
     index: Text
     brand: Optional[Text] = field(default=None)
 
+    class Meta:
+        keys: List[str] = ["index"]
+        excluded_fields: List[str] = []
+
 
 @pytest.fixture
 def serializer() -> DataclassSerializer:
@@ -63,6 +67,4 @@ def snack(db_connection: Connection) -> Snack:
 
 @pytest.fixture
 def entity_registry():
-    return EntityRegistry(
-        entity_type=Car, serializer=DataclassSerializer(Car), key_fields=["index"]
-    )
+    return EntityRegistry(entity_type=Car, serializer=DataclassSerializer(Car))

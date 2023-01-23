@@ -35,7 +35,7 @@ class Snack:
         if type_name in self.registry:
             raise EntityAlreadyRegistered(f"Entity {type_name} is already registered")
 
-        if not entity_type.keys:
+        if not entity_type.get_keys():
             raise WrongKeyValue("Entity keys cannot be empty")
 
         if not serializer:
@@ -62,7 +62,7 @@ class Snack:
 
     def _build_record_key(self, type_name: Text, entity: Entity) -> Text:
         key_values = [
-            getattr(entity, key) for key in self.registry[type_name].entity_type.keys
+            getattr(entity, key) for key in self.registry[type_name].entity_type.get_keys()
         ]
         return self.key_factory(type_name, *key_values)
 
