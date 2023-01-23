@@ -1,3 +1,4 @@
+from abc import ABC
 from dataclasses import dataclass
 from typing import Type, List
 
@@ -5,7 +6,7 @@ import pytest
 
 from data_snack.entities import Entity
 from data_snack.entities.entity_meta import EntityMetaClass
-from data_snack.entities.exceptions import MetaFieldsException, MetaEmptyKeysException
+from data_snack.entities.entity_meta.exceptions import MetaFieldsException, MetaEmptyKeysException
 
 
 @pytest.fixture
@@ -22,7 +23,21 @@ def dummy_entity() -> Type[Entity]:
     return DummyEntity
 
 
-def test_entity_init() -> None:
+def test_entity_type() -> None:
+    """Testing if `Entity` has proper type."""
+    assert type(Entity) == EntityMetaClass
+
+
+def test_entity_bases() -> None:
+    """Testing if `Entity` has proper bases."""
+    assert Entity.__bases__ == (ABC, )
+
+
+def test_entity_subclass_init() -> None:
+    """
+    Testing if `Entity` subclasses are initialized properly (type, bases, structure), and if initialization doesn't
+    product unwanted side effects.
+    """
 
     meta_keys = ["key"]
     meta_excluded_fields = []
@@ -44,7 +59,8 @@ def test_entity_init() -> None:
     assert Entity.Meta.excluded_fields == []
 
 
-def test_entity_init_bad_meta_fields_names() -> None:
+def test_entity_subclass_init_bad_meta_fields_names() -> None:
+    """Testing entity subclasses `Meta` field names validation."""
     with pytest.raises(MetaFieldsException):
         @dataclass
         class DummyEntity(Entity):
@@ -56,7 +72,8 @@ def test_entity_init_bad_meta_fields_names() -> None:
                 bad_excluded_fields: List[str] = []
 
 
-def test_entity_init_bad_meta_fields_types() -> None:
+def test_entity_subclass_init_bad_meta_fields_types() -> None:
+    """Testing entity subclasses `Meta` field types validation."""
     with pytest.raises(MetaFieldsException):
         @dataclass
         class DummyEntity(Entity):
@@ -68,7 +85,8 @@ def test_entity_init_bad_meta_fields_types() -> None:
                 excluded_fields: List[str] = []
 
 
-def test_entity_init_empty_meta_keys() -> None:
+def test_entity_subclass_init_empty_meta_keys() -> None:
+    """Testing entity subclasses `Meta` field content validation."""
     with pytest.raises(MetaEmptyKeysException):
         @dataclass
         class DummyEntity(Entity):
@@ -80,25 +98,29 @@ def test_entity_init_empty_meta_keys() -> None:
                 excluded_fields: List[str] = []
 
 
-def test_get_all_fields(dummy_entity) -> None:
+def test_get_all_fields(dummy_entity: Type[Entity]) -> None:
+    """Testing if `get_all_fields` returns all fields indeed."""
     expected = ["key", "excluded", "included"]
     result = dummy_entity.get_all_fields()
     assert result == expected
 
 
-def test_get_fields(dummy_entity) -> None:
+def test_get_fields(dummy_entity: Type[Entity]) -> None:
+    """Testing if `get_fields` filters out `Meta.excluded_fields`."""
     expected = ["key", "included"]
     result = dummy_entity.get_fields()
     assert result == expected
 
 
-def test_get_excluded_fields(dummy_entity) -> None:
+def test_get_excluded_fields(dummy_entity: Type[Entity]) -> None:
+    """Testing if `get_excluded_fields` returns `Meta.excluded_fields`."""
     expected = ["excluded"]
     result = dummy_entity.get_excluded_fields()
     assert result == expected
 
 
-def test_get_keys(dummy_entity) -> None:
+def test_get_keys(dummy_entity: Type[Entity]) -> None:
+    """Testing if get_keys returns `Meta.keys`."""
     expected = ["key"]
     result = dummy_entity.get_keys()
     assert result == expected
