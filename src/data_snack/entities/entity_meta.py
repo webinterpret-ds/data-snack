@@ -14,6 +14,7 @@ class EntityMetaClass(ABCMeta):
 
     def __new__(mcs, name, bases, dct):
         entity_class = super().__new__(mcs, name, bases, dct)
+        # TODO: consider encapsulation of each validation rule to function to make this class cleaner.
         try:
             entity_class.Meta
         except AttributeError:
