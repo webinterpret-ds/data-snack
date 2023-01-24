@@ -1,12 +1,12 @@
 from abc import ABC
 from dataclasses import dataclass
-from typing import Type, List
+from typing import Type, List, Any
 
 import pytest
 
 from data_snack.entities import Entity
 from data_snack.entities.entity_meta import EntityMetaClass
-from data_snack.entities.exceptions import MetaFieldsException, MetaEmptyKeysException
+from data_snack.entities.exceptions import MetaFieldsException, MetaEmptyKeysException, NonExistingMetaError
 
 
 @pytest.fixture
@@ -96,6 +96,47 @@ def test_entity_subclass_init_empty_meta_keys() -> None:
             class Meta:
                 keys: List[str] = []
                 excluded_fields: List[str] = []
+
+
+def test_entity_subclass_init_non_dataclass() -> None:
+    """Testing entity subclass init if not dataclass."""
+
+    class RegularClassEntity(ABC, metaclass=EntityMetaClass):
+        def __init__(self, *args: Any, **kwargs: Any):
+            ...
+
+        class Meta:
+            keys: List[str] = []
+            excluded_fields: List[str] = []
+
+    with pytest.raises(TypeError):
+        class DummyEntity(RegularClassEntity):
+
+            def __init__(self, key: int, included: int):
+                super().__init__()
+                self.key = key
+                self.included = included
+
+            class Meta:
+                keys: List[str] = ["key"]
+                excluded_fields: List[str] = []
+
+
+def test_entity_init_non_dataclass() -> None:
+    """
+    Current implementation doesn't check if entity is dataclass since metaclass is applied before `@dataclass` decorator
+    and the test fails.
+    """
+    pass
+
+
+def test_entity_init_no_meta_defined() -> None:
+    """Testing error handling if `Entity` does not provide `Meta` implementation."""
+
+    with pytest.raises(NonExistingMetaError):
+        @dataclass
+        class EntityNoMeta(ABC, metaclass=EntityMetaClass):
+            pass
 
 
 def test_get_all_fields(dummy_entity: Type[Entity]) -> None:

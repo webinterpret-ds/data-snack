@@ -19,6 +19,11 @@ class EntityMetaClass(ABCMeta):
         except AttributeError:
             raise NonExistingMetaError(f"Private class `Meta not defined for {entity_class.__name__}.")
         if bases != (ABC, ):
+            # TODO: this test is not the best one possible. Metaclass is applied before decorator, so if this metaclass
+            #  is used, test fails. `is_dataclass` returns `True` if class parent is a dataclass. Even if
+            #  `@dataclass` is not applied to concrete entity `is_dataclass` returns `True` since `Entity` is wrapped
+            #  with `@dataclass`, which is not desired behavior, since `get_type_hints` will return empty dict for such
+            #  a class.
             if not is_dataclass(entity_class):
                 raise TypeError(f"{entity_class.__name__} is not well defined dataclass.")
             if mcs.meta_structure != (defined_fields := get_type_hints(entity_class.Meta)):
