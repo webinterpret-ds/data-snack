@@ -31,6 +31,7 @@ def dummy_entity() -> Type[Entity]:
 
 
 def test_get_entity_schema_all_fields(dummy_entity: Type[Entity]) -> None:
+    """Testing if `get_entity_schema` recognizes types properly."""
     result = get_entity_schema(entity_type=dummy_entity, exclude_fields=False)
     expected = {
         "key": int,
@@ -48,6 +49,7 @@ def test_get_entity_schema_all_fields(dummy_entity: Type[Entity]) -> None:
 
 
 def test_get_entity_schema_exclude_fields(dummy_entity: Type[Entity]) -> None:
+    """Testing if `get_entity_schema` filters out entity excluded fields properly."""
     result = get_entity_schema(entity_type=dummy_entity, exclude_fields=True)
     expected = {
         "key": int,
