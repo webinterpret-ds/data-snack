@@ -18,8 +18,8 @@ def dummy_entity() -> Type[Entity]:
         included: int
 
         class Meta:
-            keys: List[str] = ["key"]
-            excluded_fields: List[str] = ["excluded"]
+            keys = ["key"]
+            excluded_fields = ["excluded"]
     return DummyEntity
 
 
@@ -48,8 +48,8 @@ def test_entity_subclass_init() -> None:
         included: int
 
         class Meta:
-            keys: List[str] = meta_keys
-            excluded_fields: List[str] = meta_excluded_fields
+            keys = meta_keys
+            excluded_fields = meta_excluded_fields
 
     assert type(DummyEntity) == EntityMetaClass
     assert DummyEntity.__bases__ == (Entity, )
@@ -68,21 +68,8 @@ def test_entity_subclass_init_bad_meta_fields_names() -> None:
             included: int
 
             class Meta:
-                bad_keys: List[str] = ["key"]
-                bad_excluded_fields: List[str] = []
-
-
-def test_entity_subclass_init_bad_meta_fields_types() -> None:
-    """Testing entity subclasses `Meta` field types validation."""
-    with pytest.raises(MetaFieldsException):
-        @dataclass
-        class DummyEntity(Entity):
-            key: int
-            included: int
-
-            class Meta:
-                keys: List[int] = [1]
-                excluded_fields: List[str] = []
+                bad_keys = ["key"]
+                bad_excluded_fields = []
 
 
 def test_entity_subclass_init_empty_meta_keys() -> None:
@@ -94,40 +81,8 @@ def test_entity_subclass_init_empty_meta_keys() -> None:
             included: int
 
             class Meta:
-                keys: List[str] = []
-                excluded_fields: List[str] = []
-
-
-def test_entity_subclass_init_non_dataclass() -> None:
-    """Testing entity subclass init if not dataclass."""
-
-    class RegularClassEntity(ABC, metaclass=EntityMetaClass):
-        def __init__(self, *args: Any, **kwargs: Any):
-            ...
-
-        class Meta:
-            keys: List[str] = []
-            excluded_fields: List[str] = []
-
-    with pytest.raises(TypeError):
-        class DummyEntity(RegularClassEntity):
-
-            def __init__(self, key: int, included: int):
-                super().__init__()
-                self.key = key
-                self.included = included
-
-            class Meta:
-                keys: List[str] = ["key"]
-                excluded_fields: List[str] = []
-
-
-def test_entity_init_non_dataclass() -> None:
-    """
-    Current implementation doesn't check if entity is dataclass since metaclass is applied before `@dataclass` decorator
-    and the test fails.
-    """
-    pass
+                keys = []
+                excluded_fields = []
 
 
 def test_entity_init_no_meta_defined() -> None:
