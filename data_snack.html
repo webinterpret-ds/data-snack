@@ -88,13 +88,19 @@
 <li class="toctree-l1"><a class="reference internal" href="data_snack.entities.html">data_snack.entities package</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="data_snack.entities.html#submodules">Submodules</a></li>
 <li class="toctree-l2"><a class="reference internal" href="data_snack.entities.html#module-data_snack.entities.entity">data_snack.entities.entity module</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="data_snack.entities.html#data_snack.entities.entity.Entity"><code class="docutils literal notranslate"><span class="pre">Entity</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="data_snack.entities.html#data_snack.entities.entity.Entity"><code class="docutils literal notranslate"><span class="pre">Entity</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="data_snack.entities.html#data_snack.entities.entity.Entity.Meta"><code class="docutils literal notranslate"><span class="pre">Entity.Meta</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="data_snack.entities.html#data_snack.entities.entity.Entity.get_all_fields"><code class="docutils literal notranslate"><span class="pre">Entity.get_all_fields()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="data_snack.entities.html#data_snack.entities.entity.Entity.get_excluded_fields"><code class="docutils literal notranslate"><span class="pre">Entity.get_excluded_fields()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="data_snack.entities.html#data_snack.entities.entity.Entity.get_fields"><code class="docutils literal notranslate"><span class="pre">Entity.get_fields()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="data_snack.entities.html#data_snack.entities.entity.Entity.get_keys"><code class="docutils literal notranslate"><span class="pre">Entity.get_keys()</span></code></a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="data_snack.entities.html#module-data_snack.entities.registry">data_snack.entities.registry module</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="data_snack.entities.html#data_snack.entities.registry.EntityRegistry"><code class="docutils literal notranslate"><span class="pre">EntityRegistry</span></code></a><ul>
 <li class="toctree-l4"><a class="reference internal" href="data_snack.entities.html#data_snack.entities.registry.EntityRegistry.entity_type"><code class="docutils literal notranslate"><span class="pre">EntityRegistry.entity_type</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="data_snack.entities.html#data_snack.entities.registry.EntityRegistry.key_fields"><code class="docutils literal notranslate"><span class="pre">EntityRegistry.key_fields</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="data_snack.entities.html#data_snack.entities.registry.EntityRegistry.serializer"><code class="docutils literal notranslate"><span class="pre">EntityRegistry.serializer</span></code></a></li>
 </ul>
 </li>
@@ -331,13 +337,12 @@ Notice, key is represented as a list of strings, since one Entity can have multi
 
 <dl class="py method">
 <dt class="sig sig-object py" id="data_snack.snack.Snack.register_entity">
-<span class="sig-name descname"><span class="pre">register_entity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">entity_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Type</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="data_snack.entities.html#data_snack.entities.entity.Entity" title="data_snack.entities.entity.Entity"><span class="pre">Entity</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">key_fields</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">serializer</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="data_snack.serializers.html#data_snack.serializers.base.Serializer" title="data_snack.serializers.base.Serializer"><span class="pre">Serializer</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#data_snack.snack.Snack.register_entity" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">register_entity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">entity_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Type</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="data_snack.entities.html#data_snack.entities.entity.Entity" title="data_snack.entities.entity.Entity"><span class="pre">Entity</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">serializer</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="data_snack.serializers.html#data_snack.serializers.base.Serializer" title="data_snack.serializers.base.Serializer"><span class="pre">Serializer</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#data_snack.snack.Snack.register_entity" title="Permalink to this definition">¶</a></dt>
 <dd><p>Registers new Entity type to Snack.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>entity_type</strong> – Entity type</p></li>
-<li><p><strong>key_fields</strong> – a list of fields that will be used to define Entity key</p></li>
 <li><p><strong>serializer</strong> – Serializer that is used to compress and decompress entities before saving in db</p></li>
 </ul>
 </dd>
