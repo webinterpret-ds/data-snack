@@ -1,5 +1,5 @@
 from dataclasses import dataclass, field
-from typing import Dict, List, Optional, Text, Type, Any, get_type_hints
+from typing import Dict, List, Optional, Text, Type, Any
 
 from .connections import Connection
 from .entities import Entity, EntityRegistry
@@ -22,14 +22,12 @@ class Snack:
     def register_entity(
         self,
         entity_type: Type[Entity],
-        key_fields: List[Text],
         serializer: Serializer = None,
     ) -> None:
         """
         Registers new Entity type to Snack.
 
         :param entity_type: Entity type
-        :param key_fields: a list of fields that will be used to define Entity key
         :param serializer: Serializer that is used to compress and decompress entities before saving in db
         """
         type_name = entity_type.__name__
@@ -37,18 +35,11 @@ class Snack:
         if type_name in self.registry:
             raise EntityAlreadyRegistered(f"Entity {type_name} is already registered")
 
-        if not key_fields:
-            raise WrongKeyValue("Entity keys cannot be empty")
-
-        for key in key_fields:
-            if key not in get_type_hints(entity_type).keys():
-                raise WrongKeyValue(f"Key {key} not found in entity definition.")
-
         if not serializer:
             serializer = DataclassSerializer(entity_type)
 
         self.registry[type_name] = EntityRegistry(
-            entity_type=entity_type, serializer=serializer, key_fields=key_fields
+            entity_type=entity_type, serializer=serializer
         )
 
     def create_wrap(
@@ -68,7 +59,7 @@ class Snack:
 
     def _build_record_key(self, type_name: Text, entity: Entity) -> Text:
         key_values = [
-            getattr(entity, key) for key in self.registry[type_name].key_fields
+            getattr(entity, key) for key in self.registry[type_name].entity_type.get_keys()
         ]
         return self.key_factory(type_name, *key_values)
 
