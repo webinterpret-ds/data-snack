@@ -18,7 +18,10 @@ class DataclassSerializer(Serializer):
         if not entity:
             return
         entity_fields = entity.__dict__
-        values = [entity_fields[field] if pd.notnull(entity_fields[field]) else None for field in self.entity_fields]
+        values = [
+            entity_fields[field] if pd.notnull(entity_fields[field]) else None
+            for field in self.entity_fields
+        ]
         return zlib.compress(str(values).encode())
 
     def serialize(

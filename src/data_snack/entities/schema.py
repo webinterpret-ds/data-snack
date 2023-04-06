@@ -6,7 +6,9 @@ from data_snack.entities import Entity
 EntitySchemaGetter = Callable[[Type[Entity], bool], Dict[str, Any]]
 
 
-def get_entity_schema(entity_type: Type[Entity], exclude_fields: bool = False) -> Dict[str, Any]:
+def get_entity_schema(
+    entity_type: Type[Entity], exclude_fields: bool = False
+) -> Dict[str, Any]:
     """
     Gets `Entity` schema, i.e. {field: data type} mapping. Allows excluding Entities excluded fields.
     :param entity_type: Entity definition (class)

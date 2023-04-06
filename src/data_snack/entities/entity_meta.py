@@ -1,6 +1,10 @@
 from abc import ABCMeta, ABC
 
-from .exceptions import MetaFieldsException, MetaEmptyKeysException, NonExistingMetaError
+from .exceptions import (
+    MetaFieldsException,
+    MetaEmptyKeysException,
+    NonExistingMetaError,
+)
 
 
 class EntityMetaClass(ABCMeta):
@@ -11,9 +15,15 @@ class EntityMetaClass(ABCMeta):
         entity_class = super().__new__(mcs, name, bases, dct)
         # TODO: consider encapsulation of each validation rule to function to make this class cleaner.
         if "Meta" not in dir(entity_class):
-            raise NonExistingMetaError(f"Private class `Meta not defined for {entity_class.__name__}.")
-        if bases != (ABC, ):
-            if missing_fields := [field for field in mcs.meta_fields if field not in dir(entity_class.Meta)]:
+            raise NonExistingMetaError(
+                f"Private class `Meta not defined for {entity_class.__name__}."
+            )
+        if bases != (ABC,):
+            if missing_fields := [
+                field
+                for field in mcs.meta_fields
+                if field not in dir(entity_class.Meta)
+            ]:
                 raise MetaFieldsException(f"Missing Meta fields: {missing_fields}.")
             if not entity_class.Meta.keys:
                 raise MetaEmptyKeysException("Meta keys can not be empty.")

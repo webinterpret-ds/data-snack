@@ -22,7 +22,11 @@ class Entity(ABC, metaclass=EntityMetaClass):
     @classmethod
     def get_fields(cls) -> List[str]:
         """Gets Entity fields if not excluded."""
-        return [field for field in cls.get_all_fields() if field not in cls.get_excluded_fields()]
+        return [
+            field
+            for field in cls.get_all_fields()
+            if field not in cls.get_excluded_fields()
+        ]
 
     @classmethod
     def get_excluded_fields(cls) -> List[str]:

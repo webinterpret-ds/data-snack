@@ -59,7 +59,8 @@ class Snack:
 
     def _build_record_key(self, type_name: Text, entity: Entity) -> Text:
         key_values = [
-            getattr(entity, key) for key in self.registry[type_name].entity_type.get_keys()
+            getattr(entity, key)
+            for key in self.registry[type_name].entity_type.get_keys()
         ]
         return self.key_factory(type_name, *key_values)
 
