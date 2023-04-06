@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Optional
 
 import pytest
 
@@ -24,7 +24,7 @@ def snack_factory_key_cluster(db_connection: Connection) -> Snack:
     return snack
 
 
-def test_register_entity(snack: Snack) -> None:
+def test__register_entity(snack: Snack) -> None:
     snack.register_entity(Car)
 
     registry = snack.registry.get("Car")
@@ -34,13 +34,13 @@ def test_register_entity(snack: Snack) -> None:
     assert registry.serializer.entity_type is Car
 
 
-def test_register_entity_duplicated(snack_car: Snack) -> None:
+def test__register_entity_duplicated(snack_car: Snack) -> None:
     """Testing if exception is risen if Entity duplicated"""
     with pytest.raises(EntityAlreadyRegistered):
         snack_car.register_entity(Car)
 
 
-def test_snack_custom_factory_key(
+def test__snack_custom_factory_key(
     snack_factory_key_cluster: Snack, example_entity: Car, example_entity_hash: bytes
 ) -> None:
     """Testing using custom key_factory_cluster"""
@@ -50,19 +50,19 @@ def test_snack_custom_factory_key(
     _snack.connection.connection.get.assert_called_with("{Car}-1")
 
 
-def test_create_wrap(snack_car: Snack) -> None:
+def test__create_wrap(snack_car: Snack) -> None:
     wrap = snack_car.create_wrap(Car)
     assert type(wrap) is EntityWrap
     assert wrap.entity_type is Car
     assert wrap.snack == snack_car
 
 
-def test_create_custom_wrap(snack_car: Snack) -> None:
+def test__create_custom_wrap(snack_car: Snack) -> None:
     wrap = snack_car.create_wrap(Car, DataFrameWrap)
     assert type(wrap) is DataFrameWrap
 
 
-def test_get(snack_car: Snack, example_entity: Car, example_entity_hash: bytes) -> None:
+def test__get(snack_car: Snack, example_entity: Car, example_entity_hash: bytes) -> None:
     snack_car.connection.connection.get.return_value = example_entity_hash
 
     entity = snack_car.get(Car, ["1"])
@@ -70,20 +70,21 @@ def test_get(snack_car: Snack, example_entity: Car, example_entity_hash: bytes) 
     snack_car.connection.connection.get.assert_called_with("Car-1")
 
 
-def test_get_raises_key_error(snack_car: Snack, example_entity: Car) -> None:
+def test__get__missing_key(snack_car: Snack, example_entity: Car) -> None:
     snack_car.connection.connection.get.return_value = None
-    with pytest.raises(KeyError):
-        snack_car.get_many(Car, [["1"]])
+
+    entity = snack_car.get(Car, [["1"]])
+    assert entity is None
 
 
-def test_delete(snack_car: Snack, example_entity: Car) -> None:
+def test__delete(snack_car: Snack, example_entity: Car) -> None:
     snack_car.connection.connection.delete.return_value = 1
 
     deleted = snack_car.delete(Car, ["1"])
     assert deleted
 
 
-def test_set(snack_car: Snack, example_entity: Car, example_entity_hash: bytes) -> None:
+def test__set(snack_car: Snack, example_entity: Car, example_entity_hash: bytes) -> None:
     expected_key = "Car-1"
     snack_car.connection.connection.set.return_value = True
 
@@ -94,7 +95,7 @@ def test_set(snack_car: Snack, example_entity: Car, example_entity_hash: bytes) 
     )
 
 
-def test_get_many(
+def test__get_many(
     snack_car: Snack, example_entities: List[Car], example_entities_hashes: List[bytes]
 ) -> None:
     snack_car.connection.connection.mget.return_value = example_entities_hashes
@@ -103,13 +104,18 @@ def test_get_many(
     assert entities == example_entities
 
 
-def test_get_many_raises_key_error(snack_car: Snack, example_entities: List[Car]) -> None:
-    snack_car.connection.connection.mget.return_value = {}
-    with pytest.raises(KeyError):
-        snack_car.get_many(Car, [["1"], ["2"]])
+def test__get_many__missing_data(
+        snack_car: Snack,
+        example_entities_none: List[Optional[Car]],
+        example_entities_hashes_none: List[Optional[bytes]]
+) -> None:
+    snack_car.connection.connection.mget.return_value = example_entities_hashes_none
+
+    entities = snack_car.get_many(Car, [["1"], ["2"]])
+    assert entities == example_entities_none
 
 
-def test_set_many(
+def test__set_many(
     snack_car: Snack, example_entities: List[Car], example_entities_hashes: List[bytes]
 ) -> None:
     expected_keys = ["Car-1", "Car-2"]
@@ -121,7 +127,7 @@ def test_set_many(
     snack_car.connection.connection.mset.assert_called_with(expected_payload)
 
 
-def test_delete_many(
+def test__delete_many(
     snack_car: Snack, example_entities: List[Car], example_entities_hashes: List[bytes]
 ) -> None:
     deleted_keys = ["Car-1", "Car-2"]
@@ -132,7 +138,7 @@ def test_delete_many(
     snack_car.connection.connection.delete.assert_called_with(*deleted_keys)
 
 
-def test_keys(snack_car: Snack) -> None:
+def test__keys(snack_car: Snack) -> None:
     expected_keys = ["Car-1", "Car-2"]
     snack_car.connection.connection.keys.return_value = expected_keys
 

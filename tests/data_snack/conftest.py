@@ -41,6 +41,14 @@ def example_entities() -> List[Car]:
 
 
 @pytest.fixture
+def example_entities_none() -> List[Car]:
+    return [
+        Car(index="1", brand="Volkswagen Passat"),
+        None
+    ]
+
+
+@pytest.fixture
 def example_entity_hash() -> bytes:
     return (
         b"x\x9c\x8bV7T\xd7QP\x0f\xcb\xcf\xc9..OLO\xcdS\x08H,.N,Q\x8f\x05\x00i&\x08\x7f"
@@ -52,6 +60,14 @@ def example_entities_hashes() -> List[bytes]:
     return [
         b"x\x9c\x8bV7T\xd7QP\x0f\xcb\xcf\xc9..OLO\xcdS\x08H,.N,Q\x8f\x05\x00i&\x08\x7f",
         b"x\x9c\x8bV7R\xd7QP\x0f\xcb\xcf\xc9..OLO\xcdSp\xcf\xcfIS\x8f\x05\x00W\xdd\x07\x9c",
+    ]
+
+
+@pytest.fixture
+def example_entities_hashes_none() -> List[bytes]:
+    return [
+        b"x\x9c\x8bV7T\xd7QP\x0f\xcb\xcf\xc9..OLO\xcdS\x08H,.N,Q\x8f\x05\x00i&\x08\x7f",
+        None
     ]
 
 

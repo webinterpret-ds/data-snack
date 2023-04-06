@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import Dict, List, Text
+from typing import Dict, List, Text, Optional
 
 from .base import Connection
 
@@ -8,7 +8,7 @@ from .base import Connection
 class RedisConnection(Connection):
     connection: "Redis"
 
-    def get(self, key: Text) -> bytes:
+    def get(self, key: Text) -> Optional[bytes]:
         return self.connection.get(key)
 
     def set(self, key: Text, value: Text, expire: int = 0) -> bool:
@@ -19,7 +19,7 @@ class RedisConnection(Connection):
         n_deleted = self.connection.delete(key)
         return n_deleted == 1
 
-    def get_many(self, keys: List[Text]) -> Dict[Text, bytes]:
+    def get_many(self, keys: List[Text]) -> Dict[Text, Optional[bytes]]:
         return dict(zip(keys, self.connection.mget(keys)))
 
     def set_many(self, values: Dict[Text, Text]) -> List[Text]:

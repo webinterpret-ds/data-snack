@@ -1,4 +1,4 @@
-from typing import Any, Dict, List, Protocol, Text, Union
+from typing import Any, Dict, List, Protocol, Text, Union, Optional
 
 
 class Connection(Protocol):
@@ -10,9 +10,10 @@ class Connection(Protocol):
 
     connection: Any
 
-    def get(self, key: Text) -> bytes:
+    def get(self, key: Text) -> Optional[bytes]:
         """
         Reads data from db based on provided key.
+        If key was missing in db, it returns None.
 
         :param key: unique data identifier
         :return: retrieved data
@@ -39,9 +40,10 @@ class Connection(Protocol):
         """
         ...
 
-    def get_many(self, keys: List[Text]) -> Dict[Text, bytes]:
+    def get_many(self, keys: List[Text]) -> Dict[Text, Optional[bytes]]:
         """
         Reads multiple values from db based on provided list of keys.
+        If a certain key was missing in db, it returns None for that value.
 
         :param keys: a list of keys
         :return: a dictionary with retrieved values assigned to each key

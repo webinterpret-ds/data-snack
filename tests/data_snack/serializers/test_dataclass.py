@@ -16,7 +16,7 @@ import pytest
         (Car(index="1", brand=np.nan), b"x\x9c\x8bV7T\xd7Q\xf0\xcb\xcfK\x8d\x05\x00\x10\x12\x03\x14"),
     ]
 )
-def test_serialize(
+def test__serialize(
     serializer: DataclassSerializer, entity_instance: Car, entity_hash: bytes
 ) -> None:
     """Testing serializing (compressing) a single entity."""
@@ -24,7 +24,7 @@ def test_serialize(
     assert entity_hash == entity_hash
 
 
-def test_serialize_multi(
+def test__serialize__many(
     serializer: DataclassSerializer,
     example_entities: List[Car],
     example_entities_hashes: List[bytes],
@@ -34,7 +34,7 @@ def test_serialize_multi(
     assert entities_hashes == example_entities_hashes
 
 
-def test_deserialize(
+def test__deserialize(
     serializer: DataclassSerializer, example_entity: Car, example_entity_hash: bytes
 ) -> None:
     """Testing deserializing (decompressing) a single entity."""
@@ -42,7 +42,15 @@ def test_deserialize(
     assert entity == example_entity
 
 
-def test_deserialize_multi(
+def test__deserialize__none(
+        serializer: DataclassSerializer, example_entity: Car, example_entity_hash: bytes
+) -> None:
+    """Testing deserializing (decompressing) a None value."""
+    entity = serializer.deserialize(data=None)
+    assert entity is None
+
+
+def test__deserialize__many(
     serializer: DataclassSerializer,
     example_entities: List[Car],
     example_entities_hashes: List[bytes],
@@ -50,3 +58,13 @@ def test_deserialize_multi(
     """Testing deserializing a list of multiple entities from a list of hashes."""
     entities = serializer.deserialize(data=example_entities_hashes, many=True)
     assert entities == example_entities
+
+
+def test__deserialize__many_with_none(
+        serializer: DataclassSerializer,
+        example_entities_none: List[Car],
+        example_entities_hashes_none: List[bytes],
+) -> None:
+    """Testing deserializing a list of multiple entities from a list of hashes with None values."""
+    entities = serializer.deserialize(data=example_entities_hashes_none, many=True)
+    assert entities == example_entities_none
