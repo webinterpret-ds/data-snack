@@ -15,8 +15,6 @@ class DataclassSerializer(Serializer):
         self.entity_fields = list(get_type_hints(self.entity_type).keys())
 
     def _serialize(self, entity: Optional[Entity]) -> Optional[bytes]:
-        if not entity:
-            return
         entity_fields = entity.__dict__
         values = [
             entity_fields[field] if pd.notnull(entity_fields[field]) else None
