@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Optional
 
 import pytest
 
@@ -70,10 +70,11 @@ def test_get(snack_car: Snack, example_entity: Car, example_entity_hash: bytes) 
     snack_car.connection.connection.get.assert_called_with("Car-1")
 
 
-def test_get_raises_key_error(snack_car: Snack, example_entity: Car) -> None:
+def test_get_none_missing_data(snack_car: Snack, example_entity: Car) -> None:
     snack_car.connection.connection.get.return_value = None
-    with pytest.raises(KeyError):
-        snack_car.get_many(Car, [["1"]])
+
+    entity = snack_car.get(Car, [["1"]])
+    assert entity is None
 
 
 def test_delete(snack_car: Snack, example_entity: Car) -> None:
@@ -103,10 +104,15 @@ def test_get_many(
     assert entities == example_entities
 
 
-def test_get_many_raises_key_error(snack_car: Snack, example_entities: List[Car]) -> None:
-    snack_car.connection.connection.mget.return_value = {}
-    with pytest.raises(KeyError):
-        snack_car.get_many(Car, [["1"], ["2"]])
+def test_get_many_none_missing_data(
+        snack_car: Snack,
+        example_entities_none: List[Optional[Car]],
+        example_entities_hashes_none: List[Optional[bytes]]
+) -> None:
+    snack_car.connection.connection.mget.return_value = example_entities_hashes_none
+
+    entities = snack_car.get_many(Car, [["1"], ["2"]])
+    assert entities == example_entities_none
 
 
 def test_set_many(

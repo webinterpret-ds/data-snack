@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import Dict, List, Text
+from typing import Dict, List, Text, Optional
 
 from .base import Connection
 
@@ -8,7 +8,7 @@ from .base import Connection
 class MemcachedConnection(Connection):
     connection: "Client"
 
-    def get(self, key: Text) -> bytes:
+    def get(self, key: Text) -> Optional[bytes]:
         return self.connection.get(key)
 
     def set(self, key: Text, value: Text, expire: int = 0) -> bool:
@@ -17,7 +17,7 @@ class MemcachedConnection(Connection):
     def delete(self, key: Text) -> bool:
         return self.connection.delete(key, noreply=False)
 
-    def get_many(self, keys: List[Text]) -> Dict[Text, bytes]:
+    def get_many(self, keys: List[Text]) -> Dict[Text, Optional[bytes]]:
         return self.connection.get_many(keys)
 
     def set_many(self, values: Dict[Text, Text]) -> List[Text]:

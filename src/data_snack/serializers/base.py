@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 from dataclasses import dataclass
-from typing import List, Type, Union
+from typing import List, Type, Union, Optional
 
 from ..entities import Entity
 
@@ -17,6 +17,6 @@ class Serializer(ABC):
 
     @abstractmethod
     def deserialize(
-        self, data: Union[bytes, List[bytes]], many: bool = False
-    ) -> Union[Entity, List[Entity]]:
+        self, data: Union[Optional[bytes], List[Optional[bytes]]], many: bool = False
+    ) -> Union[Optional[Entity], List[Optional[Entity]]]:
         ...

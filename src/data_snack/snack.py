@@ -79,7 +79,7 @@ class Snack:
         if self.connection.set(key, record, expire):
             return key
 
-    def get(self, cls: Type[Entity], key_values: List[Any]) -> Entity:
+    def get(self, cls: Type[Entity], key_values: List[Any]) -> Optional[Entity]:
         """
         Gets ane entity of `Entity` type from db based on provided key values.
         Notice, key is represented as a list of strings, since one Entity can have multiple key fields.
@@ -90,10 +90,8 @@ class Snack:
         """
         type_name = cls.__name__
         _key = self.key_factory(type_name, *key_values)
-        if value := self.connection.get(_key):
-            return self._get_serializer(type_name).deserialize(value)
-        else:
-            raise KeyError(f"Key {_key} not found.")
+        value = self.connection.get(_key)
+        return self._get_serializer(type_name).deserialize(value)
 
     def delete(self, cls: Type[Entity], key_values: List[Any]) -> bool:
         """
@@ -110,7 +108,7 @@ class Snack:
 
     def get_many(
         self, cls: Type[Entity], keys_values: List[List[Any]]
-    ) -> List[Entity]:
+    ) -> List[Optional[Entity]]:
         """
         Gets list of `Entity` objects from db based on provided list of keys.
 
@@ -121,8 +119,6 @@ class Snack:
         type_name = cls.__name__
         _keys = [self.key_factory(type_name, *key_values) for key_values in keys_values]
         records = list(self.connection.get_many(_keys).values())
-        if not records:
-            raise KeyError(f"None of requested keys found.")
         return self._get_serializer(type_name).deserialize(records, many=True)
 
     def set_many(self, entities: List[Entity]) -> List[Text]:

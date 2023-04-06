@@ -24,7 +24,7 @@ def test_serialize(
     assert entity_hash == entity_hash
 
 
-def test_serialize_multi(
+def test_serialize_many(
     serializer: DataclassSerializer,
     example_entities: List[Car],
     example_entities_hashes: List[bytes],
@@ -42,7 +42,7 @@ def test_deserialize(
     assert entity == example_entity
 
 
-def test_deserialize_multi(
+def test_deserialize_many(
     serializer: DataclassSerializer,
     example_entities: List[Car],
     example_entities_hashes: List[bytes],
@@ -50,3 +50,23 @@ def test_deserialize_multi(
     """Testing deserializing a list of multiple entities from a list of hashes."""
     entities = serializer.deserialize(data=example_entities_hashes, many=True)
     assert entities == example_entities
+
+
+def test_serialize_many_none(
+        serializer: DataclassSerializer,
+        example_entities_none: List[Car],
+        example_entities_hashes_none: List[bytes],
+) -> None:
+    """Testing serializing a list of multiple entities to a list of hashes."""
+    entities_hashes = serializer.serialize(entity=example_entities_none, many=True)
+    assert entities_hashes == example_entities_hashes_none
+
+
+def test_deserialize_many_none(
+        serializer: DataclassSerializer,
+        example_entities_none: List[Car],
+        example_entities_hashes_none: List[bytes],
+) -> None:
+    """Testing deserializing a list of multiple entities from a list of hashes."""
+    entities = serializer.deserialize(data=example_entities_hashes_none, many=True)
+    assert entities == example_entities_none
