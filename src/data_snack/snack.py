@@ -3,8 +3,8 @@ from typing import Dict, List, Optional, Text, Type, Any
 
 from .connections import Connection
 from .entities import Entity, EntityRegistry
-from .exceptions import EntityAlreadyRegistered, WrongKeyValue
-from .key_factory import KeyFactory, key_factory
+from .exceptions import EntityAlreadyRegistered
+from .key_factory import BaseKeyFactory, SingleKeyFactory
 from .serializers import DataclassSerializer, Serializer
 from .wrap import EntityWrap
 
@@ -17,7 +17,7 @@ class Snack:
 
     connection: Connection
     registry: Dict[Text, EntityRegistry] = field(default_factory=dict)
-    key_factory: KeyFactory = field(default=key_factory)
+    key_factory: BaseKeyFactory = field(default=SingleKeyFactory)
 
     def register_entity(
         self,
@@ -62,7 +62,7 @@ class Snack:
             getattr(entity, key)
             for key in self.registry[type_name].entity_type.get_keys()
         ]
-        return self.key_factory(type_name, *key_values)
+        return self.key_factory.get_key(type_name, *key_values)
 
     def set(self, entity: Entity, expire: int = 0) -> Optional[Text]:
         """
@@ -90,7 +90,7 @@ class Snack:
         :return: a retrieved Entity object
         """
         type_name = cls.__name__
-        _key = self.key_factory(type_name, *key_values)
+        _key = self.key_factory.get_key(type_name, *key_values)
         value = self.connection.get(_key)
         return self._get_serializer(type_name).deserialize(value)
 
@@ -104,7 +104,7 @@ class Snack:
         :return: True if data were deleted
         """
         type_name = cls.__name__
-        _key = self.key_factory(type_name, *key_values)
+        _key = self.key_factory.get_key(type_name, *key_values)
         return self.connection.delete(_key)
 
     def get_many(
@@ -118,7 +118,7 @@ class Snack:
         :return: a list of retrieved Entity objects
         """
         type_name = cls.__name__
-        _keys = [self.key_factory(type_name, *key_values) for key_values in keys_values]
+        _keys = [self.key_factory.get_key(type_name, *key_values) for key_values in keys_values]
         records = list(self.connection.get_many(_keys).values())
         return self._get_serializer(type_name).deserialize(records, many=True)
 
@@ -144,7 +144,7 @@ class Snack:
         :return: True if data were deleted
         """
         type_name = cls.__name__
-        _keys = [self.key_factory(type_name, *key_values) for key_values in keys_values]
+        _keys = [self.key_factory.get_key(type_name, *key_values) for key_values in keys_values]
         return self.connection.delete_many(_keys)
 
     def keys(self, cls: Type[Entity]) -> List[Text]:
@@ -154,4 +154,4 @@ class Snack:
         :param cls: Entity type
         :return: a list of keys
         """
-        return self.connection.keys(pattern=f"{cls.__name__}-*")
+        return self.connection.keys(pattern=self.key_factory.get_pattern(cls.__name__))
