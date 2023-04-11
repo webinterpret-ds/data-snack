@@ -2,12 +2,17 @@ from unittest import TestCase
 
 from parameterized import parameterized
 
+from data_snack.key_factories import KeyFactory
 from data_snack.key_factories.single import SingleKeyFactory
 
 
 class TestSingleKeyFactory(TestCase):
     def setUp(self) -> None:
         self.key_factory = SingleKeyFactory()
+
+    def test_protocol(self):
+        # assert
+        self.assertIsInstance(self.key_factory, KeyFactory)
 
     @parameterized.expand(
         [

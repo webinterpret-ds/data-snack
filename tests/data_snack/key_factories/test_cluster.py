@@ -2,12 +2,17 @@ from unittest import TestCase
 
 from parameterized import parameterized
 
+from data_snack.key_factories import KeyFactory
 from data_snack.key_factories.cluster import ClusterKeyFactory
 
 
 class TestClusterKeyFactory(TestCase):
     def setUp(self) -> None:
         self.key_factory = ClusterKeyFactory()
+
+    def test_protocol(self):
+        # assert
+        self.assertIsInstance(self.key_factory, KeyFactory)
 
     @parameterized.expand(
         [
@@ -21,7 +26,7 @@ class TestClusterKeyFactory(TestCase):
         actual = self.key_factory.get_key(type_name, *key_values)
 
         # assert
-        assert expected == actual
+        self.assertEqual(actual, expected)
 
     def test_get_key_multiple_values(self):
         # arrange
@@ -34,7 +39,7 @@ class TestClusterKeyFactory(TestCase):
         actual = self.key_factory.get_key(type_name, *key_values)
 
         # assert
-        assert expected == actual
+        self.assertEqual(actual, expected)
 
     def test_get_pattern(self):
         # arrange
@@ -46,4 +51,4 @@ class TestClusterKeyFactory(TestCase):
         actual = self.key_factory.get_pattern(type_name)
 
         # assert
-        assert expected == actual
+        self.assertEqual(actual, expected)
