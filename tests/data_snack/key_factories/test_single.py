@@ -3,12 +3,12 @@ from unittest import TestCase
 from parameterized import parameterized
 
 from data_snack.key_factories import KeyFactory
-from data_snack.key_factories.single import SingleKeyFactory
+from data_snack.key_factories.non_cluster import NoneClusterKeyFactory
 
 
-class TestSingleKeyFactory(TestCase):
+class TestNonClusterKeyFactory(TestCase):
     def setUp(self) -> None:
-        self.key_factory = SingleKeyFactory()
+        self.key_factory = NoneClusterKeyFactory()
 
     def test_protocol(self) -> None:
         # assert
@@ -21,14 +21,14 @@ class TestSingleKeyFactory(TestCase):
             ("Entity", ["Abc"], "Entity-Abc"),
         ]
     )
-    def test_get_key_single_value(self, type_name, key_values, expected) -> None:
+    def test_get_key_single_key_value(self, type_name, key_values, expected) -> None:
         # act
         actual = self.key_factory.get_key(type_name, *key_values)
 
         # assert
         assert expected == actual
 
-    def test_get_key_multiple_values(self) -> None:
+    def test_get_key_multiple_key_values(self) -> None:
         # arrange
         type_name = "Entity"
         key_values = [1, "2", "A", "Bcd"]
