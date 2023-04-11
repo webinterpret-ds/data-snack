@@ -4,7 +4,8 @@ from typing import Dict, List, Optional, Text, Type, Any
 from .connections import Connection
 from .entities import Entity, EntityRegistry
 from .exceptions import EntityAlreadyRegistered
-from .key_factory import BaseKeyFactory, SingleKeyFactory
+from .key_factories import KeyFactory
+from .key_factories.single import SingleKeyFactory
 from .serializers import DataclassSerializer, Serializer
 from .wrap import EntityWrap
 
@@ -17,7 +18,7 @@ class Snack:
 
     connection: Connection
     registry: Dict[Text, EntityRegistry] = field(default_factory=dict)
-    key_factory: BaseKeyFactory = field(default=SingleKeyFactory)
+    key_factory: KeyFactory = field(default=SingleKeyFactory)
 
     def register_entity(
         self,
