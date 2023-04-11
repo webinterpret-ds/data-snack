@@ -6,7 +6,7 @@ from data_snack import DataFrameWrap, EntityWrap, Snack
 from data_snack.connections import Connection
 from data_snack.entities import EntityRegistry
 from data_snack.exceptions import EntityAlreadyRegistered
-from data_snack.key_factory import key_factory_cluster
+from data_snack.key_factories.cluster import ClusterKeyFactory
 from data_snack.serializers import DataclassSerializer
 from tests.data_snack.conftest import Car
 
@@ -19,7 +19,7 @@ def snack_car(snack: Snack) -> Snack:
 
 @pytest.fixture
 def snack_factory_key_cluster(db_connection: Connection) -> Snack:
-    snack = Snack(connection=db_connection, key_factory=key_factory_cluster)
+    snack = Snack(connection=db_connection, key_factory=ClusterKeyFactory())
     snack.register_entity(Car)
     return snack
 

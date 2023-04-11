@@ -18,7 +18,7 @@ class Snack:
 
     connection: Connection
     registry: Dict[Text, EntityRegistry] = field(default_factory=dict)
-    key_factory: KeyFactory = field(default=SingleKeyFactory)
+    key_factory: KeyFactory = field(default=SingleKeyFactory())
 
     def register_entity(
         self,
