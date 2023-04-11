@@ -1,7 +1,7 @@
 import ast
 import zlib
 from dataclasses import dataclass
-from typing import List, Union, get_type_hints, Optional
+from typing import List, Optional, Union, get_type_hints
 
 import pandas as pd
 

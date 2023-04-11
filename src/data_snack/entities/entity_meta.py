@@ -1,8 +1,8 @@
-from abc import ABCMeta, ABC
+from abc import ABC, ABCMeta
 
 from .exceptions import (
-    MetaFieldsException,
     MetaEmptyKeysException,
+    MetaFieldsException,
     NonExistingMetaError,
 )
 

@@ -1,5 +1,5 @@
 from dataclasses import dataclass, field
-from typing import Dict, List, Optional, Text, Type, Any
+from typing import Any, Dict, List, Optional, Text, Type
 
 from .connections import Connection
 from .entities import Entity, EntityRegistry
@@ -119,7 +119,10 @@ class Snack:
         :return: a list of retrieved Entity objects
         """
         type_name = cls.__name__
-        _keys = [self.key_factory.get_key(type_name, *key_values) for key_values in keys_values]
+        _keys = [
+            self.key_factory.get_key(type_name, *key_values)
+            for key_values in keys_values
+        ]
         records = list(self.connection.get_many(_keys).values())
         return self._get_serializer(type_name).deserialize(records, many=True)
 
@@ -145,7 +148,10 @@ class Snack:
         :return: True if data were deleted
         """
         type_name = cls.__name__
-        _keys = [self.key_factory.get_key(type_name, *key_values) for key_values in keys_values]
+        _keys = [
+            self.key_factory.get_key(type_name, *key_values)
+            for key_values in keys_values
+        ]
         return self.connection.delete_many(_keys)
 
     def keys(self, cls: Type[Entity]) -> List[Text]:

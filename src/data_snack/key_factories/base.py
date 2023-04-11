@@ -1,4 +1,4 @@
-from typing import Text, Protocol
+from typing import Protocol, Text
 
 
 class KeyFactory(Protocol):

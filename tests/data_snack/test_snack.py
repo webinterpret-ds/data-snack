@@ -62,7 +62,9 @@ def test__create_custom_wrap(snack_car: Snack) -> None:
     assert type(wrap) is DataFrameWrap
 
 
-def test__get(snack_car: Snack, example_entity: Car, example_entity_hash: bytes) -> None:
+def test__get(
+    snack_car: Snack, example_entity: Car, example_entity_hash: bytes
+) -> None:
     snack_car.connection.connection.get.return_value = example_entity_hash
 
     entity = snack_car.get(Car, ["1"])
@@ -84,7 +86,9 @@ def test__delete(snack_car: Snack, example_entity: Car) -> None:
     assert deleted
 
 
-def test__set(snack_car: Snack, example_entity: Car, example_entity_hash: bytes) -> None:
+def test__set(
+    snack_car: Snack, example_entity: Car, example_entity_hash: bytes
+) -> None:
     expected_key = "Car-1"
     snack_car.connection.connection.set.return_value = True
 
@@ -105,9 +109,9 @@ def test__get_many(
 
 
 def test__get_many__missing_data(
-        snack_car: Snack,
-        example_entities_none: List[Optional[Car]],
-        example_entities_hashes_none: List[Optional[bytes]]
+    snack_car: Snack,
+    example_entities_none: List[Optional[Car]],
+    example_entities_hashes_none: List[Optional[bytes]],
 ) -> None:
     snack_car.connection.connection.mget.return_value = example_entities_hashes_none
 

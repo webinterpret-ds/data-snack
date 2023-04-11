@@ -1,4 +1,4 @@
-from typing import Any, Dict, List, Protocol, Text, Union, Optional
+from typing import Any, Dict, List, Optional, Protocol, Text, Union
 
 
 class Connection(Protocol):
