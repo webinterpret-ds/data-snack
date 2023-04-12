@@ -1,6 +1,7 @@
-from typing import Protocol, Text
+from typing import Protocol, Text, runtime_checkable
 
 
+@runtime_checkable
 class KeyFactory(Protocol):
     """
     An interface for key factories.
@@ -17,11 +18,12 @@ class KeyFactory(Protocol):
         """
         ...
 
-    def get_pattern(self, type_name: Text) -> Text:
+    def get_pattern(self, type_name: Text, pattern: Text = "*") -> Text:
         """
         Gets pattern string.
 
         :param type_name: type name
+        :param pattern: pattern to match
         :return: pattern string in specified format
         """
         ...

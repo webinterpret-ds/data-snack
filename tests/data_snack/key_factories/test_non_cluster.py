@@ -41,7 +41,7 @@ class TestNonClusterKeyFactory(TestCase):
         # assert
         assert expected == actual
 
-    def test_get_pattern(self) -> None:
+    def test_get_pattern_default(self) -> None:
         # arrange
         type_name = "Entity"
 
@@ -49,6 +49,19 @@ class TestNonClusterKeyFactory(TestCase):
 
         # act
         actual = self.key_factory.get_pattern(type_name)
+
+        # assert
+        assert expected == actual
+
+    def test_get_pattern_custom(self) -> None:
+        # arrange
+        type_name = "Entity"
+        pattern = "custom*"
+
+        expected = "Entity-custom*"
+
+        # act
+        actual = self.key_factory.get_pattern(type_name, pattern=pattern)
 
         # assert
         assert expected == actual

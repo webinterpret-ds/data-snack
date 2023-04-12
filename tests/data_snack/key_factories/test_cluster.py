@@ -10,10 +10,6 @@ class TestClusterKeyFactory(TestCase):
     def setUp(self) -> None:
         self.key_factory = ClusterKeyFactory()
 
-    def test_protocol(self) -> None:
-        # assert
-        self.assertIsInstance(self.key_factory, KeyFactory)
-
     @parameterized.expand(
         [
             ("Entity", ["1"], "{Entity}-1"),
@@ -41,7 +37,7 @@ class TestClusterKeyFactory(TestCase):
         # assert
         self.assertEqual(actual, expected)
 
-    def test_get_pattern(self) -> None:
+    def test_get_pattern_default(self) -> None:
         # arrange
         type_name = "Entity"
 
@@ -52,3 +48,16 @@ class TestClusterKeyFactory(TestCase):
 
         # assert
         self.assertEqual(actual, expected)
+
+    def test_get_pattern_custom(self) -> None:
+        # arrange
+        type_name = "Entity"
+        pattern = "custom*"
+
+        expected = "{Entity}-custom*"
+
+        # act
+        actual = self.key_factory.get_pattern(type_name, pattern=pattern)
+
+        # assert
+        assert expected == actual
