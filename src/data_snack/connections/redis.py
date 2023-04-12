@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import Dict, List, Text, Optional
+from typing import Dict, List, Optional, Text
 
 from .base import Connection
 

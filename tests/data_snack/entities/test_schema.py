@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 from datetime import date, datetime
-from typing import Type, Any, List, Optional
+from typing import Any, List, Optional, Type
 
 import pytest
 

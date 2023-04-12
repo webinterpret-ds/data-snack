@@ -9,6 +9,7 @@ Subpackages
 
    data_snack.connections
    data_snack.entities
+   data_snack.key_factories
    data_snack.serializers
    data_snack.wrap
 
@@ -19,14 +20,6 @@ data\_snack.exceptions module
 -----------------------------
 
 .. automodule:: data_snack.exceptions
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-data\_snack.key\_factory module
--------------------------------
-
-.. automodule:: data_snack.key_factory
    :members:
    :undoc-members:
    :show-inheritance:

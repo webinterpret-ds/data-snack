@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 from dataclasses import dataclass
-from typing import List, Type, Union, Optional
+from typing import List, Optional, Type, Union
 
 from ..entities import Entity
 

@@ -1,4 +1,3 @@
-
 Welcome to Data Snack's documentation!
 ======================================
 

@@ -1,12 +1,16 @@
 from abc import ABC
 from dataclasses import dataclass
-from typing import Type, List, Any
+from typing import Any, List, Type
 
 import pytest
 
 from data_snack.entities import Entity
 from data_snack.entities.entity_meta import EntityMetaClass
-from data_snack.entities.exceptions import MetaFieldsException, MetaEmptyKeysException, NonExistingMetaError
+from data_snack.entities.exceptions import (
+    MetaEmptyKeysException,
+    MetaFieldsException,
+    NonExistingMetaError,
+)
 
 
 @pytest.fixture
@@ -20,6 +24,7 @@ def dummy_entity() -> Type[Entity]:
         class Meta:
             keys = ["key"]
             excluded_fields = ["excluded"]
+
     return DummyEntity
 
 
@@ -30,7 +35,7 @@ def test_entity_type() -> None:
 
 def test_entity_bases() -> None:
     """Testing if `Entity` has proper bases."""
-    assert Entity.__bases__ == (ABC, )
+    assert Entity.__bases__ == (ABC,)
 
 
 def test_entity_subclass_init() -> None:
@@ -52,7 +57,7 @@ def test_entity_subclass_init() -> None:
             excluded_fields = meta_excluded_fields
 
     assert type(DummyEntity) == EntityMetaClass
-    assert DummyEntity.__bases__ == (Entity, )
+    assert DummyEntity.__bases__ == (Entity,)
     assert DummyEntity.Meta.keys == meta_keys
     assert DummyEntity.Meta.excluded_fields == meta_excluded_fields
     assert Entity.Meta.keys == []
@@ -62,6 +67,7 @@ def test_entity_subclass_init() -> None:
 def test_entity_subclass_init_bad_meta_fields_names() -> None:
     """Testing entity subclasses `Meta` field names validation."""
     with pytest.raises(MetaFieldsException):
+
         @dataclass
         class DummyEntity(Entity):
             key: int
@@ -75,6 +81,7 @@ def test_entity_subclass_init_bad_meta_fields_names() -> None:
 def test_entity_subclass_init_empty_meta_keys() -> None:
     """Testing entity subclasses `Meta` field content validation."""
     with pytest.raises(MetaEmptyKeysException):
+
         @dataclass
         class DummyEntity(Entity):
             key: int
@@ -89,6 +96,7 @@ def test_entity_init_no_meta_defined() -> None:
     """Testing error handling if `Entity` does not provide `Meta` implementation."""
 
     with pytest.raises(NonExistingMetaError):
+
         @dataclass
         class EntityNoMeta(ABC, metaclass=EntityMetaClass):
             pass
