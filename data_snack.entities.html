@@ -14,7 +14,7 @@
     <script src="_static/sphinx_highlight.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="data_snack.serializers package" href="data_snack.serializers.html" />
+    <link rel="next" title="data_snack.key_factories package" href="data_snack.key_factories.html" />
     <link rel="prev" title="data_snack.connections package" href="data_snack.connections.html" />
    
   <link rel="stylesheet" href="_static/custom.css" type="text/css" />
@@ -86,6 +86,41 @@
 </dd></dl>
 
 </section>
+<section id="module-data_snack.entities.entity_meta">
+<span id="data-snack-entities-entity-meta-module"></span><h2>data_snack.entities.entity_meta module<a class="headerlink" href="#module-data_snack.entities.entity_meta" title="Permalink to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="data_snack.entities.entity_meta.EntityMetaClass">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">data_snack.entities.entity_meta.</span></span><span class="sig-name descname"><span class="pre">EntityMetaClass</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bases</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dct</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#data_snack.entities.entity_meta.EntityMetaClass" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ABCMeta</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="data_snack.entities.entity_meta.EntityMetaClass.meta_fields">
+<span class="sig-name descname"><span class="pre">meta_fields</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['keys',</span> <span class="pre">'excluded_fields']</span></em><a class="headerlink" href="#data_snack.entities.entity_meta.EntityMetaClass.meta_fields" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-data_snack.entities.exceptions">
+<span id="data-snack-entities-exceptions-module"></span><h2>data_snack.entities.exceptions module<a class="headerlink" href="#module-data_snack.entities.exceptions" title="Permalink to this heading">¶</a></h2>
+<dl class="py exception">
+<dt class="sig sig-object py" id="data_snack.entities.exceptions.MetaEmptyKeysException">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">data_snack.entities.exceptions.</span></span><span class="sig-name descname"><span class="pre">MetaEmptyKeysException</span></span><a class="headerlink" href="#data_snack.entities.exceptions.MetaEmptyKeysException" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="data_snack.entities.exceptions.MetaFieldsException">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">data_snack.entities.exceptions.</span></span><span class="sig-name descname"><span class="pre">MetaFieldsException</span></span><a class="headerlink" href="#data_snack.entities.exceptions.MetaFieldsException" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="data_snack.entities.exceptions.NonExistingMetaError">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">data_snack.entities.exceptions.</span></span><span class="sig-name descname"><span class="pre">NonExistingMetaError</span></span><a class="headerlink" href="#data_snack.entities.exceptions.NonExistingMetaError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
+</dd></dl>
+
+</section>
 <section id="module-data_snack.entities.registry">
 <span id="data-snack-entities-registry-module"></span><h2>data_snack.entities.registry module<a class="headerlink" href="#module-data_snack.entities.registry" title="Permalink to this heading">¶</a></h2>
 <dl class="py class">
@@ -102,6 +137,18 @@
 <span class="sig-name descname"><span class="pre">serializer</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="data_snack.serializers.html#data_snack.serializers.base.Serializer" title="data_snack.serializers.base.Serializer"><span class="pre">Serializer</span></a></em><a class="headerlink" href="#data_snack.entities.registry.EntityRegistry.serializer" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
+</dd></dl>
+
+</section>
+<section id="module-data_snack.entities.schema">
+<span id="data-snack-entities-schema-module"></span><h2>data_snack.entities.schema module<a class="headerlink" href="#module-data_snack.entities.schema" title="Permalink to this heading">¶</a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="data_snack.entities.schema.get_entity_schema">
+<span class="sig-prename descclassname"><span class="pre">data_snack.entities.schema.</span></span><span class="sig-name descname"><span class="pre">get_entity_schema</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">entity_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Type</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#data_snack.entities.entity.Entity" title="data_snack.entities.entity.Entity"><span class="pre">Entity</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exclude_fields</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#data_snack.entities.schema.get_entity_schema" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets <cite>Entity</cite> schema, i.e. {field: data type} mapping. Allows excluding Entities excluded fields.
+:param entity_type: Entity definition (class)
+:param exclude_fields: excludes Entity excluded fields if True
+:return: Entity schema</p>
 </dd></dl>
 
 </section>
@@ -143,7 +190,7 @@
   <li><a href="modules.html">data_snack</a><ul>
   <li><a href="data_snack.html">data_snack package</a><ul>
       <li>Previous: <a href="data_snack.connections.html" title="previous chapter">data_snack.connections package</a></li>
-      <li>Next: <a href="data_snack.serializers.html" title="next chapter">data_snack.serializers package</a></li>
+      <li>Next: <a href="data_snack.key_factories.html" title="next chapter">data_snack.key_factories package</a></li>
   </ul></li>
   </ul></li>
   </ul></li>
