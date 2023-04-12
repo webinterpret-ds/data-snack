@@ -3,12 +3,12 @@ from unittest import TestCase
 from parameterized import parameterized
 
 from data_snack.key_factories import KeyFactory
-from data_snack.key_factories.non_cluster import NoneClusterKeyFactory
+from data_snack.key_factories.non_cluster import NonClusterKeyFactory
 
 
 class TestNonClusterKeyFactory(TestCase):
     def setUp(self) -> None:
-        self.key_factory = NoneClusterKeyFactory()
+        self.key_factory = NonClusterKeyFactory()
 
     def test_protocol(self) -> None:
         # assert

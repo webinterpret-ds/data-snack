@@ -5,7 +5,7 @@ from .connections import Connection
 from .entities import Entity, EntityRegistry
 from .exceptions import EntityAlreadyRegistered
 from .key_factories import KeyFactory
-from .key_factories.non_cluster import NoneClusterKeyFactory
+from .key_factories.non_cluster import NonClusterKeyFactory
 from .serializers import DataclassSerializer, Serializer
 from .wrap import EntityWrap
 
@@ -18,7 +18,7 @@ class Snack:
 
     connection: Connection
     registry: Dict[Text, EntityRegistry] = field(default_factory=dict)
-    key_factory: KeyFactory = field(default=NoneClusterKeyFactory())
+    key_factory: KeyFactory = field(default=NonClusterKeyFactory())
 
     def register_entity(
         self,
