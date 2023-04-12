@@ -41,8 +41,11 @@ def example_entities() -> List[Car]:
 
 
 @pytest.fixture
-def example_entities_none() -> List[Car]:
-    return [Car(index="1", brand="Volkswagen Passat"), None]
+def example_entities_none() -> List[Optional[Car]]:
+    return [
+        Car(index="1", brand="Volkswagen Passat"),
+        None
+    ]
 
 
 @pytest.fixture

@@ -1,5 +1,5 @@
-from typing import List
-from unittest.mock import call
+from dataclasses import asdict
+from typing import List, Optional
 
 import pandas as pd
 import pytest
@@ -20,6 +20,12 @@ def wrap_dataframe(snack: Snack) -> DataFrameWrap:
 def data_df(example_entities: List[Car]) -> pd.DataFrame:
     """Data frame containing all data: both keys and field values of the entity."""
     return pd.DataFrame(example_entities)
+
+
+@pytest.fixture
+def data_with_none_df(example_entities_none: List[Optional[Car]]) -> pd.DataFrame:
+    """Data frame containing all data: both keys and field values of the entity."""
+    return pd.DataFrame([asdict(row) if row else {} for row in example_entities_none])  # noqa
 
 
 @pytest.fixture
@@ -66,6 +72,26 @@ def test_get_dataframe(
     # returned data frame is created based on the compressed entities stored in the database
     df = wrap_dataframe.get_dataframe(index_df)
     assert df.equals(data_df)
+
+    # connection is called with a list of entity keys
+    expected_keys = ("Car-" + index_df["index"]).tolist()
+    wrap_dataframe.snack.connection.connection.mget.assert_called_with(expected_keys)
+
+
+def test_get_dataframe_data_with_none(
+        wrap_dataframe: DataFrameWrap,
+        index_df: pd.DataFrame,
+        data_with_none_df: pd.DataFrame,
+        example_entities_hashes_none: List[bytes],
+) -> None:
+    """Testing reading a data frame with entities values based on a provided data frame with key columns."""
+    wrap_dataframe.snack.connection.connection.mget.return_value = (
+        example_entities_hashes_none
+    )
+
+    # returned data frame is created based on the compressed entities stored in the database
+    df = wrap_dataframe.get_dataframe(index_df)
+    assert df.equals(data_with_none_df)
 
     # connection is called with a list of entity keys
     expected_keys = ("Car-" + index_df["index"]).tolist()
