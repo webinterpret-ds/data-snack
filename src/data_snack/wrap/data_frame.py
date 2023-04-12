@@ -1,4 +1,4 @@
-from dataclasses import dataclass
+from dataclasses import dataclass, asdict
 from typing import List, Text
 
 import pandas as pd
@@ -38,4 +38,4 @@ class DataFrameWrap(EntityWrap):
             )
 
         data = self.get_many(df[required_key_columns].values.tolist())
-        return pd.DataFrame(data)
+        return pd.DataFrame([asdict(row) if row else {} for row in data])

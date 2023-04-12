@@ -25,7 +25,7 @@ from tests.data_snack.conftest import Car
         ),
     ],
 )
-def test__serialize(
+def test_serialize(
     serializer: DataclassSerializer, entity_instance: Car, entity_hash: bytes
 ) -> None:
     """Testing serializing (compressing) a single entity."""
@@ -33,7 +33,7 @@ def test__serialize(
     assert entity_hash == entity_hash
 
 
-def test__serialize__many(
+def test_serialize_many(
     serializer: DataclassSerializer,
     example_entities: List[Car],
     example_entities_hashes: List[bytes],
@@ -43,7 +43,7 @@ def test__serialize__many(
     assert entities_hashes == example_entities_hashes
 
 
-def test__deserialize(
+def test_deserialize(
     serializer: DataclassSerializer, example_entity: Car, example_entity_hash: bytes
 ) -> None:
     """Testing deserializing (decompressing) a single entity."""
@@ -51,7 +51,7 @@ def test__deserialize(
     assert entity == example_entity
 
 
-def test__deserialize__none(
+def test_deserialize_none(
     serializer: DataclassSerializer, example_entity: Car, example_entity_hash: bytes
 ) -> None:
     """Testing deserializing (decompressing) a None value."""
@@ -59,7 +59,7 @@ def test__deserialize__none(
     assert entity is None
 
 
-def test__deserialize__many(
+def test_deserialize_many(
     serializer: DataclassSerializer,
     example_entities: List[Car],
     example_entities_hashes: List[bytes],
@@ -69,7 +69,7 @@ def test__deserialize__many(
     assert entities == example_entities
 
 
-def test__deserialize__many_with_none(
+def test_deserialize_many_with_none(
     serializer: DataclassSerializer,
     example_entities_none: List[Car],
     example_entities_hashes_none: List[bytes],
