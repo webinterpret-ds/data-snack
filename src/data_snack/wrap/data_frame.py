@@ -38,4 +38,14 @@ class DataFrameWrap(EntityWrap):
             )
 
         data = self.get_many(df[required_key_columns].values.tolist())
-        return pd.DataFrame([asdict(row) if row else {} for row in data])
+        output_df = pd.DataFrame(
+            [row for row in data if row],
+            columns=self.entity_type.get_all_fields()
+        )
+
+        return pd.merge(
+            df,
+            output_df,
+            on=required_key_columns,
+            how='left'
+        )

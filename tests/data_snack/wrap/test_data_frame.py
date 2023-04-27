@@ -23,21 +23,44 @@ def data_df(example_entities: List[Car]) -> pd.DataFrame:
 
 
 @pytest.fixture
-def data_with_none_df(example_entities_none: List[Optional[Car]]) -> pd.DataFrame:
-    """Data frame containing all data: both keys and field values of the entity."""
-    return pd.DataFrame([asdict(row) if row else {} for row in example_entities_none])  # noqa
+def data_with_duplicates_df(example_entities_with_duplicates: List[Car]) -> pd.DataFrame:
+    """
+    Data frame containing all data: both keys and field values of the entity.
+    Some entities are duplicated.
+    """
+    return pd.DataFrame(example_entities_with_duplicates)
+
+
+@pytest.fixture
+def data_with_none_df(index_df: pd.DataFrame, example_entities_none: List[Optional[Car]]) -> pd.DataFrame:
+    """
+    Data frame containing all data: both keys and field values of the entity.
+    Since some entities were not available so None is returned.
+    """
+    return pd.merge(
+        index_df,
+        pd.DataFrame([row for row in example_entities_none if row]),
+        on=Car.get_keys(),
+        how="left"
+    )
 
 
 @pytest.fixture
 def index_df(data_df: pd.DataFrame) -> pd.DataFrame:
     """Data frame containing only columns assigned as `keys` for given entity."""
-    return data_df[["index"]]
+    return pd.DataFrame([{"index": "1"}, {"index": "2"}])
+
+
+@pytest.fixture
+def index_with_duplicates_df(data_df: pd.DataFrame) -> pd.DataFrame:
+    """Data frame containing only columns assigned as `keys` for given entity."""
+    return pd.DataFrame([{"index": "1"}, {"index": "2"}, {"index": "1"}])
 
 
 @pytest.fixture
 def wrong_index_df(data_df: pd.DataFrame) -> pd.DataFrame:
     """Data frame containing only columns assigned as `keys` for given entity."""
-    return data_df[["brand"]]
+    return pd.DataFrame([{"brand": "1"}, {"brand": "2"}])
 
 
 def test_set_dataframe(
@@ -95,6 +118,26 @@ def test_get_dataframe_data_with_none(
 
     # connection is called with a list of entity keys
     expected_keys = ("Car-" + index_df["index"]).tolist()
+    wrap_dataframe.snack.connection.connection.mget.assert_called_with(expected_keys)
+
+
+def test_get_dataframe_data_with_duplicates(
+        wrap_dataframe: DataFrameWrap,
+        index_with_duplicates_df: pd.DataFrame,
+        data_with_duplicates_df: pd.DataFrame,
+        example_entities_with_duplicates_hashes: List[bytes],
+) -> None:
+    """Testing reading a data frame with entities values based on a provided data frame with key columns."""
+    wrap_dataframe.snack.connection.connection.mget.return_value = (
+        example_entities_with_duplicates_hashes
+    )
+
+    # returned data frame is created based on the compressed entities stored in the database
+    df = wrap_dataframe.get_dataframe(index_with_duplicates_df)
+    assert df.equals(data_with_duplicates_df)
+
+    # connection is called with a list of entity keys
+    expected_keys = ("Car-" + index_with_duplicates_df["index"]).tolist()
     wrap_dataframe.snack.connection.connection.mget.assert_called_with(expected_keys)
 
 
