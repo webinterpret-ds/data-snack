@@ -8,7 +8,7 @@ class KeyFactory(Protocol):
     Use it to create a new key factory.
     """
 
-    def get_key(self, type_name: Text, *key_values: Text) -> Text:
+    def get_key(self, type_name: Text, *key_values: str) -> Text:
         """
         Gets key string.
 
