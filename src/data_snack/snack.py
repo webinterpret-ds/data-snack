@@ -1,13 +1,12 @@
 from dataclasses import dataclass, field
-from typing import Any, Dict, List, Optional, Text, Type
+from typing import Dict, List, Optional, Text, Type, Any
 
-from .connections import Connection
-from .entities import Entity, EntityRegistry
-from .exceptions import EntityAlreadyRegistered
-from .key_factories import KeyFactory
-from .key_factories.non_cluster import NonClusterKeyFactory
-from .serializers import DataclassSerializer, Serializer
-from .wrap import EntityWrap
+from data_snack.connections import Connection
+from data_snack.entities import Entity, EntityRegistry
+from data_snack.exceptions import EntityAlreadyRegistered
+from data_snack.key_factories import Key, NonClusterKey
+from data_snack.serializers import DataclassSerializer, Serializer
+from data_snack.wrap import EntityWrap
 
 
 @dataclass
@@ -17,8 +16,8 @@ class Snack:
     """
 
     connection: Connection
-    registry: Dict[Text, EntityRegistry] = field(default_factory=dict)
-    key_factory: KeyFactory = field(default=NonClusterKeyFactory())
+    registry: EntityRegistry = field(default_factory=dict)
+    key_factory: Type[Key] = field(default=NonClusterKey)
 
     def register_entity(
         self,
@@ -31,17 +30,13 @@ class Snack:
         :param entity_type: Entity type
         :param serializer: Serializer that is used to compress and decompress entities before saving in db
         """
-        type_name = entity_type.__name__
-
-        if type_name in self.registry:
-            raise EntityAlreadyRegistered(f"Entity {type_name} is already registered")
+        if entity_type in self.registry:
+            raise EntityAlreadyRegistered(f"Entity named {entity_type.__name__} is already registered")
 
         if not serializer:
             serializer = DataclassSerializer(entity_type)
 
-        self.registry[type_name] = EntityRegistry(
-            entity_type=entity_type, serializer=serializer
-        )
+        self.registry[entity_type] = serializer
 
     def create_wrap(
         self, entity_type: Type[Entity], wrap_type: Type["Wrap"] = EntityWrap
@@ -55,17 +50,17 @@ class Snack:
         """
         return wrap_type(self, entity_type)
 
-    def _get_serializer(self, type_name: Text) -> Serializer:
-        return self.registry[type_name].serializer
+    def _get_serializer(self, entity_type: Type[Entity]) -> Serializer:
+        return self.registry[entity_type]
 
-    def _build_record_key(self, type_name: Text, entity: Entity) -> Text:
-        key_values = [
-            getattr(entity, key)
-            for key in self.registry[type_name].entity_type.get_keys()
-        ]
-        return self.key_factory.get_key(type_name, *key_values)
+    def _build_record_key(self, entity: Entity) -> Key:
+        entity_type = entity.__class__
+        if entity_type not in self.registry:
+            raise Exception(f"Entity named {entity_type.__name__} is not registered.")
+        key_values = [getattr(entity, key) for key in entity_type.get_keys()]
+        return self.key_factory(entity.__class__, key_values)
 
-    def set(self, entity: Entity, expire: int = 0) -> Optional[Text]:
+    def set(self, entity: Entity, expire: int = 0) -> Optional[Text]:  # OK
         """
         Sets provided `Entity` object in db.
         Notice the entity stored in the db will be overwritten,
@@ -75,14 +70,12 @@ class Snack:
         :param expire: number of seconds until the item is expired, or zero for no expiry
         :return: on success returns key used for the object, None on fail
         """
-        cls = entity.__class__
-        type_name = cls.__name__
-        key = self._build_record_key(type_name, entity)
-        record = self._get_serializer(type_name).serialize(entity)
-        if self.connection.set(cls, key, record, expire):
-            return key
+        key = self._build_record_key(entity)
+        record = self._get_serializer(entity.__class__).serialize(entity)
+        if self.connection.set(key, record, expire):
+            return key.keystring
 
-    def get(self, cls: Type[Entity], key_values: List[Any]) -> Optional[Entity]:
+    def get(self, cls: Type[Entity], key_values: List[str]) -> Optional[Entity]:  # OK
         """
         Gets ane entity of `Entity` type from db based on provided key values.
         Notice, key is represented as a list of strings, since one Entity can have multiple key fields.
@@ -91,12 +84,11 @@ class Snack:
         :param key_values: a list of key values representing the entity
         :return: a retrieved Entity object
         """
-        type_name = cls.__name__
-        _key = self.key_factory.get_key(type_name, *key_values)
-        value = self.connection.get(cls, _key)
-        return self._get_serializer(type_name).deserialize(value)
+        _key = self.key_factory(cls, key_values)
+        value = self.connection.get(_key)
+        return self._get_serializer(cls).deserialize(value)
 
-    def delete(self, cls: Type[Entity], key_values: List[Any]) -> bool:
+    def delete(self, cls: Type[Entity], key_values: List[str]) -> bool:  # OK
         """
         Deletes one entity of `Entity` type from db based on provided key values.
         Notice, key is represented as a list of strings, since one Entity can have multiple key fields.
@@ -105,12 +97,11 @@ class Snack:
         :param key_values: a list of key values representing the entity
         :return: True if data were deleted
         """
-        type_name = cls.__name__
-        _key = self.key_factory.get_key(type_name, *key_values)
-        return self.connection.delete(cls, _key)
+        _key = self.key_factory(cls, key_values)
+        return self.connection.delete(_key)
 
     def get_many(
-        self, cls: Type[Entity], keys_values: List[List[Any]]
+        self, cls: Type[Entity], keys_values: List[List[str]]
     ) -> List[Optional[Entity]]:
         """
         Gets list of `Entity` objects from db based on provided list of keys.
@@ -119,29 +110,26 @@ class Snack:
         :param keys_values: list of keys, each list defines a set key values for one Entity object
         :return: a list of retrieved Entity objects
         """
-        type_name = cls.__name__
-        _keys = [
-            self.key_factory.get_key(type_name, *key_values)
-            for key_values in keys_values
-        ]
-        records = list(self.connection.get_many(cls, _keys).values())
-        return self._get_serializer(type_name).deserialize(records, many=True)
+        _keys = [self.key_factory(cls, key_values) for key_values in keys_values]
+        records = list(self.connection.get_many(_keys).values())
+        return self._get_serializer(cls).deserialize(records, many=True)
 
-    def set_many(self, entities: List[Entity]) -> List[Text]:
+    def set_many(self, entities: List[Entity]) -> Any:
         """
         Saves multiple `Entity` objects in db.
 
         :param entities: a list of Entity objects
         :return: a list of keys generated for saved objects
         """
-        cls = entities[0].__class__
-        type_name = cls.__name__
-        records = self._get_serializer(type_name).serialize(entities, many=True)
-        keys = [self._build_record_key(type_name, entity) for entity in entities]
-        if result := self.connection.set_many(cls, dict(zip(keys, records))):
+        # TODO: fail if entities is an empty list, which is still valid according
+        #  to the typing
+        entity_type = entities[0].__class__
+        records = self._get_serializer(entity_type).serialize(entities, many=True)
+        keys = [self._build_record_key(entity) for entity in entities]
+        if result := self.connection.set_many(dict(zip(keys, records))):
             return result
 
-    def delete_many(self, cls: Type[Entity], keys_values: List[List[Any]]) -> bool:
+    def delete_many(self, cls: Type[Entity], keys_values: List[List[str]]) -> bool:
         """
         Deletes multiple `Entity` objects in db.
 
@@ -149,12 +137,11 @@ class Snack:
         :param keys_values: list of keys, each list defines a set key values for one Entity object
         :return: True if data were deleted
         """
-        type_name = cls.__name__
         _keys = [
-            self.key_factory.get_key(type_name, *key_values)
+            self.key_factory(cls, key_values)
             for key_values in keys_values
         ]
-        return self.connection.delete_many(cls, _keys)
+        return self.connection.delete_many(_keys)
 
     def keys(self, cls: Type[Entity]) -> List[Text]:
         """
@@ -163,4 +150,4 @@ class Snack:
         :param cls: Entity type
         :return: a list of keys
         """
-        return self.connection.keys(cls, pattern=self.key_factory.get_pattern(cls.__name__))
+        return self.connection.keys(pattern=self.key_factory.get_pattern(cls.__name__))

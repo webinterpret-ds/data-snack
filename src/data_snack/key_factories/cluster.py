@@ -1,13 +1,6 @@
-from dataclasses import dataclass
-from typing import Text
-
-from data_snack.key_factories.base import KeyFactory
+from data_snack.key_factories.base import Key
 
 
-@dataclass
-class ClusterKeyFactory(KeyFactory):
-    def get_key(self, type_name: Text, *key_values: Text) -> Text:
-        return f"{{{type_name}}}-{'_'.join(map(str, key_values))}"
-
-    def get_pattern(self, type_name: Text, pattern: Text = "*") -> Text:
-        return f"{{{type_name}}}-{pattern}"
+class ClusterKey(Key):
+    def get_pattern(self, pattern: str = "*") -> str:
+        return f"{{{self.entity.__name__}}}-{pattern}"
