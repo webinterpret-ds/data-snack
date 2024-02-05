@@ -21,7 +21,7 @@ class MongoConnection(Connection):
     connection: "pymongo.database.Database"
 
     def _get_entity_collection(self, entity_type: Type[Entity]) -> pymongo.collection.Collection:
-        collection = self.connection[entity_type]
+        collection = self.connection[entity_type.__name__]
         collection.create_index(
             [(key, pymongo.ASCENDING) for key in entity_type.Meta.keys],
             unique=True
@@ -38,7 +38,7 @@ class MongoConnection(Connection):
 
     @validate_keys
     def get_many(self, keys: List[Key]) -> Dict[str, Optional[Dict]]:
-        if not (entity_type := getattr(next(iter(keys, None)), "entity_type", None)):  # type: ignore
+        if not (entity_type := getattr(next(iter(keys), None), "entity_type", None)):
             return {}
         db_keys = [key.keystring for key in keys]
 
@@ -62,7 +62,7 @@ class MongoConnection(Connection):
 
     @validate_keys
     def set_many(self, values: Dict[Key, str]) -> bool:
-        if not (entity_type := getattr(next(iter(values, None)), "entity_type", None)):  # type: ignore
+        if not (entity_type := getattr(next(iter(values), None), "entity_type", None)):
             return True
         updates = [
             UpdateOne({"_id": key.keystring}, {"$set": value}, upsert=True)
@@ -80,7 +80,7 @@ class MongoConnection(Connection):
 
     @validate_keys
     def delete_many(self, keys: List[Key]) -> bool:
-        if not (entity_type := getattr(next(iter(keys, None)), "entity_type", None)):  # type: ignore
+        if not (entity_type := getattr(next(iter(keys), None), "entity_type", None)):
             return True
 
         collection = self._get_entity_collection(entity_type)

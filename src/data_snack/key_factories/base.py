@@ -11,6 +11,9 @@ class Key(ABC):
     entity_type: Type[Entity]
     key_values: List[str]
 
+    def __hash__(self):
+        return hash((self.entity_type.__name__, *self.key_values))
+
     @abstractmethod
     def get_pattern(self, pattern: str) -> str:
         """
@@ -26,4 +29,3 @@ class Key(ABC):
         :return: key string in specified format
         """
         return self.get_pattern('_'.join(map(str, self.key_values)))
-
