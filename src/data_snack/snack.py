@@ -73,7 +73,7 @@ class Snack:
         key = self._build_record_key(entity)
         record = self._get_serializer(entity.__class__).serialize(entity)
         if self.connection.set(key, record, expire):
-            return key.keystring
+            return key.keystring  # Should we return keystring or maybe just a key?
 
     def get(self, cls: Type[Entity], key_values: List[str]) -> Optional[Entity]:
         """
@@ -150,4 +150,4 @@ class Snack:
         :param cls: Entity type
         :return: a list of keys
         """
-        return self.connection.keys(pattern=self.key_factory.get_pattern(cls.__name__))
+        return self.connection.keys(pattern=self.key_factory(cls, []).get_pattern(cls.__name__))

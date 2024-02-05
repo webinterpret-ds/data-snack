@@ -5,18 +5,18 @@ from parameterized import parameterized
 
 from data_snack.entities import Entity
 from tests.data_snack.conftest import Car
-from data_snack.key_factories.cluster import ClusterKey
+from data_snack.key_factories.hash import HashKey
 
 
-class TestClusterKeyFactory(TestCase):
+class TestHashKeyFactory(TestCase):
     def setUp(self) -> None:
-        self.key_factory = ClusterKey
+        self.key_factory = HashKey
 
     @parameterized.expand(
         [
-            (Car, ["1"], "{Car}-1"),
-            (Car, [1], "{Car}-1"),
-            (Car, ["Abc"], "{Car}-Abc"),
+            (Car, ["1"], "c35a43010ddc80cf23173315516062be"),
+            (Car, [1], "c35a43010ddc80cf23173315516062be"),  # the same hash as above
+            (Car, ["Abc"], "35b8a98d4b40102ed1f501e290f76684"),
         ]
     )
     def test_get_key_single_key_value(self, entity_type, key_values, expected) -> None:
@@ -31,38 +31,13 @@ class TestClusterKeyFactory(TestCase):
         entity_type = Car
         key_values = [1, "2", "A", "Bcd"]
 
-        expected = "{Car}-1_2_A_Bcd"
+        expected = "75a88f65b9eb4f207e094cf072acc7e7"
 
         # act
         actual = self.key_factory(entity_type, key_values).keystring
 
         # assert
         self.assertEqual(actual, expected)
-
-    def test_get_pattern_default(self) -> None:
-        # arrange
-        entity_type = Car
-
-        expected = "{Car}-*"
-
-        # act
-        actual = self.key_factory(entity_type, ["1"]).get_pattern()
-
-        # assert
-        self.assertEqual(actual, expected)
-
-    def test_get_pattern_custom(self) -> None:
-        # arrange
-        entity_type = Car
-        pattern = "custom*"
-
-        expected = "{Car}-custom*"
-
-        # act
-        actual = self.key_factory(entity_type, ["1"]).get_pattern(pattern=pattern)
-
-        # assert
-        assert expected == actual
 
     def test_hashable(self) -> None:
         # arrange

@@ -31,7 +31,9 @@ class MemcachedConnection(Connection):
             index_mapping[key.keystring] = index
         failed_keys = self.connection.set_many(keystrings_values)
         values_key_list = list(values.keys())
-        return [values_key_list[index_mapping[keystring]] for keystring in failed_keys]
+        return [
+            values_key_list[index_mapping[keystring]] for keystring in keystrings_values if keystring not in failed_keys
+        ]
 
     def delete_many(
         self, keys: List[Key]

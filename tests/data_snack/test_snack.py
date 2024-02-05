@@ -6,7 +6,7 @@ from data_snack import DataFrameWrap, EntityWrap, Snack
 from data_snack.connections import Connection
 from data_snack.entities import EntityRegistry
 from data_snack.exceptions import EntityAlreadyRegistered
-from data_snack.key_factories.cluster import ClusterKeyFactory
+from data_snack.key_factories.cluster import ClusterKey
 from data_snack.serializers import DataclassSerializer
 from tests.data_snack.conftest import Car
 
@@ -19,7 +19,7 @@ def snack_car(snack: Snack) -> Snack:
 
 @pytest.fixture
 def snack_factory_key_cluster(db_connection: Connection) -> Snack:
-    snack = Snack(connection=db_connection, key_factory=ClusterKeyFactory())
+    snack = Snack(connection=db_connection, key_factory=ClusterKey)
     snack.register_entity(Car)
     return snack
 
@@ -27,11 +27,8 @@ def snack_factory_key_cluster(db_connection: Connection) -> Snack:
 def test__register_entity(snack: Snack) -> None:
     snack.register_entity(Car)
 
-    registry = snack.registry.get("Car")
-    assert type(registry) is EntityRegistry
-    assert registry.entity_type == Car
-    assert type(registry.serializer) is DataclassSerializer
-    assert registry.serializer.entity_type is Car
+    serializer = snack.registry.get(Car)
+    assert type(serializer) is DataclassSerializer
 
 
 def test__register_entity_duplicated(snack_car: Snack) -> None:
