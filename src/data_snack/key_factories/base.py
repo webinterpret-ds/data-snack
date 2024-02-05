@@ -8,7 +8,7 @@ from data_snack.entities import Entity
 @dataclass
 class Key(ABC):
     """An abstract key."""
-    entity: Type[Entity]  # TODO: consider renaming to entity_type
+    entity_type: Type[Entity]
     key_values: List[str]
 
     @abstractmethod

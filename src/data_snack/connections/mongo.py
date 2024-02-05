@@ -10,9 +10,8 @@ from data_snack.key_factories import Key
 
 def validate_keys(method):
     def method_wrapper(self, keys: Union[Dict[Key, Any], List[Key]]):
-        if len(set([key.entity for key in keys])) > 1:
-            # TODO: consider handling len(keys) == 0 in Snack or validate it here (seems to be worse)
-            raise Exception(f"{method.__name__} is supported for one entity at the time for MongoDB.")
+        if len(set([key.entity_type for key in keys])) > 1:
+            raise ValueError(f"{method.__name__} is supported for one entity at the time for MongoDB.")
         return method(self, keys)
     return method_wrapper
 
@@ -30,8 +29,8 @@ class MongoConnection(Connection):
         return collection
 
     def get(self, key: Key) -> Optional[bytes]:
-        collection = self._get_entity_collection(key.entity)
-        result = collection.find_one({"_id": key})
+        collection = self._get_entity_collection(key.entity_type)
+        result = collection.find_one({"_id": key.keystring})
         if not result:
             return None
         del result['_id']
@@ -39,53 +38,53 @@ class MongoConnection(Connection):
 
     @validate_keys
     def get_many(self, keys: List[Key]) -> Dict[str, Optional[Dict]]:
-        entity_type = keys[0].entity
+        if not (entity_type := getattr(next(iter(keys, None)), "entity_type", None)):  # type: ignore
+            return {}
+        db_keys = [key.keystring for key in keys]
 
-        def _delete_id_field(result: Dict):
+        def _delete_id_field(result: Dict) -> Dict:
             if result:
                 del result['_id']
             return result
         collection = self._get_entity_collection(entity_type)
         return {
             row["_id"]: _delete_id_field(row)
-            for row in collection.find({"_id": {"$in": keys}})
+            for row in collection.find({"_id": {"$in": db_keys}})
         }
 
     def set(self, key: Key, value: Dict, expire: int = None) -> bool:
-        collection = self._get_entity_collection(key.entity)
+        collection = self._get_entity_collection(key.entity_type)
         try:
-            collection.update_one({"_id": key}, {"$set": value}, upsert=True)
+            collection.update_one({"_id": key.keystring}, {"$set": value}, upsert=True)
             return True
         except pymongo.errors.DuplicateKeyError:
             return False
 
+    @validate_keys
     def set_many(self, values: Dict[Key, str]) -> bool:
-        # TODO: consider handling empty dicts in Snack
-        entity_type = list(values.keys())[0].entity
-
-        collection = self._get_entity_collection(entity_type)
+        if not (entity_type := getattr(next(iter(values, None)), "entity_type", None)):  # type: ignore
+            return True
         updates = [
-            UpdateOne({"_id": key}, {"$set": value}, upsert=True)
+            UpdateOne({"_id": key.keystring}, {"$set": value}, upsert=True)
             for key, value in values.items()
         ]
+        collection = self._get_entity_collection(entity_type)
         result = collection.bulk_write(updates)
         set_count = result.inserted_count + result.upserted_count + max(result.modified_count, result.matched_count)
         return set_count == len(updates)
 
     def delete(self, key: Key) -> bool:
-        collection = self._get_entity_collection(key.entity)
-        result = collection.delete_one({"_id": key})
+        collection = self._get_entity_collection(key.entity_type)
+        result = collection.delete_one({"_id": key.keystring})
         return result.deleted_count == 1
 
     @validate_keys
     def delete_many(self, keys: List[Key]) -> bool:
-        # TODO: move this validation to the decorator
-        if len(set([key.entity for key in keys])) != 1:
-            raise Exception("get_many is supported for one entity at the time for MongoDB.")
-        entity_type = keys[0].entity
+        if not (entity_type := getattr(next(iter(keys, None)), "entity_type", None)):  # type: ignore
+            return True
 
         collection = self._get_entity_collection(entity_type)
-        updates = [DeleteOne({"_id": key}) for key in keys]
+        updates = [DeleteOne({"_id": key.keystring}) for key in keys]
         result = collection.bulk_write(updates)
         return result.deleted_count == len(updates)
 

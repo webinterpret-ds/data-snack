@@ -1,5 +1,5 @@
 from dataclasses import dataclass, field
-from typing import Dict, List, Optional, Text, Type, Any
+from typing import List, Optional, Text, Type, Any
 
 from data_snack.connections import Connection
 from data_snack.entities import Entity, EntityRegistry
@@ -60,7 +60,7 @@ class Snack:
         key_values = [getattr(entity, key) for key in entity_type.get_keys()]
         return self.key_factory(entity.__class__, key_values)
 
-    def set(self, entity: Entity, expire: int = 0) -> Optional[Text]:  # OK
+    def set(self, entity: Entity, expire: int = 0) -> Optional[Text]:
         """
         Sets provided `Entity` object in db.
         Notice the entity stored in the db will be overwritten,
@@ -75,7 +75,7 @@ class Snack:
         if self.connection.set(key, record, expire):
             return key.keystring
 
-    def get(self, cls: Type[Entity], key_values: List[str]) -> Optional[Entity]:  # OK
+    def get(self, cls: Type[Entity], key_values: List[str]) -> Optional[Entity]:
         """
         Gets ane entity of `Entity` type from db based on provided key values.
         Notice, key is represented as a list of strings, since one Entity can have multiple key fields.
@@ -88,7 +88,7 @@ class Snack:
         value = self.connection.get(_key)
         return self._get_serializer(cls).deserialize(value)
 
-    def delete(self, cls: Type[Entity], key_values: List[str]) -> bool:  # OK
+    def delete(self, cls: Type[Entity], key_values: List[str]) -> bool:
         """
         Deletes one entity of `Entity` type from db based on provided key values.
         Notice, key is represented as a list of strings, since one Entity can have multiple key fields.

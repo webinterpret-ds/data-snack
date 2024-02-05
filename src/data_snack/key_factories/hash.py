@@ -9,4 +9,4 @@ def string_hash(value: str) -> str:
 
 class HashKey(Key):
     def get_pattern(self, pattern: str = "*") -> str:
-        return string_hash(f"{self.entity}-{pattern}")
+        return string_hash(f"{self.entity_type}-{pattern}")

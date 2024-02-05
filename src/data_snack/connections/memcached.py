@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import Dict, List, Optional, Text
+from typing import Dict, List, Optional
 
 from data_snack.connections import Connection
 from data_snack.key_factories import Key
@@ -39,5 +39,5 @@ class MemcachedConnection(Connection):
         keystrings = [key.keystring for key in keys]
         return self.connection.delete_many(keystrings, noreply=False)
 
-    def keys(self, pattern: Text) -> List[Text]:
+    def keys(self, pattern: str) -> List[str]:
         raise NotImplementedError()
