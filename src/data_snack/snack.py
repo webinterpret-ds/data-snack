@@ -72,7 +72,7 @@ class Snack:
         """
         key = self._build_record_key(entity)
         record = self._get_serializer(entity.__class__).serialize(entity)
-        if self.connection.set(key, record, expire):
+        if self.connection.set(key, record, expire=expire):
             return key.keystring  # Should we return keystring or maybe just a key?
 
     def get(self, cls: Type[Entity], key_values: List[str]) -> Optional[Entity]:
