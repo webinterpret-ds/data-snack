@@ -1,34 +1,44 @@
 from dataclasses import dataclass
-from typing import Dict, List, Optional, Text
-from data_snack.entities import Entity
+from typing import Dict, List, Optional, Any
 
-from .base import Connection
+from data_snack.connections import Connection
+from data_snack.key_factories import Key
 
 
 @dataclass
 class MemcachedConnection(Connection):
     connection: "Client"
 
-    def get(self, entity_type: Type[Entity], key: Text) -> Optional[bytes]:
-        return self.connection.get(key)
+    def get(self, key: Key) -> Optional[bytes]:
+        return self.connection.get(key.keystring)
 
-    def set(self, entity_type: Type[Entity], key: Text, value: Text, expire: int = 0) -> bool:
-        return self.connection.set(key, value, expire=expire)
+    def set(self, key: Key, value: str) -> bool:
+        return self.connection.set(key.keystring, value)
 
-    def delete(self, entity_type: Type[Entity], key: Text) -> bool:
-        return self.connection.delete(key, noreply=False)
+    def delete(self, key: Key) -> bool:
+        return self.connection.delete(key.keystring, noreply=False)
 
-    def get_many(self, entity_type: Type[Entity], keys: List[Text]) -> Dict[Text, Optional[bytes]]:
-        return self.connection.get_many(keys)
+    def get_many(self, keys: List[Key]) -> Dict[str, Optional[bytes]]:
+        keystrings = [key.keystring for key in keys]
+        return self.connection.get_many(keystrings)
 
-    def set_many(self, entity_type: Type[Entity], values: Dict[Text, Text]) -> List[Text]:
-        failed_keys = self.connection.set_many(values)
-        return list(set(values.keys()) - set(failed_keys))
+    def set_many(self, values: Dict[Key, Any]) -> List[Key]:
+        keystrings_values = {}
+        index_mapping = {}
+        for index, (key, value) in enumerate(values.items()):
+            keystrings_values[key.keystring] = value
+            index_mapping[key.keystring] = index
+        failed_keys = self.connection.set_many(keystrings_values)
+        values_key_list = list(values.keys())
+        return [
+            values_key_list[index_mapping[keystring]] for keystring in keystrings_values if keystring not in failed_keys
+        ]
 
     def delete_many(
-        self, entity_type: Type[Entity], keys: List[Text]
+        self, keys: List[Key]
     ) -> bool:  # always returns True. How should we approach this?
-        return self.connection.delete_many(keys, noreply=False)
+        keystrings = [key.keystring for key in keys]
+        return self.connection.delete_many(keystrings, noreply=False)
 
-    def keys(self, entity_type: Type[Entity], pattern: Text) -> List[Text]:
+    def keys(self, pattern: str) -> List[str]:
         raise NotImplementedError()

@@ -1,9 +1,10 @@
-from typing import Any, Dict, List, Optional, Protocol, Type, Union
+from abc import ABC, abstractmethod
+from typing import Any, Dict, List, Optional
 
-from data_snack.entities import Entity
+from data_snack.key_factories import Key
 
 
-class Connection(Protocol):
+class Connection(ABC):
     """
     An interface used for by `Snack` to access db.
     If you want to create a custom connection to a db for your choosing,
@@ -12,76 +13,75 @@ class Connection(Protocol):
 
     connection: Any
 
-    def get(self, entity_type: Type[Entity], key: Any) -> Optional[Any]:
+    @abstractmethod
+    def get(self, key: Key) -> Optional[Any]:
         """
         Reads data from db based on provided key.
         If key was missing in db, it returns None.
 
-        :param entity_type: a type of entity
         :param key: unique data identifier
         :return: retrieved data
         """
-        ...
+        pass
 
-    def get_many(self, entity_type: Type[Entity], keys: List[Any]) -> Dict[str, Optional[Any]]:
+    @abstractmethod
+    def get_many(self, keys: List[Key]) -> Dict[str, Optional[Any]]:
         """
         Reads multiple values from db based on provided list of keys.
         If a certain key was missing in db, it returns None for that value.
 
-        :param entity_type: a type of entity
         :param keys: a list of keys
         :return: a dictionary with retrieved values assigned to each key
         """
-        ...
+        pass
 
-    def set(self, entity_type: Type[Entity], key: Any, value: Any, expire: int = 0) -> bool:
+    @abstractmethod
+    def set(self, key: Key, value: Any) -> bool:
         """
         Saves given value using provided key.
 
-        :param entity_type: a type of entity
         :param key: unique data identifier
         :param value: value saved in db
-        :param expire: number of seconds until the item is expired, or zero for no expiry
         :return: True if data was saved
         """
-        ...
+        pass
 
-    def set_many(self, entity_type: Type[Entity], values: Dict[str, Any]) -> List[str]:
+    @abstractmethod
+    def set_many(self, values: Dict[Key, Any]) -> Any:
         """
         Saves multiple values in db
 
-        :param entity_type: a type of entity
         :param values: a dictionary containing keys and corresponding values
         :return: a list of keys successfully saved in db
         """
-        ...
+        pass
 
-    def delete(self, entity_type: Type[Entity], key: Any) -> bool:
+    @abstractmethod
+    def delete(self, key: Key) -> bool:
         """
         Deletes value for provided key.
 
-        :param entity_type: a type of entity
         :param key: unique data identifier
         :return: True if data were deleted
         """
-        ...
+        pass
 
-    def delete_many(self, entity_type: Type[Entity], keys: List[Any]) -> bool:
+    @abstractmethod
+    def delete_many(self, keys: List[Key]) -> bool:
         """
         Deletes values for provided keys.
 
-        :param entity_type: a type of entity
         :param keys: a list of keys
         :return: True if data were deleted
         """
-        ...
+        pass
 
-    def keys(self, entity_type: Type[Entity], pattern: str) -> List[str]:
+    @abstractmethod
+    def keys(self, pattern: str) -> List[str]:
         """
         Retrieves keys from db that follows given pattern.
 
-        :param entity_type: a type of entity
         :param pattern: pattern used to select only a subset of keys
         :return: a list of retrieved keys
         """
-        ...
+        pass
