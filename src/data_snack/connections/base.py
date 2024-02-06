@@ -36,13 +36,12 @@ class Connection(ABC):
         pass
 
     @abstractmethod
-    def set(self, key: Key, value: Any, expire: int = 0) -> bool:
+    def set(self, key: Key, value: Any, **kwargs: Any) -> bool:
         """
         Saves given value using provided key.
 
         :param key: unique data identifier
         :param value: value saved in db
-        :param expire: number of seconds until the item is expired, or zero for no expiry
         :return: True if data was saved
         """
         pass

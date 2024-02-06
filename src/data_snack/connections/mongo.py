@@ -53,8 +53,7 @@ class MongoConnection(Connection):
             for row in collection.find({"_id": {"$in": db_keys}})
         }
 
-    # TODO: `expire` argument is not used
-    def set(self, key: Key, value: Dict, expire: int = None) -> bool:
+    def set(self, key: Key, value: Dict, **kwargs: Any) -> bool:
         collection = self._get_entity_collection(key.entity_type)
         try:
             collection.update_one({"_id": key.keystring}, {"$set": value}, upsert=True)
