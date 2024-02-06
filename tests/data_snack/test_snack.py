@@ -128,6 +128,11 @@ def test__set_many(
     snack_car.connection.connection.mset.assert_called_with(expected_payload)
 
 
+def test__set_many_empty_list_of_entity_passed_expect_none_returned(snack_car: Snack) -> None:
+    result = snack_car.set_many(entities=[])
+    assert result is None
+
+
 def test__delete_many(
     snack_car: Snack, example_entities: List[Car], example_entities_hashes: List[bytes]
 ) -> None:
@@ -145,3 +150,4 @@ def test__keys(snack_car: Snack) -> None:
 
     keys = snack_car.keys(Car)
     assert keys == expected_keys
+    snack_car.connection.connection.keys.assert_called_once_with("Car-*")

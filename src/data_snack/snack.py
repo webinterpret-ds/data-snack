@@ -1,11 +1,12 @@
 from dataclasses import dataclass, field
-from typing import List, Optional, Text, Type, Any
+from typing import List, Optional, Type, Any
 
 from data_snack.connections import Connection
 from data_snack.entities import Entity, EntityRegistry
 from data_snack.exceptions import EntityAlreadyRegistered
 from data_snack.key_factories import Key, NonClusterKey
 from data_snack.serializers import DataclassSerializer, Serializer
+from data_snack.utils import get_attribute_of_first_element_from_iterable
 from data_snack.wrap import EntityWrap
 
 
@@ -60,7 +61,7 @@ class Snack:
         key_values = [getattr(entity, key) for key in entity_type.get_keys()]
         return self.key_factory(entity.__class__, key_values)
 
-    def set(self, entity: Entity) -> Optional[Text]:
+    def set(self, entity: Entity) -> Optional[str]:
         """
         Sets provided `Entity` object in db.
         Notice the entity stored in the db will be overwritten,
@@ -74,7 +75,7 @@ class Snack:
         if self.connection.set(key, record):
             return key.keystring  # Should we return keystring or maybe just a key?
 
-    def get(self, cls: Type[Entity], key_values: List[str]) -> Optional[Entity]:
+    def get(self, cls: Type[Entity], key_values: List[Any]) -> Optional[Entity]:
         """
         Gets ane entity of `Entity` type from db based on provided key values.
         Notice, key is represented as a list of strings, since one Entity can have multiple key fields.
@@ -87,7 +88,7 @@ class Snack:
         value = self.connection.get(_key)
         return self._get_serializer(cls).deserialize(value)
 
-    def delete(self, cls: Type[Entity], key_values: List[str]) -> bool:
+    def delete(self, cls: Type[Entity], key_values: List[Any]) -> bool:
         """
         Deletes one entity of `Entity` type from db based on provided key values.
         Notice, key is represented as a list of strings, since one Entity can have multiple key fields.
@@ -100,7 +101,7 @@ class Snack:
         return self.connection.delete(_key)
 
     def get_many(
-        self, cls: Type[Entity], keys_values: List[List[str]]
+        self, cls: Type[Entity], keys_values: List[List[Any]]
     ) -> List[Optional[Entity]]:
         """
         Gets list of `Entity` objects from db based on provided list of keys.
@@ -120,15 +121,14 @@ class Snack:
         :param entities: a list of Entity objects
         :return: a list of keys generated for saved objects
         """
-        # TODO: fail if entities is an empty list, which is still valid according
-        #  to the typing
-        entity_type = entities[0].__class__
+        if (entity_type := get_attribute_of_first_element_from_iterable(entities, "__class__")) is type(None):
+            return
         records = self._get_serializer(entity_type).serialize(entities, many=True)
         keys = [self._build_record_key(entity) for entity in entities]
         if result := self.connection.set_many(dict(zip(keys, records))):
             return result
 
-    def delete_many(self, cls: Type[Entity], keys_values: List[List[str]]) -> bool:
+    def delete_many(self, cls: Type[Entity], keys_values: List[List[Any]]) -> bool:
         """
         Deletes multiple `Entity` objects in db.
 
@@ -142,11 +142,11 @@ class Snack:
         ]
         return self.connection.delete_many(_keys)
 
-    def keys(self, cls: Type[Entity]) -> List[Text]:
+    def keys(self, cls: Type[Entity]) -> List[str]:
         """
         Gets a list of keys for a given Entity type.
 
         :param cls: Entity type
         :return: a list of keys
         """
-        return self.connection.keys(pattern=self.key_factory(cls, []).get_pattern(cls.__name__))
+        return self.connection.keys(pattern=self.key_factory(cls, []).get_pattern("*"))

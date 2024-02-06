@@ -7,6 +7,7 @@ from pymongo import DeleteOne, UpdateOne
 from data_snack.connections.base import Connection
 from data_snack.entities import Entity
 from data_snack.key_factories import Key
+from data_snack.utils import get_attribute_of_first_element_from_iterable
 
 
 def validate_keys(method):
@@ -29,7 +30,7 @@ class MongoConnection(Connection):
         )
         return collection
 
-    def get(self, key: Key) -> Optional[bytes]:
+    def get(self, key: Key) -> Optional[Dict]:
         collection = self._get_entity_collection(key.entity_type)
         result = collection.find_one({"_id": key.keystring})
         if not result:
@@ -39,7 +40,7 @@ class MongoConnection(Connection):
 
     @validate_keys
     def get_many(self, keys: List[Key], /) -> Dict[str, Optional[Dict]]:
-        if not (entity_type := getattr(next(iter(keys), None), "entity_type", None)):
+        if not (entity_type := get_attribute_of_first_element_from_iterable(keys, "entity_type")):
             return {}
         db_keys = [key.keystring for key in keys]
 
@@ -63,7 +64,7 @@ class MongoConnection(Connection):
 
     @validate_keys
     def set_many(self, values: Dict[Key, Any], /) -> bool:
-        if not (entity_type := getattr(next(iter(values), None), "entity_type", None)):
+        if not (entity_type := get_attribute_of_first_element_from_iterable(values, "entity_type")):
             return True
         updates = [
             UpdateOne({"_id": key.keystring}, {"$set": value}, upsert=True)
@@ -81,7 +82,7 @@ class MongoConnection(Connection):
 
     @validate_keys
     def delete_many(self, keys: List[Key], /) -> bool:
-        if not (entity_type := getattr(next(iter(keys), None), "entity_type", None)):
+        if not (entity_type := get_attribute_of_first_element_from_iterable(keys, "entity_type")):
             return True
 
         collection = self._get_entity_collection(entity_type)

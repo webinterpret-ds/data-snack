@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+from typing import Any
 from unittest import TestCase
 
 from parameterized import parameterized
@@ -17,16 +18,18 @@ class TestHashKeyFactory(TestCase):
             (Car, ["1"], "c35a43010ddc80cf23173315516062be"),
             (Car, [1], "c35a43010ddc80cf23173315516062be"),  # the same hash as above
             (Car, ["Abc"], "35b8a98d4b40102ed1f501e290f76684"),
+            (Car, [1.0], "fcd81df24fc6afd906a74c87560aa69b"),
+            (Car, [True], "e919cd976a717fe3df3a6bbbbdae54e1"),
         ]
     )
-    def test_get_key_single_key_value(self, entity_type, key_values, expected) -> None:
+    def test_keystring_single_key_value(self, entity_type, key_values, expected) -> None:
         # act
         actual = self.key_factory(entity_type, key_values).keystring
 
         # assert
         self.assertEqual(actual, expected)
 
-    def test_get_key_multiple_key_values(self) -> None:
+    def test_keystring_multiple_key_values(self) -> None:
         # arrange
         entity_type = Car
         key_values = [1, "2", "A", "Bcd"]

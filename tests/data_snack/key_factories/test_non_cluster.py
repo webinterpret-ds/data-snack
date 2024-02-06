@@ -17,6 +17,8 @@ class TestNonClusterKeyFactory(TestCase):
             (Car, ["1"], "Car-1"),
             (Car, [1], "Car-1"),
             (Car, ["Abc"], "Car-Abc"),
+            (Car, [1.0], "Car-1.0"),
+            (Car, [True], "Car-True"),
         ]
     )
     def test_get_key_single_key_value(self, entity_type, key_values, expected) -> None:
