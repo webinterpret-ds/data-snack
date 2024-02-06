@@ -24,8 +24,7 @@ class RedisConnection(Connection):
         keystrings = [key.keystring for key in keys]
         return dict(zip(keystrings, self.connection.mget(keystrings)))
 
-    def set_many(self, values: Dict[Key, str]) -> Any:
-        # TODO: values.values type is not str probably
+    def set_many(self, values: Dict[Key, Any]) -> Any:
         values = {key.keystring: value for (key, value) in values.items()}
         return self.connection.mset(values)
 

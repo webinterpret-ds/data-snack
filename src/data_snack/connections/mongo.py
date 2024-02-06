@@ -9,7 +9,7 @@ from data_snack.key_factories import Key
 
 
 def validate_keys(method):
-    def method_wrapper(self, keys: Union[Dict[Key, Any], List[Key]]):
+    def method_wrapper(self, keys: Union[Dict[Key, Any], List[Key]], /):
         if len(set([key.entity_type for key in keys])) > 1:
             raise ValueError(f"{method.__name__} is supported for one entity at the time for MongoDB.")
         return method(self, keys)
@@ -37,7 +37,7 @@ class MongoConnection(Connection):
         return result  # TODO: wrong typing - investigate
 
     @validate_keys
-    def get_many(self, keys: List[Key]) -> Dict[str, Optional[Dict]]:
+    def get_many(self, keys: List[Key], /) -> Dict[str, Optional[Dict]]:
         if not (entity_type := getattr(next(iter(keys), None), "entity_type", None)):
             return {}
         db_keys = [key.keystring for key in keys]
@@ -52,6 +52,7 @@ class MongoConnection(Connection):
             for row in collection.find({"_id": {"$in": db_keys}})
         }
 
+    # TODO: `expire` argument is not used
     def set(self, key: Key, value: Dict, expire: int = None) -> bool:
         collection = self._get_entity_collection(key.entity_type)
         try:
@@ -61,7 +62,7 @@ class MongoConnection(Connection):
             return False
 
     @validate_keys
-    def set_many(self, values: Dict[Key, str]) -> bool:
+    def set_many(self, values: Dict[Key, Any], /) -> bool:
         if not (entity_type := getattr(next(iter(values), None), "entity_type", None)):
             return True
         updates = [
@@ -79,7 +80,7 @@ class MongoConnection(Connection):
         return result.deleted_count == 1
 
     @validate_keys
-    def delete_many(self, keys: List[Key]) -> bool:
+    def delete_many(self, keys: List[Key], /) -> bool:
         if not (entity_type := getattr(next(iter(keys), None), "entity_type", None)):
             return True
 

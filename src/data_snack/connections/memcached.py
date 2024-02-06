@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import Dict, List, Optional
+from typing import Dict, List, Optional, Any
 
 from data_snack.connections import Connection
 from data_snack.key_factories import Key
@@ -22,7 +22,7 @@ class MemcachedConnection(Connection):
         keystrings = [key.keystring for key in keys]
         return self.connection.get_many(keystrings)
 
-    def set_many(self, values: Dict[Key, str]) -> List[Key]:
+    def set_many(self, values: Dict[Key, Any]) -> List[Key]:
         # TODO: values.values type is not str probably
         keystrings_values = {}
         index_mapping = {}

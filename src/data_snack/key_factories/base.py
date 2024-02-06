@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 from dataclasses import dataclass
-from typing import List, Type
+from typing import List, Type, Any
 
 from data_snack.entities import Entity
 
@@ -9,7 +9,7 @@ from data_snack.entities import Entity
 class Key(ABC):
     """An abstract key."""
     entity_type: Type[Entity]
-    key_values: List[str]
+    key_values: List[Any]
 
     def __hash__(self):
         return hash((self.entity_type.__name__, *self.key_values))
