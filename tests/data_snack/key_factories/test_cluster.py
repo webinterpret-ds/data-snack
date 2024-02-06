@@ -21,14 +21,14 @@ class TestClusterKeyFactory(TestCase):
             (Car, [True], "{Car}-True"),
         ]
     )
-    def test_get_key_single_key_value(self, entity_type, key_values, expected) -> None:
+    def test_keystring_single_key_value(self, entity_type, key_values, expected) -> None:
         # act
         actual = self.key_factory(entity_type, key_values).keystring
 
         # assert
         self.assertEqual(actual, expected)
 
-    def test_get_key_multiple_key_values(self) -> None:
+    def test_keystring_multiple_key_values(self) -> None:
         # arrange
         entity_type = Car
         key_values = [1, "2", "A", "Bcd"]
