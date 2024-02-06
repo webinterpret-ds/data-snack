@@ -27,17 +27,7 @@ def test_set(connection: RedisConnection) -> None:
 
     result = connection.set(key, "value")
     assert result == key
-    connection.connection.set.assert_called_with(key.keystring, "value", ex=None)
-
-
-def test_set_expire(connection: RedisConnection) -> None:
-    """Testing setting a single value based for the provided key."""
-    key = Mock()
-    connection.connection.set.return_value = key
-
-    result = connection.set(key, "value", 100)
-    assert result == key
-    connection.connection.set.assert_called_with(key.keystring, "value", ex=100)
+    connection.connection.set.assert_called_with(key.keystring, "value")
 
 
 def test_delete(connection: RedisConnection) -> None:

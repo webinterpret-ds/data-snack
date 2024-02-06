@@ -12,8 +12,8 @@ class MemcachedConnection(Connection):
     def get(self, key: Key) -> Optional[bytes]:
         return self.connection.get(key.keystring)
 
-    def set(self, key: Key, value: str, expire: int = 0) -> bool:
-        return self.connection.set(key.keystring, value, expire=expire)
+    def set(self, key: Key, value: str) -> bool:
+        return self.connection.set(key.keystring, value)
 
     def delete(self, key: Key) -> bool:
         return self.connection.delete(key.keystring, noreply=False)

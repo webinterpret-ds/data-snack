@@ -36,7 +36,7 @@ class Connection(ABC):
         pass
 
     @abstractmethod
-    def set(self, key: Key, value: Any, **kwargs: Any) -> bool:
+    def set(self, key: Key, value: Any) -> bool:
         """
         Saves given value using provided key.
 

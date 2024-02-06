@@ -60,19 +60,18 @@ class Snack:
         key_values = [getattr(entity, key) for key in entity_type.get_keys()]
         return self.key_factory(entity.__class__, key_values)
 
-    def set(self, entity: Entity, expire: int = 0) -> Optional[Text]:
+    def set(self, entity: Entity) -> Optional[Text]:
         """
         Sets provided `Entity` object in db.
         Notice the entity stored in the db will be overwritten,
         so make sure all the combined keys are unique for each entity.
 
         :param entity: an entity to save
-        :param expire: number of seconds until the item is expired, or zero for no expiry
         :return: on success returns key used for the object, None on fail
         """
         key = self._build_record_key(entity)
         record = self._get_serializer(entity.__class__).serialize(entity)
-        if self.connection.set(key, record, expire=expire):
+        if self.connection.set(key, record):
             return key.keystring  # Should we return keystring or maybe just a key?
 
     def get(self, cls: Type[Entity], key_values: List[str]) -> Optional[Entity]:

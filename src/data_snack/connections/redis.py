@@ -12,9 +12,8 @@ class RedisConnection(Connection):
     def get(self, key: Key) -> Optional[bytes]:
         return self.connection.get(key.keystring)
 
-    def set(self, key: Key, value: str, expire: int = 0) -> bool:
-        ex = expire if expire > 0 else None
-        return self.connection.set(key.keystring, value, ex=ex)
+    def set(self, key: Key, value: str) -> bool:
+        return self.connection.set(key.keystring, value)
 
     def delete(self, key: Key) -> bool:
         n_deleted = self.connection.delete(key.keystring)

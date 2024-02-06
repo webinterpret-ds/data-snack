@@ -89,10 +89,10 @@ def test__set(
     expected_key = "Car-1"
     snack_car.connection.connection.set.return_value = True
 
-    key = snack_car.set(entity=example_entity, expire=100)
+    key = snack_car.set(entity=example_entity)
     assert key == expected_key
     snack_car.connection.connection.set.assert_called_with(
-        expected_key, example_entity_hash, ex=100
+        expected_key, example_entity_hash
     )
 
 

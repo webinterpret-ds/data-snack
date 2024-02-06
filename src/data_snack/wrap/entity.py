@@ -24,8 +24,8 @@ class EntityWrap(Wrap):
 
         return self.snack.get(self.entity_type, key_values)
 
-    def set(self, entity: Entity, expire: int = 0) -> Optional[Text]:
-        return self.snack.set(entity, expire)
+    def set(self, entity: Entity) -> Optional[Text]:
+        return self.snack.set(entity)
 
     def delete(self, key_values: List[Any]) -> bool:
         return self.snack.delete(self.entity_type, key_values)

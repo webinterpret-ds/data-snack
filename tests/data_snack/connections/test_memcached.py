@@ -28,17 +28,7 @@ def test_set(connection: MemcachedConnection) -> None:
 
     result = connection.set(key, "value")
     assert result == key
-    connection.connection.set.assert_called_with(key.keystring, "value", expire=0)
-
-
-def test_set_expire(connection: MemcachedConnection) -> None:
-    """Testing setting a single value based for the provided key."""
-    key = Mock()
-    connection.connection.set.return_value = key
-
-    result = connection.set(key, "value", 100)
-    assert result == key
-    connection.connection.set.assert_called_with(key.keystring, "value", expire=100)
+    connection.connection.set.assert_called_with(key.keystring, "value")
 
 
 def test_delete(connection: MemcachedConnection) -> None:
