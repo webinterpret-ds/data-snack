@@ -1,10 +1,11 @@
-import pymongo
 from dataclasses import dataclass
-from pymongo import DeleteOne, UpdateOne
 from typing import Optional, Dict, Type, List, Union, Any
-from data_snack.entities import Entity
+
+import pymongo
+from pymongo import DeleteOne, UpdateOne
 
 from data_snack.connections.base import Connection
+from data_snack.entities import Entity
 from data_snack.key_factories import Key
 
 

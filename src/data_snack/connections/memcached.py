@@ -23,7 +23,6 @@ class MemcachedConnection(Connection):
         return self.connection.get_many(keystrings)
 
     def set_many(self, values: Dict[Key, Any]) -> List[Key]:
-        # TODO: values.values type is not str probably
         keystrings_values = {}
         index_mapping = {}
         for index, (key, value) in enumerate(values.items()):
