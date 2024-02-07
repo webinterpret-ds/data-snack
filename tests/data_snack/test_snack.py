@@ -6,7 +6,7 @@ from data_snack import DataFrameWrap, EntityWrap, Snack
 from data_snack.connections import Connection
 from data_snack.entities import EntityRegistry
 from data_snack.exceptions import EntityAlreadyRegistered
-from data_snack.key_factories.cluster import ClusterKeyFactory
+from data_snack.key_factories.cluster import ClusterKey
 from data_snack.serializers import DataclassSerializer
 from tests.data_snack.conftest import Car
 
@@ -19,7 +19,7 @@ def snack_car(snack: Snack) -> Snack:
 
 @pytest.fixture
 def snack_factory_key_cluster(db_connection: Connection) -> Snack:
-    snack = Snack(connection=db_connection, key_factory=ClusterKeyFactory())
+    snack = Snack(connection=db_connection, key_factory=ClusterKey)
     snack.register_entity(Car)
     return snack
 
@@ -27,11 +27,8 @@ def snack_factory_key_cluster(db_connection: Connection) -> Snack:
 def test__register_entity(snack: Snack) -> None:
     snack.register_entity(Car)
 
-    registry = snack.registry.get("Car")
-    assert type(registry) is EntityRegistry
-    assert registry.entity_type == Car
-    assert type(registry.serializer) is DataclassSerializer
-    assert registry.serializer.entity_type is Car
+    serializer = snack.registry.get(Car)
+    assert type(serializer) is DataclassSerializer
 
 
 def test__register_entity_duplicated(snack_car: Snack) -> None:
@@ -92,10 +89,10 @@ def test__set(
     expected_key = "Car-1"
     snack_car.connection.connection.set.return_value = True
 
-    key = snack_car.set(entity=example_entity, expire=100)
+    key = snack_car.set(entity=example_entity)
     assert key == expected_key
     snack_car.connection.connection.set.assert_called_with(
-        expected_key, example_entity_hash, ex=100
+        expected_key, example_entity_hash
     )
 
 
@@ -131,6 +128,11 @@ def test__set_many(
     snack_car.connection.connection.mset.assert_called_with(expected_payload)
 
 
+def test__set_many_empty_list_of_entity_passed_expect_none_returned(snack_car: Snack) -> None:
+    result = snack_car.set_many(entities=[])
+    assert result is None
+
+
 def test__delete_many(
     snack_car: Snack, example_entities: List[Car], example_entities_hashes: List[bytes]
 ) -> None:
@@ -148,3 +150,4 @@ def test__keys(snack_car: Snack) -> None:
 
     keys = snack_car.keys(Car)
     assert keys == expected_keys
+    snack_car.connection.connection.keys.assert_called_once_with("Car-*")

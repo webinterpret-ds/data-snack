@@ -86,15 +86,7 @@ entities = snack.get_many(Person, [["1"], ["2"]])
 # [Person(index='1', name='John'), Person(index='2', name='Anna')]
 ```
 
-#### 4.1 Set expire time for entities
-You can also specify number of seconds until the item is expired using `Snack`.
-
-```python
-snack.set(Person("1", "John"), expire=100)
-# 'Person-1'
-```
-
-### 5. Delete your entities using Snack
+### 4. Delete your entities using Snack
 After you're done with your data you can delete it using `Snack`.
 
 ```python

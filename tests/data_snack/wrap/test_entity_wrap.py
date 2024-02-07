@@ -31,10 +31,10 @@ def test_set(wrap_car: EntityWrap, example_entity: Car, example_entity_hash: byt
     expected_key = "Car-1"
     wrap_car.snack.connection.connection.set.return_value = expected_key
 
-    result = wrap_car.set(example_entity, 100)
+    result = wrap_car.set(example_entity)
     assert result == expected_key
     wrap_car.snack.connection.connection.set.assert_called_with(
-        expected_key, example_entity_hash, ex=100
+        expected_key, example_entity_hash
     )
 
 

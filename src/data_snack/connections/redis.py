@@ -1,33 +1,35 @@
 from dataclasses import dataclass
-from typing import Dict, List, Optional, Text
+from typing import Dict, List, Optional, Any
 
-from .base import Connection
+from data_snack.connections import Connection
+from data_snack.key_factories import Key
 
 
 @dataclass
 class RedisConnection(Connection):
     connection: "Redis"
 
-    def get(self, key: Text) -> Optional[bytes]:
-        return self.connection.get(key)
+    def get(self, key: Key) -> Optional[bytes]:
+        return self.connection.get(key.keystring)
 
-    def set(self, key: Text, value: Text, expire: int = 0) -> bool:
-        ex = expire if expire > 0 else None
-        return self.connection.set(key, value, ex=ex)
+    def set(self, key: Key, value: str) -> bool:
+        return self.connection.set(key.keystring, value)
 
-    def delete(self, key: Text) -> bool:
-        n_deleted = self.connection.delete(key)
+    def delete(self, key: Key) -> bool:
+        n_deleted = self.connection.delete(key.keystring)
         return n_deleted == 1
 
-    def get_many(self, keys: List[Text]) -> Dict[Text, Optional[bytes]]:
-        return dict(zip(keys, self.connection.mget(keys)))
+    def get_many(self, keys: List[Key]) -> Dict[str, Optional[bytes]]:
+        keystrings = [key.keystring for key in keys]
+        return dict(zip(keystrings, self.connection.mget(keystrings)))
 
-    def set_many(self, values: Dict[Text, Text]) -> List[Text]:
+    def set_many(self, values: Dict[Key, Any]) -> Any:
+        values = {key.keystring: value for (key, value) in values.items()}
         return self.connection.mset(values)
 
-    def delete_many(self, keys: List[Text]) -> bool:
-        n_deleted = self.connection.delete(*keys)
+    def delete_many(self, keys: List[Key]) -> bool:
+        n_deleted = self.connection.delete(*[key.keystring for key in keys])
         return len(keys) == n_deleted
 
-    def keys(self, pattern: Text) -> List[Text]:
+    def keys(self, pattern: str) -> List[str]:
         return self.connection.keys(pattern)

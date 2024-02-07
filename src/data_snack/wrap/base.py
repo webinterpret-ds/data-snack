@@ -21,12 +21,11 @@ class Wrap(ABC):
         """
         ...
 
-    def set(self, entity: Entity, expire: int = 0) -> Optional[Text]:
+    def set(self, entity: Entity) -> Optional[Text]:
         """
         Saves given entity in db.
 
         :param entity: an entity
-        :param expire: number of seconds until the item is expired, or zero for no expiry
         :return: a key to saved entity
         """
         ...
