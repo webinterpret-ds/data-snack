@@ -1,17 +1,16 @@
-
 <!DOCTYPE html>
 
-<html lang="en">
+<html lang="en" data-content_root="./">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <title>data_snack package &#8212; Data Snack  documentation</title>
-    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="_static/alabaster.css" />
-    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-    <script src="_static/doctools.js"></script>
-    <script src="_static/sphinx_highlight.js"></script>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=d1102ebc" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=12dfc556" />
+    <script src="_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="_static/doctools.js?v=888ff710"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="data_snack.connections package" href="data_snack.connections.html" />
@@ -19,8 +18,9 @@
    
   <link rel="stylesheet" href="_static/custom.css" type="text/css" />
   
+
   
-  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+  
 
   </head><body>
   
@@ -33,9 +33,9 @@
           <div class="body" role="main">
             
   <section id="data-snack-package">
-<h1>data_snack package<a class="headerlink" href="#data-snack-package" title="Permalink to this heading">¶</a></h1>
+<h1>data_snack package<a class="headerlink" href="#data-snack-package" title="Link to this heading">¶</a></h1>
 <section id="subpackages">
-<h2>Subpackages<a class="headerlink" href="#subpackages" title="Permalink to this heading">¶</a></h2>
+<h2>Subpackages<a class="headerlink" href="#subpackages" title="Link to this heading">¶</a></h2>
 <div class="toctree-wrapper compound">
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="data_snack.connections.html">data_snack.connections package</a><ul>
@@ -111,14 +111,7 @@
 <li class="toctree-l3"><a class="reference internal" href="data_snack.entities.html#data_snack.entities.exceptions.NonExistingMetaError"><code class="docutils literal notranslate"><span class="pre">NonExistingMetaError</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="data_snack.entities.html#module-data_snack.entities.registry">data_snack.entities.registry module</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="data_snack.entities.html#data_snack.entities.registry.EntityRegistry"><code class="docutils literal notranslate"><span class="pre">EntityRegistry</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="data_snack.entities.html#data_snack.entities.registry.EntityRegistry.entity_type"><code class="docutils literal notranslate"><span class="pre">EntityRegistry.entity_type</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="data_snack.entities.html#data_snack.entities.registry.EntityRegistry.serializer"><code class="docutils literal notranslate"><span class="pre">EntityRegistry.serializer</span></code></a></li>
-</ul>
-</li>
-</ul>
-</li>
+<li class="toctree-l2"><a class="reference internal" href="data_snack.entities.html#module-data_snack.entities.registry">data_snack.entities.registry module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="data_snack.entities.html#module-data_snack.entities.schema">data_snack.entities.schema module</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="data_snack.entities.html#data_snack.entities.schema.get_entity_schema"><code class="docutils literal notranslate"><span class="pre">get_entity_schema()</span></code></a></li>
 </ul>
@@ -129,25 +122,29 @@
 <li class="toctree-l1"><a class="reference internal" href="data_snack.key_factories.html">data_snack.key_factories package</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="data_snack.key_factories.html#submodules">Submodules</a></li>
 <li class="toctree-l2"><a class="reference internal" href="data_snack.key_factories.html#module-data_snack.key_factories.base">data_snack.key_factories.base module</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="data_snack.key_factories.html#data_snack.key_factories.base.KeyFactory"><code class="docutils literal notranslate"><span class="pre">KeyFactory</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="data_snack.key_factories.html#data_snack.key_factories.base.KeyFactory.get_key"><code class="docutils literal notranslate"><span class="pre">KeyFactory.get_key()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="data_snack.key_factories.html#data_snack.key_factories.base.KeyFactory.get_pattern"><code class="docutils literal notranslate"><span class="pre">KeyFactory.get_pattern()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="data_snack.key_factories.html#data_snack.key_factories.base.Key"><code class="docutils literal notranslate"><span class="pre">Key</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="data_snack.key_factories.html#data_snack.key_factories.base.Key.entity_type"><code class="docutils literal notranslate"><span class="pre">Key.entity_type</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="data_snack.key_factories.html#data_snack.key_factories.base.Key.get_pattern"><code class="docutils literal notranslate"><span class="pre">Key.get_pattern()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="data_snack.key_factories.html#data_snack.key_factories.base.Key.key_values"><code class="docutils literal notranslate"><span class="pre">Key.key_values</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="data_snack.key_factories.html#data_snack.key_factories.base.Key.keystring"><code class="docutils literal notranslate"><span class="pre">Key.keystring</span></code></a></li>
 </ul>
 </li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="data_snack.key_factories.html#module-data_snack.key_factories.cluster">data_snack.key_factories.cluster module</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="data_snack.key_factories.html#data_snack.key_factories.cluster.ClusterKeyFactory"><code class="docutils literal notranslate"><span class="pre">ClusterKeyFactory</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="data_snack.key_factories.html#data_snack.key_factories.cluster.ClusterKeyFactory.get_key"><code class="docutils literal notranslate"><span class="pre">ClusterKeyFactory.get_key()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="data_snack.key_factories.html#data_snack.key_factories.cluster.ClusterKeyFactory.get_pattern"><code class="docutils literal notranslate"><span class="pre">ClusterKeyFactory.get_pattern()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="data_snack.key_factories.html#data_snack.key_factories.cluster.ClusterKey"><code class="docutils literal notranslate"><span class="pre">ClusterKey</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="data_snack.key_factories.html#data_snack.key_factories.cluster.ClusterKey.entity_type"><code class="docutils literal notranslate"><span class="pre">ClusterKey.entity_type</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="data_snack.key_factories.html#data_snack.key_factories.cluster.ClusterKey.get_pattern"><code class="docutils literal notranslate"><span class="pre">ClusterKey.get_pattern()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="data_snack.key_factories.html#data_snack.key_factories.cluster.ClusterKey.key_values"><code class="docutils literal notranslate"><span class="pre">ClusterKey.key_values</span></code></a></li>
 </ul>
 </li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="data_snack.key_factories.html#module-data_snack.key_factories.non_cluster">data_snack.key_factories.non_cluster module</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="data_snack.key_factories.html#data_snack.key_factories.non_cluster.NonClusterKeyFactory"><code class="docutils literal notranslate"><span class="pre">NonClusterKeyFactory</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="data_snack.key_factories.html#data_snack.key_factories.non_cluster.NonClusterKeyFactory.get_key"><code class="docutils literal notranslate"><span class="pre">NonClusterKeyFactory.get_key()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="data_snack.key_factories.html#data_snack.key_factories.non_cluster.NonClusterKeyFactory.get_pattern"><code class="docutils literal notranslate"><span class="pre">NonClusterKeyFactory.get_pattern()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="data_snack.key_factories.html#data_snack.key_factories.non_cluster.NonClusterKey"><code class="docutils literal notranslate"><span class="pre">NonClusterKey</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="data_snack.key_factories.html#data_snack.key_factories.non_cluster.NonClusterKey.entity_type"><code class="docutils literal notranslate"><span class="pre">NonClusterKey.entity_type</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="data_snack.key_factories.html#data_snack.key_factories.non_cluster.NonClusterKey.get_pattern"><code class="docutils literal notranslate"><span class="pre">NonClusterKey.get_pattern()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="data_snack.key_factories.html#data_snack.key_factories.non_cluster.NonClusterKey.key_values"><code class="docutils literal notranslate"><span class="pre">NonClusterKey.key_values</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -230,16 +227,196 @@
 </div>
 </section>
 <section id="submodules">
-<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this heading">¶</a></h2>
+<h2>Submodules<a class="headerlink" href="#submodules" title="Link to this heading">¶</a></h2>
 </section>
-<section id="data-snack-exceptions-module">
-<h2>data_snack.exceptions module<a class="headerlink" href="#data-snack-exceptions-module" title="Permalink to this heading">¶</a></h2>
+<section id="module-data_snack.exceptions">
+<span id="data-snack-exceptions-module"></span><h2>data_snack.exceptions module<a class="headerlink" href="#module-data_snack.exceptions" title="Link to this heading">¶</a></h2>
+<dl class="py exception">
+<dt class="sig sig-object py" id="data_snack.exceptions.EntityAlreadyRegistered">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">data_snack.exceptions.</span></span><span class="sig-name descname"><span class="pre">EntityAlreadyRegistered</span></span><a class="headerlink" href="#data_snack.exceptions.EntityAlreadyRegistered" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="data_snack.exceptions.WrongKeyValue">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">data_snack.exceptions.</span></span><span class="sig-name descname"><span class="pre">WrongKeyValue</span></span><a class="headerlink" href="#data_snack.exceptions.WrongKeyValue" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
+</dd></dl>
+
 </section>
-<section id="data-snack-snack-module">
-<h2>data_snack.snack module<a class="headerlink" href="#data-snack-snack-module" title="Permalink to this heading">¶</a></h2>
+<section id="module-data_snack.snack">
+<span id="data-snack-snack-module"></span><h2>data_snack.snack module<a class="headerlink" href="#module-data_snack.snack" title="Link to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="data_snack.snack.Snack">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">data_snack.snack.</span></span><span class="sig-name descname"><span class="pre">Snack</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">connection:</span> <span class="pre">~data_snack.connections.base.Connection,</span> <span class="pre">registry:</span> <span class="pre">~typing.Dict[~typing.Type[~data_snack.entities.entity.Entity],</span> <span class="pre">~data_snack.serializers.base.Serializer]</span> <span class="pre">=</span> <span class="pre">&lt;factory&gt;,</span> <span class="pre">key_factory:</span> <span class="pre">~typing.Type[~data_snack.key_factories.base.Key]</span> <span class="pre">=</span> <span class="pre">&lt;class</span> <span class="pre">'data_snack.key_factories.non_cluster.NonClusterKey'&gt;</span></em><span class="sig-paren">)</span><a class="headerlink" href="#data_snack.snack.Snack" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>A core interface handling saving and reading Entities from db.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="data_snack.snack.Snack.connection">
+<span class="sig-name descname"><span class="pre">connection</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="data_snack.connections.html#data_snack.connections.base.Connection" title="data_snack.connections.base.Connection"><span class="pre">Connection</span></a></em><a class="headerlink" href="#data_snack.snack.Snack.connection" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="data_snack.snack.Snack.create_wrap">
+<span class="sig-name descname"><span class="pre">create_wrap</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">entity_type:</span> <span class="pre">~typing.Type[~data_snack.entities.entity.Entity],</span> <span class="pre">wrap_type:</span> <span class="pre">~typing.Type[Wrap]</span> <span class="pre">=</span> <span class="pre">&lt;class</span> <span class="pre">'data_snack.wrap.entity.EntityWrap'&gt;</span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="data_snack.wrap.html#data_snack.wrap.base.Wrap" title="data_snack.wrap.base.Wrap"><span class="pre">Wrap</span></a></span></span><a class="headerlink" href="#data_snack.snack.Snack.create_wrap" title="Link to this definition">¶</a></dt>
+<dd><p>Creates a Wrap object for selected Entity type.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>entity_type</strong> – Entity type</p></li>
+<li><p><strong>wrap_type</strong> – <cite>Wrap</cite> type, by default it uses <cite>EntityWrap</cite>, but any other <cite>Wrap</cite> can be used</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>created Wrap object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="data_snack.snack.Snack.delete">
+<span class="sig-name descname"><span class="pre">delete</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cls</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Type</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="data_snack.entities.html#data_snack.entities.entity.Entity" title="data_snack.entities.entity.Entity"><span class="pre">Entity</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">key_values</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#data_snack.snack.Snack.delete" title="Link to this definition">¶</a></dt>
+<dd><p>Deletes one entity of <cite>Entity</cite> type from db based on provided key values.
+Notice, key is represented as a list of strings, since one Entity can have multiple key fields.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>cls</strong> – <cite>Entity</cite> type</p></li>
+<li><p><strong>key_values</strong> – a list of key values representing the entity</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>True if data were deleted</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="data_snack.snack.Snack.delete_many">
+<span class="sig-name descname"><span class="pre">delete_many</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cls</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Type</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="data_snack.entities.html#data_snack.entities.entity.Entity" title="data_snack.entities.entity.Entity"><span class="pre">Entity</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">keys_values</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#data_snack.snack.Snack.delete_many" title="Link to this definition">¶</a></dt>
+<dd><p>Deletes multiple <cite>Entity</cite> objects in db.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>cls</strong> – <cite>Entity</cite> type</p></li>
+<li><p><strong>keys_values</strong> – list of keys, each list defines a set key values for one Entity object</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>True if data were deleted</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="data_snack.snack.Snack.get">
+<span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cls</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Type</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="data_snack.entities.html#data_snack.entities.entity.Entity" title="data_snack.entities.entity.Entity"><span class="pre">Entity</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">key_values</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="data_snack.entities.html#data_snack.entities.entity.Entity" title="data_snack.entities.entity.Entity"><span class="pre">Entity</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></span><a class="headerlink" href="#data_snack.snack.Snack.get" title="Link to this definition">¶</a></dt>
+<dd><p>Gets ane entity of <cite>Entity</cite> type from db based on provided key values.
+Notice, key is represented as a list of strings, since one Entity can have multiple key fields.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>cls</strong> – <cite>Entity</cite> type</p></li>
+<li><p><strong>key_values</strong> – a list of key values representing the entity</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>a retrieved Entity object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="data_snack.snack.Snack.get_many">
+<span class="sig-name descname"><span class="pre">get_many</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cls</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Type</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="data_snack.entities.html#data_snack.entities.entity.Entity" title="data_snack.entities.entity.Entity"><span class="pre">Entity</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">keys_values</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="data_snack.entities.html#data_snack.entities.entity.Entity" title="data_snack.entities.entity.Entity"><span class="pre">Entity</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#data_snack.snack.Snack.get_many" title="Link to this definition">¶</a></dt>
+<dd><p>Gets list of <cite>Entity</cite> objects from db based on provided list of keys.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>cls</strong> – <cite>Entity</cite> type</p></li>
+<li><p><strong>keys_values</strong> – list of keys, each list defines a set key values for one Entity object</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>a list of retrieved Entity objects</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="data_snack.snack.Snack.key_factory">
+<span class="sig-name descname"><span class="pre">key_factory</span></span><a class="headerlink" href="#data_snack.snack.Snack.key_factory" title="Link to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="data_snack.key_factories.html#data_snack.key_factories.non_cluster.NonClusterKey" title="data_snack.key_factories.non_cluster.NonClusterKey"><code class="xref py py-class docutils literal notranslate"><span class="pre">NonClusterKey</span></code></a></p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="data_snack.snack.Snack.keys">
+<span class="sig-name descname"><span class="pre">keys</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cls</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Type</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="data_snack.entities.html#data_snack.entities.entity.Entity" title="data_snack.entities.entity.Entity"><span class="pre">Entity</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#data_snack.snack.Snack.keys" title="Link to this definition">¶</a></dt>
+<dd><p>Gets a list of keys for a given Entity type.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>cls</strong> – Entity type</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>a list of keys</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="data_snack.snack.Snack.register_entity">
+<span class="sig-name descname"><span class="pre">register_entity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">entity_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Type</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="data_snack.entities.html#data_snack.entities.entity.Entity" title="data_snack.entities.entity.Entity"><span class="pre">Entity</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">serializer</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="data_snack.serializers.html#data_snack.serializers.base.Serializer" title="data_snack.serializers.base.Serializer"><span class="pre">Serializer</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#data_snack.snack.Snack.register_entity" title="Link to this definition">¶</a></dt>
+<dd><p>Registers new Entity type to Snack.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>entity_type</strong> – Entity type</p></li>
+<li><p><strong>serializer</strong> – Serializer that is used to compress and decompress entities before saving in db</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="data_snack.snack.Snack.registry">
+<span class="sig-name descname"><span class="pre">registry</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">Type</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="data_snack.entities.html#data_snack.entities.entity.Entity" title="data_snack.entities.entity.Entity"><span class="pre">Entity</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="data_snack.serializers.html#data_snack.serializers.base.Serializer" title="data_snack.serializers.base.Serializer"><span class="pre">Serializer</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#data_snack.snack.Snack.registry" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="data_snack.snack.Snack.set">
+<span class="sig-name descname"><span class="pre">set</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">entity</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="data_snack.entities.html#data_snack.entities.entity.Entity" title="data_snack.entities.entity.Entity"><span class="pre">Entity</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></span><a class="headerlink" href="#data_snack.snack.Snack.set" title="Link to this definition">¶</a></dt>
+<dd><p>Sets provided <cite>Entity</cite> object in db.
+Notice the entity stored in the db will be overwritten,
+so make sure all the combined keys are unique for each entity.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>entity</strong> – an entity to save</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>on success returns key used for the object, None on fail</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="data_snack.snack.Snack.set_many">
+<span class="sig-name descname"><span class="pre">set_many</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">entities</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="data_snack.entities.html#data_snack.entities.entity.Entity" title="data_snack.entities.entity.Entity"><span class="pre">Entity</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Any</span></span></span><a class="headerlink" href="#data_snack.snack.Snack.set_many" title="Link to this definition">¶</a></dt>
+<dd><p>Saves multiple <cite>Entity</cite> objects in db.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>entities</strong> – a list of Entity objects</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>a list of keys generated for saved objects</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
 </section>
-<section id="module-contents">
-<h2>Module contents<a class="headerlink" href="#module-contents" title="Permalink to this heading">¶</a></h2>
+<section id="module-data_snack">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-data_snack" title="Link to this heading">¶</a></h2>
 </section>
 </section>
 
@@ -303,11 +480,11 @@
       <div class="clearer"></div>
     </div>
     <div class="footer">
-      &copy;2022, WebInterpret.
+      &#169;2022, WebInterpret.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 6.2.1</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.13</a>
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 7.2.6</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 0.7.16</a>
       
       |
       <a href="_sources/data_snack.rst.txt"

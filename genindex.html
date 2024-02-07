@@ -1,23 +1,23 @@
-
 <!DOCTYPE html>
 
-<html lang="en">
+<html lang="en" data-content_root="./">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Index &#8212; Data Snack  documentation</title>
-    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="_static/alabaster.css" />
-    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-    <script src="_static/doctools.js"></script>
-    <script src="_static/sphinx_highlight.js"></script>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=d1102ebc" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=12dfc556" />
+    <script src="_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="_static/doctools.js?v=888ff710"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <link rel="index" title="Index" href="#" />
     <link rel="search" title="Search" href="search.html" />
    
   <link rel="stylesheet" href="_static/custom.css" type="text/css" />
   
+
   
-  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+  
 
   </head><body>
   
@@ -48,12 +48,10 @@
 <h2 id="C">C</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="data_snack.key_factories.html#data_snack.key_factories.cluster.ClusterKeyFactory">ClusterKeyFactory (class in data_snack.key_factories.cluster)</a>
+      <li><a href="data_snack.key_factories.html#data_snack.key_factories.cluster.ClusterKey">ClusterKey (class in data_snack.key_factories.cluster)</a>
 </li>
       <li><a href="data_snack.connections.html#data_snack.connections.base.Connection">Connection (class in data_snack.connections.base)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="data_snack.connections.html#data_snack.connections.base.Connection.connection">connection (data_snack.connections.base.Connection attribute)</a>
 
       <ul>
@@ -61,13 +59,26 @@
 </li>
         <li><a href="data_snack.connections.html#data_snack.connections.redis.RedisConnection.connection">(data_snack.connections.redis.RedisConnection attribute)</a>
 </li>
+        <li><a href="data_snack.html#data_snack.snack.Snack.connection">(data_snack.snack.Snack attribute)</a>
+</li>
       </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="data_snack.html#data_snack.snack.Snack.create_wrap">create_wrap() (data_snack.snack.Snack method)</a>
+</li>
   </ul></td>
 </tr></table>
 
 <h2 id="D">D</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li>
+    data_snack
+
+      <ul>
+        <li><a href="data_snack.html#module-data_snack">module</a>
+</li>
+      </ul></li>
       <li>
     data_snack.connections
 
@@ -139,6 +150,13 @@
 </li>
       </ul></li>
       <li>
+    data_snack.exceptions
+
+      <ul>
+        <li><a href="data_snack.html#module-data_snack.exceptions">module</a>
+</li>
+      </ul></li>
+      <li>
     data_snack.key_factories
 
       <ul>
@@ -190,6 +208,13 @@
 </li>
       </ul></li>
       <li>
+    data_snack.snack
+
+      <ul>
+        <li><a href="data_snack.html#module-data_snack.snack">module</a>
+</li>
+      </ul></li>
+      <li>
     data_snack.wrap
 
       <ul>
@@ -237,6 +262,8 @@
 </li>
         <li><a href="data_snack.connections.html#data_snack.connections.redis.RedisConnection.delete">(data_snack.connections.redis.RedisConnection method)</a>
 </li>
+        <li><a href="data_snack.html#data_snack.snack.Snack.delete">(data_snack.snack.Snack method)</a>
+</li>
         <li><a href="data_snack.wrap.html#data_snack.wrap.base.Wrap.delete">(data_snack.wrap.base.Wrap method)</a>
 </li>
         <li><a href="data_snack.wrap.html#data_snack.wrap.entity.EntityWrap.delete">(data_snack.wrap.entity.EntityWrap method)</a>
@@ -248,6 +275,8 @@
         <li><a href="data_snack.connections.html#data_snack.connections.memcached.MemcachedConnection.delete_many">(data_snack.connections.memcached.MemcachedConnection method)</a>
 </li>
         <li><a href="data_snack.connections.html#data_snack.connections.redis.RedisConnection.delete_many">(data_snack.connections.redis.RedisConnection method)</a>
+</li>
+        <li><a href="data_snack.html#data_snack.snack.Snack.delete_many">(data_snack.snack.Snack method)</a>
 </li>
         <li><a href="data_snack.wrap.html#data_snack.wrap.base.Wrap.delete_many">(data_snack.wrap.base.Wrap method)</a>
 </li>
@@ -270,9 +299,13 @@
 </li>
       <li><a href="data_snack.entities.html#data_snack.entities.entity.Entity.Meta">Entity.Meta (class in data_snack.entities.entity)</a>
 </li>
-      <li><a href="data_snack.entities.html#data_snack.entities.registry.EntityRegistry.entity_type">entity_type (data_snack.entities.registry.EntityRegistry attribute)</a>
+      <li><a href="data_snack.key_factories.html#data_snack.key_factories.base.Key.entity_type">entity_type (data_snack.key_factories.base.Key attribute)</a>
 
       <ul>
+        <li><a href="data_snack.key_factories.html#data_snack.key_factories.cluster.ClusterKey.entity_type">(data_snack.key_factories.cluster.ClusterKey attribute)</a>
+</li>
+        <li><a href="data_snack.key_factories.html#data_snack.key_factories.non_cluster.NonClusterKey.entity_type">(data_snack.key_factories.non_cluster.NonClusterKey attribute)</a>
+</li>
         <li><a href="data_snack.serializers.html#data_snack.serializers.base.Serializer.entity_type">(data_snack.serializers.base.Serializer attribute)</a>
 </li>
         <li><a href="data_snack.serializers.html#data_snack.serializers.dataclass.DataclassSerializer.entity_type">(data_snack.serializers.dataclass.DataclassSerializer attribute)</a>
@@ -286,9 +319,9 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="data_snack.wrap.html#data_snack.wrap.entity.EntityWrap.entity_type_name">entity_type_name (data_snack.wrap.entity.EntityWrap property)</a>
 </li>
-      <li><a href="data_snack.entities.html#data_snack.entities.entity_meta.EntityMetaClass">EntityMetaClass (class in data_snack.entities.entity_meta)</a>
+      <li><a href="data_snack.html#data_snack.exceptions.EntityAlreadyRegistered">EntityAlreadyRegistered</a>
 </li>
-      <li><a href="data_snack.entities.html#data_snack.entities.registry.EntityRegistry">EntityRegistry (class in data_snack.entities.registry)</a>
+      <li><a href="data_snack.entities.html#data_snack.entities.entity_meta.EntityMetaClass">EntityMetaClass (class in data_snack.entities.entity_meta)</a>
 </li>
       <li><a href="data_snack.wrap.html#data_snack.wrap.entity.EntityWrap">EntityWrap (class in data_snack.wrap.entity)</a>
 </li>
@@ -307,6 +340,8 @@
 </li>
         <li><a href="data_snack.connections.html#data_snack.connections.redis.RedisConnection.get">(data_snack.connections.redis.RedisConnection method)</a>
 </li>
+        <li><a href="data_snack.html#data_snack.snack.Snack.get">(data_snack.snack.Snack method)</a>
+</li>
         <li><a href="data_snack.wrap.html#data_snack.wrap.base.Wrap.get">(data_snack.wrap.base.Wrap method)</a>
 </li>
         <li><a href="data_snack.wrap.html#data_snack.wrap.entity.EntityWrap.get">(data_snack.wrap.entity.EntityWrap method)</a>
@@ -320,18 +355,10 @@
 </li>
       <li><a href="data_snack.entities.html#data_snack.entities.entity.Entity.get_excluded_fields">get_excluded_fields() (data_snack.entities.entity.Entity class method)</a>
 </li>
-      <li><a href="data_snack.entities.html#data_snack.entities.entity.Entity.get_fields">get_fields() (data_snack.entities.entity.Entity class method)</a>
-</li>
-      <li><a href="data_snack.key_factories.html#data_snack.key_factories.base.KeyFactory.get_key">get_key() (data_snack.key_factories.base.KeyFactory method)</a>
-
-      <ul>
-        <li><a href="data_snack.key_factories.html#data_snack.key_factories.cluster.ClusterKeyFactory.get_key">(data_snack.key_factories.cluster.ClusterKeyFactory method)</a>
-</li>
-        <li><a href="data_snack.key_factories.html#data_snack.key_factories.non_cluster.NonClusterKeyFactory.get_key">(data_snack.key_factories.non_cluster.NonClusterKeyFactory method)</a>
-</li>
-      </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="data_snack.entities.html#data_snack.entities.entity.Entity.get_fields">get_fields() (data_snack.entities.entity.Entity class method)</a>
+</li>
       <li><a href="data_snack.entities.html#data_snack.entities.entity.Entity.get_keys">get_keys() (data_snack.entities.entity.Entity class method)</a>
 </li>
       <li><a href="data_snack.connections.html#data_snack.connections.base.Connection.get_many">get_many() (data_snack.connections.base.Connection method)</a>
@@ -341,17 +368,19 @@
 </li>
         <li><a href="data_snack.connections.html#data_snack.connections.redis.RedisConnection.get_many">(data_snack.connections.redis.RedisConnection method)</a>
 </li>
+        <li><a href="data_snack.html#data_snack.snack.Snack.get_many">(data_snack.snack.Snack method)</a>
+</li>
         <li><a href="data_snack.wrap.html#data_snack.wrap.base.Wrap.get_many">(data_snack.wrap.base.Wrap method)</a>
 </li>
         <li><a href="data_snack.wrap.html#data_snack.wrap.entity.EntityWrap.get_many">(data_snack.wrap.entity.EntityWrap method)</a>
 </li>
       </ul></li>
-      <li><a href="data_snack.key_factories.html#data_snack.key_factories.base.KeyFactory.get_pattern">get_pattern() (data_snack.key_factories.base.KeyFactory method)</a>
+      <li><a href="data_snack.key_factories.html#data_snack.key_factories.base.Key.get_pattern">get_pattern() (data_snack.key_factories.base.Key method)</a>
 
       <ul>
-        <li><a href="data_snack.key_factories.html#data_snack.key_factories.cluster.ClusterKeyFactory.get_pattern">(data_snack.key_factories.cluster.ClusterKeyFactory method)</a>
+        <li><a href="data_snack.key_factories.html#data_snack.key_factories.cluster.ClusterKey.get_pattern">(data_snack.key_factories.cluster.ClusterKey method)</a>
 </li>
-        <li><a href="data_snack.key_factories.html#data_snack.key_factories.non_cluster.NonClusterKeyFactory.get_pattern">(data_snack.key_factories.non_cluster.NonClusterKeyFactory method)</a>
+        <li><a href="data_snack.key_factories.html#data_snack.key_factories.non_cluster.NonClusterKey.get_pattern">(data_snack.key_factories.non_cluster.NonClusterKey method)</a>
 </li>
       </ul></li>
   </ul></td>
@@ -360,10 +389,22 @@
 <h2 id="K">K</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="data_snack.key_factories.html#data_snack.key_factories.base.KeyFactory">KeyFactory (class in data_snack.key_factories.base)</a>
+      <li><a href="data_snack.key_factories.html#data_snack.key_factories.base.Key">Key (class in data_snack.key_factories.base)</a>
 </li>
+      <li><a href="data_snack.html#data_snack.snack.Snack.key_factory">key_factory (data_snack.snack.Snack attribute)</a>
+</li>
+      <li><a href="data_snack.key_factories.html#data_snack.key_factories.base.Key.key_values">key_values (data_snack.key_factories.base.Key attribute)</a>
+
+      <ul>
+        <li><a href="data_snack.key_factories.html#data_snack.key_factories.cluster.ClusterKey.key_values">(data_snack.key_factories.cluster.ClusterKey attribute)</a>
+</li>
+        <li><a href="data_snack.key_factories.html#data_snack.key_factories.non_cluster.NonClusterKey.key_values">(data_snack.key_factories.non_cluster.NonClusterKey attribute)</a>
+</li>
+      </ul></li>
       <li><a href="data_snack.entities.html#data_snack.entities.entity.Entity.Meta.keys">keys (data_snack.entities.entity.Entity.Meta attribute)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="data_snack.connections.html#data_snack.connections.base.Connection.keys">keys() (data_snack.connections.base.Connection method)</a>
 
       <ul>
@@ -371,11 +412,15 @@
 </li>
         <li><a href="data_snack.connections.html#data_snack.connections.redis.RedisConnection.keys">(data_snack.connections.redis.RedisConnection method)</a>
 </li>
+        <li><a href="data_snack.html#data_snack.snack.Snack.keys">(data_snack.snack.Snack method)</a>
+</li>
         <li><a href="data_snack.wrap.html#data_snack.wrap.base.Wrap.keys">(data_snack.wrap.base.Wrap method)</a>
 </li>
         <li><a href="data_snack.wrap.html#data_snack.wrap.entity.EntityWrap.keys">(data_snack.wrap.entity.EntityWrap method)</a>
 </li>
       </ul></li>
+      <li><a href="data_snack.key_factories.html#data_snack.key_factories.base.Key.keystring">keystring (data_snack.key_factories.base.Key property)</a>
+</li>
   </ul></td>
 </tr></table>
 
@@ -394,6 +439,8 @@
     module
 
       <ul>
+        <li><a href="data_snack.html#module-data_snack">data_snack</a>
+</li>
         <li><a href="data_snack.connections.html#module-data_snack.connections">data_snack.connections</a>
 </li>
         <li><a href="data_snack.connections.html#module-data_snack.connections.base">data_snack.connections.base</a>
@@ -414,6 +461,8 @@
 </li>
         <li><a href="data_snack.entities.html#module-data_snack.entities.schema">data_snack.entities.schema</a>
 </li>
+        <li><a href="data_snack.html#module-data_snack.exceptions">data_snack.exceptions</a>
+</li>
         <li><a href="data_snack.key_factories.html#module-data_snack.key_factories">data_snack.key_factories</a>
 </li>
         <li><a href="data_snack.key_factories.html#module-data_snack.key_factories.base">data_snack.key_factories.base</a>
@@ -427,6 +476,8 @@
         <li><a href="data_snack.serializers.html#module-data_snack.serializers.base">data_snack.serializers.base</a>
 </li>
         <li><a href="data_snack.serializers.html#module-data_snack.serializers.dataclass">data_snack.serializers.dataclass</a>
+</li>
+        <li><a href="data_snack.html#module-data_snack.snack">data_snack.snack</a>
 </li>
         <li><a href="data_snack.wrap.html#module-data_snack.wrap">data_snack.wrap</a>
 </li>
@@ -445,7 +496,7 @@
 <h2 id="N">N</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="data_snack.key_factories.html#data_snack.key_factories.non_cluster.NonClusterKeyFactory">NonClusterKeyFactory (class in data_snack.key_factories.non_cluster)</a>
+      <li><a href="data_snack.key_factories.html#data_snack.key_factories.non_cluster.NonClusterKey">NonClusterKey (class in data_snack.key_factories.non_cluster)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
@@ -458,6 +509,12 @@
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="data_snack.connections.html#data_snack.connections.redis.RedisConnection">RedisConnection (class in data_snack.connections.redis)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="data_snack.html#data_snack.snack.Snack.register_entity">register_entity() (data_snack.snack.Snack method)</a>
+</li>
+      <li><a href="data_snack.html#data_snack.snack.Snack.registry">registry (data_snack.snack.Snack attribute)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -473,14 +530,14 @@
       </ul></li>
       <li><a href="data_snack.serializers.html#data_snack.serializers.base.Serializer">Serializer (class in data_snack.serializers.base)</a>
 </li>
-      <li><a href="data_snack.entities.html#data_snack.entities.registry.EntityRegistry.serializer">serializer (data_snack.entities.registry.EntityRegistry attribute)</a>
-</li>
       <li><a href="data_snack.connections.html#data_snack.connections.base.Connection.set">set() (data_snack.connections.base.Connection method)</a>
 
       <ul>
         <li><a href="data_snack.connections.html#data_snack.connections.memcached.MemcachedConnection.set">(data_snack.connections.memcached.MemcachedConnection method)</a>
 </li>
         <li><a href="data_snack.connections.html#data_snack.connections.redis.RedisConnection.set">(data_snack.connections.redis.RedisConnection method)</a>
+</li>
+        <li><a href="data_snack.html#data_snack.snack.Snack.set">(data_snack.snack.Snack method)</a>
 </li>
         <li><a href="data_snack.wrap.html#data_snack.wrap.base.Wrap.set">(data_snack.wrap.base.Wrap method)</a>
 </li>
@@ -498,11 +555,15 @@
 </li>
         <li><a href="data_snack.connections.html#data_snack.connections.redis.RedisConnection.set_many">(data_snack.connections.redis.RedisConnection method)</a>
 </li>
+        <li><a href="data_snack.html#data_snack.snack.Snack.set_many">(data_snack.snack.Snack method)</a>
+</li>
         <li><a href="data_snack.wrap.html#data_snack.wrap.base.Wrap.set_many">(data_snack.wrap.base.Wrap method)</a>
 </li>
         <li><a href="data_snack.wrap.html#data_snack.wrap.entity.EntityWrap.set_many">(data_snack.wrap.entity.EntityWrap method)</a>
 </li>
       </ul></li>
+      <li><a href="data_snack.html#data_snack.snack.Snack">Snack (class in data_snack.snack)</a>
+</li>
       <li><a href="data_snack.wrap.html#data_snack.wrap.data_frame.DataFrameWrap.snack">snack (data_snack.wrap.data_frame.DataFrameWrap attribute)</a>
 
       <ul>
@@ -516,6 +577,10 @@
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="data_snack.wrap.html#data_snack.wrap.base.Wrap">Wrap (class in data_snack.wrap.base)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="data_snack.html#data_snack.exceptions.WrongKeyValue">WrongKeyValue</a>
 </li>
   </ul></td>
 </tr></table>
@@ -574,11 +639,11 @@
       <div class="clearer"></div>
     </div>
     <div class="footer">
-      &copy;2022, WebInterpret.
+      &#169;2022, WebInterpret.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 6.2.1</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.13</a>
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 7.2.6</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 0.7.16</a>
       
     </div>
 
