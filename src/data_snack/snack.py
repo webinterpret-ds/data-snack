@@ -111,8 +111,9 @@ class Snack:
         :return: a list of retrieved Entity objects
         """
         _keys = [self.key_factory(cls, key_values) for key_values in keys_values]
-        records = list(self.connection.get_many(_keys).values())
-        return self._get_serializer(cls).deserialize(records, many=True)
+        results_unordered = self.connection.get_many(_keys)
+        records_ordered = [results_unordered.get(key.keystring) for key in _keys]
+        return self._get_serializer(cls).deserialize(records_ordered, many=True)
 
     def set_many(self, entities: List[Entity]) -> Any:
         """

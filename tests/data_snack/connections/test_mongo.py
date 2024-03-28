@@ -112,7 +112,28 @@ class TestMongoConnection(TestCase):
                     {"_id": "ManyKeysEntity-2_2", "key1": "2", "key2": "2"}
                 ]
         self.collection.find = find
-        expected = {"ManyKeysEntity-1_1": None, "ManyKeysEntity-2_2": {"key1": "2", "key2": "2"}}
+        expected = {"ManyKeysEntity-2_2": {"key1": "2", "key2": "2"}}
+
+        # act
+        result = self.mongo_connection.get_many(keys)
+
+        # assert
+        self.assertEqual(result, expected)
+        self.collection.create_index.assert_called_once_with(
+            [("key1", pymongo.ASCENDING), ("key2", pymongo.ASCENDING)], unique=True
+        )
+
+    def test_get_many_no_records_found_expect_empty_dict_returned(self) -> None:
+        # arrange
+        key1 = self.key_factory(entity_type=self.entity_type, key_values=[1, 1])
+        key2 = self.key_factory(entity_type=self.entity_type, key_values=[2, 2])
+        keys = [key1, key2]
+
+        def find(query: Dict) -> Optional[List]:
+            if query == {"_id": {"$in": ["ManyKeysEntity-1_1", "ManyKeysEntity-2_2"]}}:
+                return []
+        self.collection.find = find
+        expected = {}
 
         # act
         result = self.mongo_connection.get_many(keys)
@@ -135,33 +156,6 @@ class TestMongoConnection(TestCase):
         self.assertEqual(result, expected)
         self.collection.create_index.assert_not_called()
         self.collection.find.assert_not_called()
-
-    def test_get_many_all_records_found_expect_returned_all_in_desired_order(self) -> None:
-        # arrange
-        key1 = self.key_factory(entity_type=self.entity_type, key_values=[1, 1])
-        key2 = self.key_factory(entity_type=self.entity_type, key_values=[2, 2])
-        keys = [key1, key2]
-
-        def find(query: Dict) -> Optional[List[Dict]]:
-            if query == {"_id": {"$in": ["ManyKeysEntity-1_1", "ManyKeysEntity-2_2"]}}:
-                return [
-                    {"_id": "ManyKeysEntity-2_2", "key1": "2", "key2": "2"},
-                    {"_id": "ManyKeysEntity-1_1", "key1": "1", "key2": "1"},
-                ]
-        self.collection.find = find
-        expected = {
-            "ManyKeysEntity-1_1": {"key1": "1", "key2": "1"},
-            "ManyKeysEntity-2_2": {"key1": "2", "key2": "2"},
-        }
-
-        # act
-        result = self.mongo_connection.get_many(keys)
-
-        # assert
-        self.assertEqual(result, expected)
-        self.collection.create_index.assert_called_once_with(
-            [("key1", pymongo.ASCENDING), ("key2", pymongo.ASCENDING)], unique=True
-        )
 
     def test_get_many_many_entity_types_expect_value_error_raised(self) -> None:
         # arrange

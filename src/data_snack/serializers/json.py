@@ -9,6 +9,8 @@ from data_snack.serializers.base import Serializer
 class JsonSerializer(Serializer):
 
     def _serialize(self, entity: Optional[Entity]) -> Optional[Dict]:
+        if not entity:
+            return
         return asdict(entity)
 
     def serialize(

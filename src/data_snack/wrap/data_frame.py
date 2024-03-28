@@ -45,7 +45,7 @@ class DataFrameWrap(EntityWrap):
 
         return pd.merge(
             df,
-            output_df,
+            output_df.drop_duplicates(subset=required_key_columns),
             on=required_key_columns,
             how='left'
         )
