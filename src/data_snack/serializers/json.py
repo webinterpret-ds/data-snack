@@ -1,5 +1,5 @@
-from dataclasses import dataclass, asdict
-from typing import List, Optional, Union, Dict
+from dataclasses import asdict, dataclass
+from typing import Dict, List, Optional, Union
 
 from data_snack.entities import Entity
 from data_snack.serializers.base import Serializer

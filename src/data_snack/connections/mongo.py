@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import Optional, Dict, Type, List, Union, Any
+from typing import Any, Dict, List, Optional, Type, Union
 
 import pymongo
 from pymongo import DeleteOne, UpdateOne
@@ -49,10 +49,8 @@ class MongoConnection(Connection):
                 del result['_id']
             return result
         collection = self._get_entity_collection(entity_type)
-        return {
-            row["_id"]: _delete_id_field(row)
-            for row in collection.find({"_id": {"$in": db_keys}})
-        }
+        unordered_results = {row["_id"]: _delete_id_field(row) for row in collection.find({"_id": {"$in": db_keys}})}
+        return {key: unordered_results.get(key) for key in db_keys}
 
     def set(self, key: Key, value: Dict, **kwargs: Any) -> bool:
         collection = self._get_entity_collection(key.entity_type)

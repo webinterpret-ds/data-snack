@@ -5,8 +5,8 @@ from unittest import TestCase
 from parameterized import parameterized
 
 from data_snack.entities import Entity
-from tests.data_snack.conftest import Car
 from data_snack.key_factories.hash import HashKey
+from tests.data_snack.conftest import Car
 
 
 class TestHashKeyFactory(TestCase):
