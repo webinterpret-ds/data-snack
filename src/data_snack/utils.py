@@ -1,4 +1,4 @@
-from typing import Iterable, Any
+from typing import Any, Iterable
 
 
 def get_attribute_of_first_element_from_iterable(iterable: Iterable, attribute_name: str) -> Any:

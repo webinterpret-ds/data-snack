@@ -1,10 +1,7 @@
 from abc import ABC, ABCMeta
 
-from .exceptions import (
-    MetaEmptyKeysException,
-    MetaFieldsException,
-    NonExistingMetaError,
-)
+from .exceptions import (MetaEmptyKeysException, MetaFieldsException,
+                         NonExistingMetaError)
 
 
 class EntityMetaClass(ABCMeta):

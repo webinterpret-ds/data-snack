@@ -1,5 +1,5 @@
 from dataclasses import dataclass, field
-from typing import List, Optional, Type, Any
+from typing import Any, List, Optional, Type
 
 from data_snack.connections import Connection
 from data_snack.entities import Entity, EntityRegistry

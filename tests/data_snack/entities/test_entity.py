@@ -6,11 +6,9 @@ import pytest
 
 from data_snack.entities import Entity
 from data_snack.entities.entity_meta import EntityMetaClass
-from data_snack.entities.exceptions import (
-    MetaEmptyKeysException,
-    MetaFieldsException,
-    NonExistingMetaError,
-)
+from data_snack.entities.exceptions import (MetaEmptyKeysException,
+                                            MetaFieldsException,
+                                            NonExistingMetaError)
 
 
 @pytest.fixture
