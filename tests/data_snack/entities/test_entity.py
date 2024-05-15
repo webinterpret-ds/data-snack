@@ -22,6 +22,7 @@ def dummy_entity() -> Type[Entity]:
         class Meta:
             keys = ["key"]
             excluded_fields = ["excluded"]
+            version = 1
 
     return DummyEntity
 
@@ -53,6 +54,7 @@ def test_entity_subclass_init() -> None:
         class Meta:
             keys = meta_keys
             excluded_fields = meta_excluded_fields
+            version = 1
 
     assert type(DummyEntity) == EntityMetaClass
     assert DummyEntity.__bases__ == (Entity,)
@@ -74,6 +76,7 @@ def test_entity_subclass_init_bad_meta_fields_names() -> None:
             class Meta:
                 bad_keys = ["key"]
                 bad_excluded_fields = []
+                version = 1
 
 
 def test_entity_subclass_init_empty_meta_keys() -> None:
@@ -88,6 +91,7 @@ def test_entity_subclass_init_empty_meta_keys() -> None:
             class Meta:
                 keys = []
                 excluded_fields = []
+                version = 1
 
 
 def test_entity_init_no_meta_defined() -> None:

@@ -13,6 +13,7 @@ class Entity(ABC, metaclass=EntityMetaClass):
     class Meta:
         keys: List[str] = []
         excluded_fields: List[str] = []
+        version: int
 
     @classmethod
     def get_all_fields(cls) -> List[str]:
@@ -37,3 +38,8 @@ class Entity(ABC, metaclass=EntityMetaClass):
     def get_keys(cls) -> List[str]:
         """Gets Entity keys only."""
         return cls.Meta.keys
+
+    @classmethod
+    @property
+    def version(cls) -> str:
+        return cls.Meta.version

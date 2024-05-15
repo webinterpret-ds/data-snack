@@ -26,6 +26,7 @@ def dummy_entity() -> Type[Entity]:
         class Meta:
             keys: List[str] = ["key"]
             excluded_fields: List[str] = ["excluded"]
+            version = 1
 
     return DummyEntity
 

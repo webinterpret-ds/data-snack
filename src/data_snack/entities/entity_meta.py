@@ -6,7 +6,7 @@ from .exceptions import (MetaEmptyKeysException, MetaFieldsException,
 
 class EntityMetaClass(ABCMeta):
 
-    meta_fields = ["keys", "excluded_fields"]
+    meta_fields = ["keys", "excluded_fields", "version"]
 
     def __new__(mcs, name, bases, dct):
         entity_class = super().__new__(mcs, name, bases, dct)
