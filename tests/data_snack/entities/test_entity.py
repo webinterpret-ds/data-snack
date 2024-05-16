@@ -60,6 +60,7 @@ def test_entity_subclass_init() -> None:
     assert DummyEntity.__bases__ == (Entity,)
     assert DummyEntity.Meta.keys == meta_keys
     assert DummyEntity.Meta.excluded_fields == meta_excluded_fields
+    assert DummyEntity.version == 1
     assert Entity.Meta.keys == []
     assert Entity.Meta.excluded_fields == []
 

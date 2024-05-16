@@ -3,6 +3,7 @@ from dataclasses import dataclass
 from typing import Any, List, get_type_hints
 
 from data_snack.entities.entity_meta import EntityMetaClass
+from data_snack.utils import classproperty
 
 
 @dataclass
@@ -39,7 +40,6 @@ class Entity(ABC, metaclass=EntityMetaClass):
         """Gets Entity keys only."""
         return cls.Meta.keys
 
-    @classmethod
-    @property
+    @classproperty
     def version(cls) -> str:
         return cls.Meta.version
