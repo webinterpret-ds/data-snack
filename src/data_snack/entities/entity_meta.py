@@ -1,27 +1,46 @@
 from abc import ABC, ABCMeta
 
-from .exceptions import (MetaEmptyKeysException, MetaFieldsException,
-                         NonExistingMetaError)
+from data_snack.entities.validation import (
+    validate_meta_class,
+    validate_meta_fields,
+    validate_meta_keys,
+    validate_meta_sources,
+    validate_meta_sources_fields,
+    validate_meta_sources_keys,
+)
 
 
-class EntityMetaClass(ABCMeta):
+class MetaClass(ABCMeta):
+
+    meta_fields = ...
+
+    def __new__(mcs, name, bases, dct):
+        entity_class = super().__new__(mcs, name, bases, dct)
+        validate_meta_class(entity_class)
+        if bases != (ABC,):
+            validate_meta_fields(entity_class, mcs.meta_fields)
+        return entity_class
+
+
+class EntityMetaClass(MetaClass):
 
     meta_fields = ["keys", "excluded_fields", "version"]
 
     def __new__(mcs, name, bases, dct):
         entity_class = super().__new__(mcs, name, bases, dct)
-        # TODO: consider encapsulation of each validation rule to function to make this class cleaner.
-        if "Meta" not in dir(entity_class):
-            raise NonExistingMetaError(
-                f"Private class `Meta not defined for {entity_class.__name__}."
-            )
         if bases != (ABC,):
-            if missing_fields := [
-                field
-                for field in mcs.meta_fields
-                if field not in dir(entity_class.Meta)
-            ]:
-                raise MetaFieldsException(f"Missing Meta fields: {missing_fields}.")
-            if not entity_class.Meta.keys:
-                raise MetaEmptyKeysException("Meta keys can not be empty.")
+            validate_meta_keys(entity_class)
+        return entity_class
+
+
+class CompoundEntityMetaClass(MetaClass):
+
+    meta_fields = ["sources"]
+
+    def __new__(mcs, name, bases, dct):
+        entity_class = super().__new__(mcs, name, bases, dct)
+        if bases != (ABC,):
+            validate_meta_sources(entity_class)
+            validate_meta_sources_keys(entity_class)
+            validate_meta_sources_fields(entity_class)
         return entity_class

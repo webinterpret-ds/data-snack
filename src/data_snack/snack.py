@@ -1,8 +1,10 @@
 from dataclasses import dataclass, field
-from typing import Any, List, Optional, Type
+from typing import Any, List, Optional, Type, Union
 
 from data_snack.connections import Connection
 from data_snack.entities import Entity, EntityRegistry
+from data_snack.entities.compound import CompoundEntity
+from data_snack.entities.utils import map_values
 from data_snack.exceptions import EntityAlreadyRegistered
 from data_snack.key_factories import Key, NonClusterKey
 from data_snack.serializers import DataclassSerializer, Serializer
@@ -75,7 +77,7 @@ class Snack:
         if self.connection.set(key, record):
             return key.keystring  # Should we return keystring or maybe just a key?
 
-    def get(self, cls: Type[Entity], key_values: List[Any]) -> Optional[Entity]:
+    def _get(self, cls: Type[Entity], key_values: List[Any]) -> Optional[Entity]:
         """
         Gets ane entity of `Entity` type from db based on provided key values.
         Notice, key is represented as a list of strings, since one Entity can have multiple key fields.
@@ -87,6 +89,23 @@ class Snack:
         _key = self.key_factory(cls, key_values)
         value = self.connection.get(_key)
         return self._get_serializer(cls).deserialize(value)
+
+    def _get_compound(self, cls: Type[CompoundEntity], key_values: List[Any]) -> Optional[CompoundEntity]:
+        values = {}
+        for source in cls.Meta.sources:
+            mapped_keys = map_values(source.fields_mapping, cls.get_keys())
+            mapped_key_values = [key_values[idx] for idx, key in enumerate(mapped_keys) if key]
+            _key = self.key_factory(source.entity, mapped_key_values)
+            if not (value := self.connection.get(_key)):
+                return None
+            values.update(value)
+        return self._get_serializer(cls).deserialize(values)
+
+    def get(self, cls: Union[Type[Entity], Type[CompoundEntity]], key_values: List[Any]) -> Optional[Union[Entity, CompoundEntity]]:
+        if issubclass(cls, Entity):
+            return self._get(cls, key_values)
+        elif issubclass(cls, CompoundEntity):
+            return self._get_compound(cls, key_values)
 
     def delete(self, cls: Type[Entity], key_values: List[Any]) -> bool:
         """
