@@ -1,9 +1,8 @@
-from dataclasses import field
+from dataclasses import field, dataclass
 from typing import List, Optional, Text
 from unittest.mock import MagicMock
 
 import pytest
-from pydantic.dataclasses import dataclass
 
 from data_snack import Snack
 from data_snack.connections import Connection
@@ -20,6 +19,7 @@ class Car(Entity):
     class Meta:
         keys: List[str] = ["index"]
         excluded_fields: List[str] = []
+        version = 1
 
 
 @pytest.fixture

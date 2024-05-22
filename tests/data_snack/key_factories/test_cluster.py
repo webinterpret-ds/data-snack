@@ -14,11 +14,11 @@ class TestClusterKeyFactory(TestCase):
 
     @parameterized.expand(
         [
-            (Car, ["1"], "{Car}-1"),
-            (Car, [1], "{Car}-1"),
-            (Car, ["Abc"], "{Car}-Abc"),
-            (Car, [1.0], "{Car}-1.0"),
-            (Car, [True], "{Car}-True"),
+            (Car, ["1"], "{Car-1}-1"),
+            (Car, [1], "{Car-1}-1"),
+            (Car, ["Abc"], "{Car-1}-Abc"),
+            (Car, [1.0], "{Car-1}-1.0"),
+            (Car, [True], "{Car-1}-True"),
         ]
     )
     def test_keystring_single_key_value(self, entity_type, key_values, expected) -> None:
@@ -33,7 +33,7 @@ class TestClusterKeyFactory(TestCase):
         entity_type = Car
         key_values = [1, "2", "A", "Bcd"]
 
-        expected = "{Car}-1_2_A_Bcd"
+        expected = "{Car-1}-1_2_A_Bcd"
 
         # act
         actual = self.key_factory(entity_type, key_values).keystring
@@ -45,7 +45,7 @@ class TestClusterKeyFactory(TestCase):
         # arrange
         entity_type = Car
 
-        expected = "{Car}-*"
+        expected = "{Car-1}-*"
 
         # act
         actual = self.key_factory(entity_type, ["1"]).get_pattern()
@@ -58,7 +58,7 @@ class TestClusterKeyFactory(TestCase):
         entity_type = Car
         pattern = "custom*"
 
-        expected = "{Car}-custom*"
+        expected = "{Car-1}-custom*"
 
         # act
         actual = self.key_factory(entity_type, ["1"]).get_pattern(pattern=pattern)
@@ -75,6 +75,7 @@ class TestClusterKeyFactory(TestCase):
             class Meta:
                 keys = ["field"]
                 excluded_fields = []
+                version = 1
 
         expected_keys = [Car, DummyEntity]
         expected_values = [1, 2]

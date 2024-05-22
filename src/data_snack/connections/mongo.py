@@ -23,7 +23,7 @@ class MongoConnection(Connection):
     connection: "pymongo.database.Database"
 
     def _get_entity_collection(self, entity_type: Type[Entity]) -> pymongo.collection.Collection:
-        collection = self.connection[entity_type.__name__]
+        collection = self.connection[f"{entity_type.__name__}-{entity_type.version}"]
         collection.create_index(
             [(key, pymongo.ASCENDING) for key in entity_type.Meta.keys],
             unique=True

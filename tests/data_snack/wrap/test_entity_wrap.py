@@ -28,7 +28,7 @@ def test_get(wrap_car: EntityWrap, example_entity: Car, example_entity_hash: byt
 
 def test_set(wrap_car: EntityWrap, example_entity: Car, example_entity_hash: bytes):
     """Testing setting a single Entity based for the provided key."""
-    expected_key = "Car-1"
+    expected_key = "Car-1-1"
     wrap_car.snack.connection.connection.set.return_value = expected_key
 
     result = wrap_car.set(example_entity)
@@ -64,7 +64,7 @@ def test_set_many(
     example_entities_hashes: List[bytes],
 ):
     """Testing setting multiple Entity objects based of the provided list of keys."""
-    expected_keys = ["Car-1", "Car-2"]
+    expected_keys = ["Car-1-1", "Car-1-2"]
     wrap_car.snack.connection.connection.mset.return_value = expected_keys
 
     keys = wrap_car.set_many(example_entities)
@@ -79,7 +79,7 @@ def test_delete_many(
     example_entities_hashes: List[bytes],
 ):
     """Testing deleting multiple Entity objects based of the provided list of keys."""
-    deleted_keys = ["Car-1", "Car-2"]
+    deleted_keys = ["Car-1-1", "Car-1-2"]
     wrap_car.snack.connection.connection.delete.return_value = 2
 
     deleted = wrap_car.delete_many([["1"], ["2"]])
@@ -88,7 +88,7 @@ def test_delete_many(
 
 
 def test_keys(wrap_car: EntityWrap):
-    expected_keys = ["Car-1", "Car-2"]
+    expected_keys = ["Car-1-1", "Car-1-2"]
     wrap_car.snack.connection.connection.keys.return_value = expected_keys
 
     keys = wrap_car.keys()
