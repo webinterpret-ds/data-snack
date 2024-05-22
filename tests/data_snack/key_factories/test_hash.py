@@ -15,11 +15,11 @@ class TestHashKeyFactory(TestCase):
 
     @parameterized.expand(
         [
-            (Car, ["1"], "c35a43010ddc80cf23173315516062be"),
-            (Car, [1], "c35a43010ddc80cf23173315516062be"),  # the same hash as above
-            (Car, ["Abc"], "35b8a98d4b40102ed1f501e290f76684"),
-            (Car, [1.0], "fcd81df24fc6afd906a74c87560aa69b"),
-            (Car, [True], "e919cd976a717fe3df3a6bbbbdae54e1"),
+            (Car, ["1"], "3680a79e3be34d33bdedf809038f4ef7"),
+            (Car, [1], "3680a79e3be34d33bdedf809038f4ef7"),  # the same hash as above
+            (Car, ["Abc"], "31192f88d3779695c98ed4b587e9c338"),
+            (Car, [1.0], "577c714950bfb0996aa39966f471adfc"),
+            (Car, [True], "8ad89063904776f49b9eac62191d0c81"),
         ]
     )
     def test_keystring_single_key_value(self, entity_type, key_values, expected) -> None:
@@ -34,7 +34,7 @@ class TestHashKeyFactory(TestCase):
         entity_type = Car
         key_values = [1, "2", "A", "Bcd"]
 
-        expected = "75a88f65b9eb4f207e094cf072acc7e7"
+        expected = "61c1d9a9ee6970313566ca1d66e5d216"
 
         # act
         actual = self.key_factory(entity_type, key_values).keystring
@@ -51,6 +51,7 @@ class TestHashKeyFactory(TestCase):
             class Meta:
                 keys = ["field"]
                 excluded_fields = []
+                version = 1
 
         expected_keys = [Car, DummyEntity]
         expected_values = [1, 2]

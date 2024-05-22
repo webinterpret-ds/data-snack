@@ -69,7 +69,7 @@ def test_set_dataframe(
     example_entities_hashes: List[bytes],
 ) -> None:
     """Testing saving a data frame containing entities data to the database."""
-    expected_keys = ("Car-" + data_df["index"]).tolist()
+    expected_keys = ("Car-1-" + data_df["index"]).tolist()
     wrap_dataframe.snack.connection.connection.mset.return_value = expected_keys
 
     # keys are returned unmodified
@@ -97,7 +97,7 @@ def test_get_dataframe(
     assert df.equals(data_df)
 
     # connection is called with a list of entity keys
-    expected_keys = ("Car-" + index_df["index"]).tolist()
+    expected_keys = ("Car-1-" + index_df["index"]).tolist()
     wrap_dataframe.snack.connection.connection.mget.assert_called_with(expected_keys)
 
 
@@ -117,7 +117,7 @@ def test_get_dataframe_data_with_none(
     assert df.equals(data_with_none_df)
 
     # connection is called with a list of entity keys
-    expected_keys = ("Car-" + index_df["index"]).tolist()
+    expected_keys = ("Car-1-" + index_df["index"]).tolist()
     wrap_dataframe.snack.connection.connection.mget.assert_called_with(expected_keys)
 
 
@@ -137,7 +137,7 @@ def test_get_dataframe_data_with_duplicates(
     assert df.equals(data_with_duplicates_df)
 
     # connection is called with a list of entity keys
-    expected_keys = ("Car-" + index_with_duplicates_df["index"]).tolist()
+    expected_keys = ("Car-1-" + index_with_duplicates_df["index"]).tolist()
     wrap_dataframe.snack.connection.connection.mget.assert_called_with(expected_keys)
 
 

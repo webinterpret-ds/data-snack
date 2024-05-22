@@ -23,6 +23,7 @@ class TestMongoConnection(TestCase):
             class Meta:
                 keys = ["key1", "key2"]
                 excluded_fields = []
+                version = 1
 
         @dataclass
         class DummyEntity(Entity):
@@ -31,12 +32,13 @@ class TestMongoConnection(TestCase):
             class Meta:
                 keys = ["field"]
                 excluded_fields = []
+                version = 1
 
         self.key_factory = NonClusterKey
         self.entity_type = ManyKeysEntity
         self.dummy_entity_type = DummyEntity
         self.collection = Mock()
-        self.mongo_db = {"ManyKeysEntity": self.collection, DummyEntity: self.collection}
+        self.mongo_db = {"ManyKeysEntity-1": self.collection, DummyEntity: self.collection}
         self.mongo_connection = MongoConnection(connection=self.mongo_db)
 
     def test_get_record_found_expect_returned_without_id_field(self) -> None:
@@ -44,8 +46,8 @@ class TestMongoConnection(TestCase):
         key = self.key_factory(entity_type=self.entity_type, key_values=[1, 1])
 
         def find_one(query: Dict[str, str]) -> Optional[Dict]:
-            if query == {"_id": "ManyKeysEntity-1_1"}:
-                return {"_id": "ManyKeysEntity-1_1", "key1": "1", "key2": "1"}
+            if query == {"_id": "ManyKeysEntity-1-1_1"}:
+                return {"_id": "ManyKeysEntity-1-1_1", "key1": "1", "key2": "1"}
 
         self.collection.find_one = find_one
         expected = {"key1": "1", "key2": "1"}
@@ -80,15 +82,15 @@ class TestMongoConnection(TestCase):
         keys = [key1, key2]
 
         def find(query: Dict) -> Optional[List[Dict]]:
-            if query == {"_id": {"$in": ["ManyKeysEntity-1_1", "ManyKeysEntity-2_2"]}}:
+            if query == {"_id": {"$in": ["ManyKeysEntity-1-1_1", "ManyKeysEntity-1-2_2"]}}:
                 return [
-                    {"_id": "ManyKeysEntity-1_1", "key1": "1", "key2": "1"},
-                    {"_id": "ManyKeysEntity-2_2", "key1": "2", "key2": "2"}
+                    {"_id": "ManyKeysEntity-1-1_1", "key1": "1", "key2": "1"},
+                    {"_id": "ManyKeysEntity-1-2_2", "key1": "2", "key2": "2"}
                 ]
         self.collection.find = find
         expected = {
-            "ManyKeysEntity-1_1": {"key1": "1", "key2": "1"},
-            "ManyKeysEntity-2_2": {"key1": "2", "key2": "2"},
+            "ManyKeysEntity-1-1_1": {"key1": "1", "key2": "1"},
+            "ManyKeysEntity-1-2_2": {"key1": "2", "key2": "2"},
         }
 
         # act
@@ -107,12 +109,12 @@ class TestMongoConnection(TestCase):
         keys = [key1, key2]
 
         def find(query: Dict) -> Optional[List[Dict]]:
-            if query == {"_id": {"$in": ["ManyKeysEntity-1_1", "ManyKeysEntity-2_2"]}}:
+            if query == {"_id": {"$in": ["ManyKeysEntity-1-1_1", "ManyKeysEntity-1-2_2"]}}:
                 return [
-                    {"_id": "ManyKeysEntity-2_2", "key1": "2", "key2": "2"}
+                    {"_id": "ManyKeysEntity-1-2_2", "key1": "2", "key2": "2"}
                 ]
         self.collection.find = find
-        expected = {"ManyKeysEntity-2_2": {"key1": "2", "key2": "2"}}
+        expected = {"ManyKeysEntity-1-2_2": {"key1": "2", "key2": "2"}}
 
         # act
         result = self.mongo_connection.get_many(keys)
@@ -130,7 +132,7 @@ class TestMongoConnection(TestCase):
         keys = [key1, key2]
 
         def find(query: Dict) -> Optional[List]:
-            if query == {"_id": {"$in": ["ManyKeysEntity-1_1", "ManyKeysEntity-2_2"]}}:
+            if query == {"_id": {"$in": ["ManyKeysEntity-1-1_1", "ManyKeysEntity-1-2_2"]}}:
                 return []
         self.collection.find = find
         expected = {}
@@ -179,7 +181,7 @@ class TestMongoConnection(TestCase):
         result = self.mongo_connection.set(key=key, value=value)
 
         # assert
-        self.collection.update_one.assert_called_once_with({"_id": "ManyKeysEntity-1_1"}, {"$set": value}, upsert=True)
+        self.collection.update_one.assert_called_once_with({"_id": "ManyKeysEntity-1-1_1"}, {"$set": value}, upsert=True)
         self.assertTrue(result)
         self.collection.create_index.assert_called_once_with(
             [("key1", pymongo.ASCENDING), ("key2", pymongo.ASCENDING)], unique=True
@@ -195,7 +197,7 @@ class TestMongoConnection(TestCase):
         result = self.mongo_connection.set(key=key, value=value)
 
         # assert
-        self.collection.update_one.assert_called_once_with({"_id": "ManyKeysEntity-1_1"}, {"$set": value}, upsert=True)
+        self.collection.update_one.assert_called_once_with({"_id": "ManyKeysEntity-1-1_1"}, {"$set": value}, upsert=True)
         self.assertFalse(result)
         self.collection.create_index.assert_called_once_with(
             [("key1", pymongo.ASCENDING), ("key2", pymongo.ASCENDING)], unique=True
@@ -236,9 +238,9 @@ class TestMongoConnection(TestCase):
         value2 = {"key1": "2", "key2": "2"}
         value3 = {"key1": "3", "key2": "3"}
         updates = [
-            UpdateOne({"_id": "ManyKeysEntity-1_1"}, {"$set": value1}, upsert=True),
-            UpdateOne({"_id": "ManyKeysEntity-2_2"}, {"$set": value2}, upsert=True),
-            UpdateOne({"_id": "ManyKeysEntity-3_3"}, {"$set": value3}, upsert=True),
+            UpdateOne({"_id": "ManyKeysEntity-1-1_1"}, {"$set": value1}, upsert=True),
+            UpdateOne({"_id": "ManyKeysEntity-1-2_2"}, {"$set": value2}, upsert=True),
+            UpdateOne({"_id": "ManyKeysEntity-1-3_3"}, {"$set": value3}, upsert=True),
         ]
         values = {key1: value1, key2: value2, key3: value3}
         self.collection.bulk_write.return_value = Mock(
@@ -291,7 +293,7 @@ class TestMongoConnection(TestCase):
         key = self.key_factory(entity_type=self.entity_type, key_values=[1, 1])
 
         def delete_one(query: Dict[str, str]) -> int:
-            if query == {"_id": "ManyKeysEntity-1_1"}:
+            if query == {"_id": "ManyKeysEntity-1-1_1"}:
                 return Mock(deleted_count=n_deleted)
 
         self.collection.delete_one = delete_one
@@ -311,7 +313,7 @@ class TestMongoConnection(TestCase):
         key1 = self.key_factory(self.entity_type, key_values=[1, 1])
         key2 = self.key_factory(self.entity_type, key_values=[2, 2])
         keys = [key1, key2]
-        updates = [DeleteOne({"_id": "ManyKeysEntity-1_1"}), DeleteOne({"_id": "ManyKeysEntity-2_2"})]
+        updates = [DeleteOne({"_id": "ManyKeysEntity-1-1_1"}), DeleteOne({"_id": "ManyKeysEntity-1-2_2"})]
         self.collection.bulk_write.return_value = Mock(deleted_count=n_deleted)
 
         # act

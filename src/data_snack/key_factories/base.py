@@ -12,7 +12,7 @@ class Key(ABC):
     key_values: List[Any]
 
     def __hash__(self):
-        return hash((self.entity_type.__name__, *self.key_values))
+        return hash((self.entity_type.__name__, self.entity_type.version, *self.key_values))
 
     @abstractmethod
     def get_pattern(self, pattern: str) -> str:

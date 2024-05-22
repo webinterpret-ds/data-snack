@@ -44,7 +44,7 @@ def test__snack_custom_factory_key(
     _snack = snack_factory_key_cluster
     _snack.connection.connection.get.return_value = example_entity_hash
     _snack.get(Car, ["1"])
-    _snack.connection.connection.get.assert_called_with("{Car}-1")
+    _snack.connection.connection.get.assert_called_with("{Car-1}-1")
 
 
 def test__create_wrap(snack_car: Snack) -> None:
@@ -66,7 +66,7 @@ def test__get(
 
     entity = snack_car.get(Car, ["1"])
     assert entity == example_entity
-    snack_car.connection.connection.get.assert_called_with("Car-1")
+    snack_car.connection.connection.get.assert_called_with("Car-1-1")
 
 
 def test__get__missing_key(snack_car: Snack, example_entity: Car) -> None:
@@ -86,7 +86,7 @@ def test__delete(snack_car: Snack, example_entity: Car) -> None:
 def test__set(
     snack_car: Snack, example_entity: Car, example_entity_hash: bytes
 ) -> None:
-    expected_key = "Car-1"
+    expected_key = "Car-1-1"
     snack_car.connection.connection.set.return_value = True
 
     key = snack_car.set(entity=example_entity)
@@ -119,7 +119,7 @@ def test__get_many__missing_data(
 def test__set_many(
     snack_car: Snack, example_entities: List[Car], example_entities_hashes: List[bytes]
 ) -> None:
-    expected_keys = ["Car-1", "Car-2"]
+    expected_keys = ["Car-1-1", "Car-1-2"]
     snack_car.connection.connection.mset.return_value = expected_keys
 
     keys = snack_car.set_many(example_entities)
@@ -136,7 +136,7 @@ def test__set_many_empty_list_of_entity_passed_expect_none_returned(snack_car: S
 def test__delete_many(
     snack_car: Snack, example_entities: List[Car], example_entities_hashes: List[bytes]
 ) -> None:
-    deleted_keys = ["Car-1", "Car-2"]
+    deleted_keys = ["Car-1-1", "Car-1-2"]
     snack_car.connection.connection.delete.return_value = 2
 
     deleted = snack_car.delete_many(Car, [["1"], ["2"]])
@@ -145,9 +145,9 @@ def test__delete_many(
 
 
 def test__keys(snack_car: Snack) -> None:
-    expected_keys = ["Car-1", "Car-2"]
+    expected_keys = ["Car-1-1", "Car-1-2"]
     snack_car.connection.connection.keys.return_value = expected_keys
 
     keys = snack_car.keys(Car)
     assert keys == expected_keys
-    snack_car.connection.connection.keys.assert_called_once_with("Car-*")
+    snack_car.connection.connection.keys.assert_called_once_with("Car-1-*")
