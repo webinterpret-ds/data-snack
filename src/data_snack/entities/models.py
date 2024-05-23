@@ -17,7 +17,7 @@ class SourceEntity:
 
     def __post_init__(self):
         self._fields_mapping = {mapping.field: mapping.source_field for mapping in self.entity_fields_mapping}
-        self._source_fields_mapping = {v: k for k, v in self._fields_mapping.items()}
+        self._source_fields_mapping = {source_field: field for field, source_field in self._fields_mapping.items()}
 
     @property
     def fields_mapping(self) -> Dict[str, str]:

@@ -14,7 +14,7 @@ class CompoundEntity(ABC, metaclass=CompoundEntityMetaClass):
         ...
 
     class Meta:
-        sources: List[SourceEntity]
+        sources: List[SourceEntity] = []
 
     @classmethod
     def get_all_fields(cls) -> List[str]:

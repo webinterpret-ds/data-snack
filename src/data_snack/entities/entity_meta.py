@@ -12,13 +12,9 @@ from data_snack.entities.validation import (
 
 class MetaClass(ABCMeta):
 
-    meta_fields = ...
-
     def __new__(mcs, name, bases, dct):
         entity_class = super().__new__(mcs, name, bases, dct)
         validate_meta_class(entity_class)
-        if bases != (ABC,):
-            validate_meta_fields(entity_class, mcs.meta_fields)
         return entity_class
 
 
@@ -29,6 +25,7 @@ class EntityMetaClass(MetaClass):
     def __new__(mcs, name, bases, dct):
         entity_class = super().__new__(mcs, name, bases, dct)
         if bases != (ABC,):
+            validate_meta_fields(entity_class, mcs.meta_fields)
             validate_meta_keys(entity_class)
         return entity_class
 
@@ -40,6 +37,7 @@ class CompoundEntityMetaClass(MetaClass):
     def __new__(mcs, name, bases, dct):
         entity_class = super().__new__(mcs, name, bases, dct)
         if bases != (ABC,):
+            validate_meta_fields(entity_class, mcs.meta_fields)
             validate_meta_sources(entity_class)
             validate_meta_sources_keys(entity_class)
             validate_meta_sources_fields(entity_class)
