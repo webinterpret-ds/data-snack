@@ -1,30 +1,16 @@
 from abc import ABC
 from dataclasses import dataclass
-from typing import Any, List, Type
+from typing import Type
 
 import pytest
 
 from data_snack.entities import Entity
 from data_snack.entities.entity_meta import EntityMetaClass
-from data_snack.entities.exceptions import (MetaEmptyKeysException,
-                                            MetaFieldsException,
-                                            NonExistingMetaError)
-
-
-@pytest.fixture
-def dummy_entity() -> Type[Entity]:
-    @dataclass
-    class DummyEntity(Entity):
-        key: int
-        excluded: int
-        included: int
-
-        class Meta:
-            keys = ["key"]
-            excluded_fields = ["excluded"]
-            version = 1
-
-    return DummyEntity
+from data_snack.entities.exceptions import (
+    MetaEmptyKeysException,
+    MetaFieldsException,
+    NonExistingMetaError,
+)
 
 
 def test_entity_type() -> None:
