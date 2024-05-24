@@ -26,54 +26,54 @@ from tests.data_snack.conftest import Car
     ],
 )
 def test_serialize(
-    serializer: DataclassSerializer, entity_instance: Car, entity_hash: bytes
+    car_serializer: DataclassSerializer, entity_instance: Car, entity_hash: bytes
 ) -> None:
     """Testing serializing (compressing) a single entity."""
-    entity_hash = serializer.serialize(entity=entity_instance)
+    entity_hash = car_serializer.serialize(entity=entity_instance)
     assert entity_hash == entity_hash
 
 
 def test_serialize_many(
-    serializer: DataclassSerializer,
-    example_entities: List[Car],
-    example_entities_hashes: List[bytes],
+    car_serializer: DataclassSerializer,
+    example_car_entities: List[Car],
+    example_car_entities_hashes: List[bytes],
 ) -> None:
     """Testing serializing a list of multiple entities to a list of hashes."""
-    entities_hashes = serializer.serialize(entity=example_entities, many=True)
-    assert entities_hashes == example_entities_hashes
+    entities_hashes = car_serializer.serialize(entity=example_car_entities, many=True)
+    assert entities_hashes == example_car_entities_hashes
 
 
 def test_deserialize(
-    serializer: DataclassSerializer, example_entity: Car, example_entity_hash: bytes
+    car_serializer: DataclassSerializer, example_car_entity: Car, example_car_entity_hash: bytes
 ) -> None:
     """Testing deserializing (decompressing) a single entity."""
-    entity = serializer.deserialize(data=example_entity_hash)
-    assert entity == example_entity
+    entity = car_serializer.deserialize(data=example_car_entity_hash)
+    assert entity == example_car_entity
 
 
 def test_deserialize_none(
-    serializer: DataclassSerializer, example_entity: Car, example_entity_hash: bytes
+    car_serializer: DataclassSerializer, example_car_entity: Car, example_car_entity_hash: bytes
 ) -> None:
     """Testing deserializing (decompressing) a None value."""
-    entity = serializer.deserialize(data=None)
+    entity = car_serializer.deserialize(data=None)
     assert entity is None
 
 
 def test_deserialize_many(
-    serializer: DataclassSerializer,
-    example_entities: List[Car],
-    example_entities_hashes: List[bytes],
+    car_serializer: DataclassSerializer,
+    example_car_entities: List[Car],
+    example_car_entities_hashes: List[bytes],
 ) -> None:
     """Testing deserializing a list of multiple entities from a list of hashes."""
-    entities = serializer.deserialize(data=example_entities_hashes, many=True)
-    assert entities == example_entities
+    entities = car_serializer.deserialize(data=example_car_entities_hashes, many=True)
+    assert entities == example_car_entities
 
 
 def test_deserialize_many_with_none(
-    serializer: DataclassSerializer,
-    example_entities_none: List[Car],
-    example_entities_hashes_none: List[bytes],
+    car_serializer: DataclassSerializer,
+    example_car_entities_none: List[Car],
+    example_car_entities_hashes_none: List[bytes],
 ) -> None:
     """Testing deserializing a list of multiple entities from a list of hashes with None values."""
-    entities = serializer.deserialize(data=example_entities_hashes_none, many=True)
-    assert entities == example_entities_none
+    entities = car_serializer.deserialize(data=example_car_entities_hashes_none, many=True)
+    assert entities == example_car_entities_none

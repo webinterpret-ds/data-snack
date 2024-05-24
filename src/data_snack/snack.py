@@ -98,15 +98,12 @@ class Snack:
         :param key_values: a list of key values representing the compound entity
         :return: a retrieved CompoundEntity object
         """
-        values = {}
+        source_entities = []
         for source in cls.Meta.sources:
             mapped_keys = map_values(source.fields_mapping, cls.get_keys())
             mapped_key_values = [key_values[idx] for idx, key in enumerate(mapped_keys) if key]
-            _key = self.key_factory(source.entity, mapped_key_values)
-            if not (value := self.connection.get(_key)):
-                return None
-            values.update(value)
-        return self._get_serializer(cls).deserialize(values)
+            source_entities.append(self._get(source.entity, mapped_key_values))
+        return cls.create_from_source_entities(source_entities) if all(source_entities) else None
 
     def get(
             self, cls: Union[Type[Entity], Type[CompoundEntity]], key_values: List[Any]
@@ -161,22 +158,22 @@ class Snack:
         :param keys_values: list of keys, each list defines a set key values for one CompoundEntity object
         :return: a list of retrieved CompoundEntity objects
         """
-        sources_records_ordered = []
+        source_entities = []
         for source in cls.Meta.sources:
             mapped_keys = map_values(source.fields_mapping, cls.get_keys())
             mapped_keys_values = [
-                [key_values[idx] for idx, key in enumerate(mapped_keys) if key]
+                [key_values[index] for index, key in enumerate(mapped_keys) if key]
                 for key_values in keys_values
             ]
-            _keys = [self.key_factory(source.entity, key_values) for key_values in mapped_keys_values]
-            results_unordered = self.connection.get_many(_keys)
-            sources_records_ordered.append([results_unordered.get(key.keystring) for key in _keys])
-        records_ordered = [dict(ChainMap(*r)) if all(r) else None for r in zip(*sources_records_ordered)]
-        return self._get_serializer(cls).deserialize(records_ordered, many=True)
+            source_entities.append(self._get_many(source.entity, mapped_keys_values))
+        return [
+            cls.create_from_source_entities(entities) if all(entities) else None
+            for entities in zip(*source_entities)
+        ]
 
     def get_many(
-        self, cls: Type[Entity], keys_values: List[List[Any]]
-    ) -> List[Optional[Entity]]:
+        self, cls: Union[Type[Entity], Type[CompoundEntity]], keys_values: List[List[Any]]
+    ) -> List[Optional[Union[Entity, CompoundEntity]]]:
         """
         Gets list of entity objects depending on type from db based on provided key values.
         Notice, key is represented as a list of strings, since one entity can have multiple key fields.
