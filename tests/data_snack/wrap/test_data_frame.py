@@ -1,4 +1,3 @@
-from dataclasses import asdict
 from typing import List, Optional
 
 import pandas as pd
@@ -17,29 +16,29 @@ def wrap_dataframe(snack: Snack) -> DataFrameWrap:
 
 
 @pytest.fixture
-def data_df(example_entities: List[Car]) -> pd.DataFrame:
+def data_df(example_car_entities: List[Car]) -> pd.DataFrame:
     """Data frame containing all data: both keys and field values of the entity."""
-    return pd.DataFrame(example_entities)
+    return pd.DataFrame(example_car_entities)
 
 
 @pytest.fixture
-def data_with_duplicates_df(example_entities_with_duplicates: List[Car]) -> pd.DataFrame:
+def data_with_duplicates_df(example_car_entities_with_duplicates: List[Car]) -> pd.DataFrame:
     """
     Data frame containing all data: both keys and field values of the entity.
     Some entities are duplicated.
     """
-    return pd.DataFrame(example_entities_with_duplicates)
+    return pd.DataFrame(example_car_entities_with_duplicates)
 
 
 @pytest.fixture
-def data_with_none_df(index_df: pd.DataFrame, example_entities_none: List[Optional[Car]]) -> pd.DataFrame:
+def data_with_none_df(index_df: pd.DataFrame, example_car_entities_none: List[Optional[Car]]) -> pd.DataFrame:
     """
     Data frame containing all data: both keys and field values of the entity.
     Since some entities were not available so None is returned.
     """
     return pd.merge(
         index_df,
-        pd.DataFrame([row for row in example_entities_none if row]),
+        pd.DataFrame([row for row in example_car_entities_none if row]),
         on=Car.get_keys(),
         how="left"
     )
@@ -66,7 +65,7 @@ def wrong_index_df(data_df: pd.DataFrame) -> pd.DataFrame:
 def test_set_dataframe(
     wrap_dataframe: DataFrameWrap,
     data_df: pd.DataFrame,
-    example_entities_hashes: List[bytes],
+    example_car_entities_hashes: List[bytes],
 ) -> None:
     """Testing saving a data frame containing entities data to the database."""
     expected_keys = ("Car-1-" + data_df["index"]).tolist()
@@ -77,7 +76,7 @@ def test_set_dataframe(
     assert keys == expected_keys
 
     # connection is called with a dict containing keys and hashed entities built based on the data frame values
-    expected_payload = dict(zip(expected_keys, example_entities_hashes))
+    expected_payload = dict(zip(expected_keys, example_car_entities_hashes))
     wrap_dataframe.snack.connection.connection.mset.assert_called_with(expected_payload)
 
 
@@ -85,11 +84,11 @@ def test_get_dataframe(
     wrap_dataframe: DataFrameWrap,
     index_df: pd.DataFrame,
     data_df: pd.DataFrame,
-    example_entities_hashes: List[bytes],
+    example_car_entities_hashes: List[bytes],
 ) -> None:
     """Testing reading a data frame with entities values based on a provided data frame with key columns."""
     wrap_dataframe.snack.connection.connection.mget.return_value = (
-        example_entities_hashes
+        example_car_entities_hashes
     )
 
     # returned data frame is created based on the compressed entities stored in the database
@@ -105,11 +104,11 @@ def test_get_dataframe_data_with_none(
         wrap_dataframe: DataFrameWrap,
         index_df: pd.DataFrame,
         data_with_none_df: pd.DataFrame,
-        example_entities_hashes_none: List[bytes],
+        example_car_entities_hashes_none: List[bytes],
 ) -> None:
     """Testing reading a data frame with entities values based on a provided data frame with key columns."""
     wrap_dataframe.snack.connection.connection.mget.return_value = (
-        example_entities_hashes_none
+        example_car_entities_hashes_none
     )
 
     # returned data frame is created based on the compressed entities stored in the database
@@ -125,11 +124,11 @@ def test_get_dataframe_data_with_duplicates(
         wrap_dataframe: DataFrameWrap,
         index_with_duplicates_df: pd.DataFrame,
         data_with_duplicates_df: pd.DataFrame,
-        example_entities_with_duplicates_hashes: List[bytes],
+        example_car_entities_with_duplicates_hashes: List[bytes],
 ) -> None:
     """Testing reading a data frame with entities values based on a provided data frame with key columns."""
     wrap_dataframe.snack.connection.connection.mget.return_value = (
-        example_entities_with_duplicates_hashes
+        example_car_entities_with_duplicates_hashes
     )
 
     # returned data frame is created based on the compressed entities stored in the database

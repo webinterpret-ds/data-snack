@@ -1,8 +1,11 @@
+from collections import ChainMap
 from dataclasses import dataclass, field
-from typing import Any, List, Optional, Type
+from typing import Any, List, Optional, Type, Union
 
 from data_snack.connections import Connection
 from data_snack.entities import Entity, EntityRegistry
+from data_snack.entities.compound import CompoundEntity
+from data_snack.entities.utils import map_values
 from data_snack.exceptions import EntityAlreadyRegistered
 from data_snack.key_factories import Key, NonClusterKey
 from data_snack.serializers import DataclassSerializer, Serializer
@@ -75,10 +78,9 @@ class Snack:
         if self.connection.set(key, record):
             return key.keystring  # Should we return keystring or maybe just a key?
 
-    def get(self, cls: Type[Entity], key_values: List[Any]) -> Optional[Entity]:
+    def _get(self, cls: Type[Entity], key_values: List[Any]) -> Optional[Entity]:
         """
         Gets ane entity of `Entity` type from db based on provided key values.
-        Notice, key is represented as a list of strings, since one Entity can have multiple key fields.
 
         :param cls: `Entity` type
         :param key_values: a list of key values representing the entity
@@ -87,6 +89,37 @@ class Snack:
         _key = self.key_factory(cls, key_values)
         value = self.connection.get(_key)
         return self._get_serializer(cls).deserialize(value)
+
+    def _get_compound(self, cls: Type[CompoundEntity], key_values: List[Any]) -> Optional[CompoundEntity]:
+        """
+        Gets ane entity of `CompoundEntity` type as collection of source entities based on provided key values.
+
+        :param cls: `CompoundEntity` type
+        :param key_values: a list of key values representing the compound entity
+        :return: a retrieved CompoundEntity object
+        """
+        source_entities = []
+        for source in cls.Meta.sources:
+            mapped_keys = map_values(source.fields_mapping, cls.get_keys())
+            mapped_key_values = [key_values[idx] for idx, key in enumerate(mapped_keys) if key]
+            source_entities.append(self._get(source.entity, mapped_key_values))
+        return cls.create_from_source_entities(source_entities) if all(source_entities) else None
+
+    def get(
+            self, cls: Union[Type[Entity], Type[CompoundEntity]], key_values: List[Any]
+    ) -> Optional[Union[Entity, CompoundEntity]]:
+        """
+        Gets one entity depending on type from db based on provided key values.
+        Notice, key is represented as a list of strings, since one entity can have multiple key fields.
+
+        :param cls: `Entity` or `CompoundEntity` type
+        :param key_values: a list of key values representing the entity
+        :return: a retrieved `Entity` or `CompoundEntity` object
+        """
+        if issubclass(cls, Entity):
+            return self._get(cls, key_values)
+        elif issubclass(cls, CompoundEntity):
+            return self._get_compound(cls, key_values)
 
     def delete(self, cls: Type[Entity], key_values: List[Any]) -> bool:
         """
@@ -100,7 +133,7 @@ class Snack:
         _key = self.key_factory(cls, key_values)
         return self.connection.delete(_key)
 
-    def get_many(
+    def _get_many(
         self, cls: Type[Entity], keys_values: List[List[Any]]
     ) -> List[Optional[Entity]]:
         """
@@ -114,6 +147,45 @@ class Snack:
         results_unordered = self.connection.get_many(_keys)
         records_ordered = [results_unordered.get(key.keystring) for key in _keys]
         return self._get_serializer(cls).deserialize(records_ordered, many=True)
+
+    def _get_many_compound(
+        self, cls: Type[CompoundEntity], keys_values: List[List[Any]]
+    ) -> List[Optional[CompoundEntity]]:
+        """
+        Gets list of `CompoundEntity` objects as collections of source entities based on provided key values.
+
+        :param cls: `CompoundEntity` type
+        :param keys_values: list of keys, each list defines a set key values for one CompoundEntity object
+        :return: a list of retrieved CompoundEntity objects
+        """
+        source_entities = []
+        for source in cls.Meta.sources:
+            mapped_keys = map_values(source.fields_mapping, cls.get_keys())
+            mapped_keys_values = [
+                [key_values[index] for index, key in enumerate(mapped_keys) if key]
+                for key_values in keys_values
+            ]
+            source_entities.append(self._get_many(source.entity, mapped_keys_values))
+        return [
+            cls.create_from_source_entities(entities) if all(entities) else None
+            for entities in zip(*source_entities)
+        ]
+
+    def get_many(
+        self, cls: Union[Type[Entity], Type[CompoundEntity]], keys_values: List[List[Any]]
+    ) -> List[Optional[Union[Entity, CompoundEntity]]]:
+        """
+        Gets list of entity objects depending on type from db based on provided key values.
+        Notice, key is represented as a list of strings, since one entity can have multiple key fields.
+
+        :param cls: `Entity` or `CompoundEntity` type
+        :param keys_values: list of keys, each list defines a set key values for one entity object
+        :return: a list of retrieved `Entity` or `CompoundEntity` objects
+        """
+        if issubclass(cls, Entity):
+            return self._get_many(cls, keys_values)
+        elif issubclass(cls, CompoundEntity):
+            return self._get_many_compound(cls, keys_values)
 
     def set_many(self, entities: List[Entity]) -> Any:
         """

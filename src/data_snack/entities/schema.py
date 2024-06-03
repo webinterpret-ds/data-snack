@@ -1,6 +1,6 @@
 from typing import Any, Callable, Dict, Type, get_type_hints
 
-from data_snack.entities import Entity
+from data_snack.entities.base import Entity
 
 EntitySchemaGetter = Callable[[Type[Entity], bool], Dict[str, Any]]
 
