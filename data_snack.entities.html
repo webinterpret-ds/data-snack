@@ -37,76 +37,37 @@
 <section id="submodules">
 <h2>Submodules<a class="headerlink" href="#submodules" title="Link to this heading">¶</a></h2>
 </section>
-<section id="module-data_snack.entities.entity">
-<span id="data-snack-entities-entity-module"></span><h2>data_snack.entities.entity module<a class="headerlink" href="#module-data_snack.entities.entity" title="Link to this heading">¶</a></h2>
-<dl class="py class">
-<dt class="sig sig-object py" id="data_snack.entities.entity.Entity">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">data_snack.entities.entity.</span></span><span class="sig-name descname"><span class="pre">Entity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#data_snack.entities.entity.Entity" title="Link to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ABC</span></code></p>
-<dl class="py class">
-<dt class="sig sig-object py" id="data_snack.entities.entity.Entity.Meta">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Meta</span></span><a class="headerlink" href="#data_snack.entities.entity.Entity.Meta" title="Link to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="data_snack.entities.entity.Entity.Meta.excluded_fields">
-<span class="sig-name descname"><span class="pre">excluded_fields</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[]</span></em><a class="headerlink" href="#data_snack.entities.entity.Entity.Meta.excluded_fields" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="data_snack.entities.entity.Entity.Meta.keys">
-<span class="sig-name descname"><span class="pre">keys</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[]</span></em><a class="headerlink" href="#data_snack.entities.entity.Entity.Meta.keys" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="data_snack.entities.entity.Entity.Meta.version">
-<span class="sig-name descname"><span class="pre">version</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#data_snack.entities.entity.Entity.Meta.version" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="data_snack.entities.entity.Entity.get_all_fields">
-<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_all_fields</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#data_snack.entities.entity.Entity.get_all_fields" title="Link to this definition">¶</a></dt>
-<dd><p>Gets all Entity fields.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="data_snack.entities.entity.Entity.get_excluded_fields">
-<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_excluded_fields</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#data_snack.entities.entity.Entity.get_excluded_fields" title="Link to this definition">¶</a></dt>
-<dd><p>Gets Entity excluded keys only.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="data_snack.entities.entity.Entity.get_fields">
-<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_fields</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#data_snack.entities.entity.Entity.get_fields" title="Link to this definition">¶</a></dt>
-<dd><p>Gets Entity fields if not excluded.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="data_snack.entities.entity.Entity.get_keys">
-<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_keys</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#data_snack.entities.entity.Entity.get_keys" title="Link to this definition">¶</a></dt>
-<dd><p>Gets Entity keys only.</p>
-</dd></dl>
-
-<dl class="py property">
-<dt class="sig sig-object py" id="data_snack.entities.entity.Entity.version">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">version</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#data_snack.entities.entity.Entity.version" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
+<section id="data-snack-entities-entity-module">
+<h2>data_snack.entities.entity module<a class="headerlink" href="#data-snack-entities-entity-module" title="Link to this heading">¶</a></h2>
 </section>
 <section id="module-data_snack.entities.entity_meta">
 <span id="data-snack-entities-entity-meta-module"></span><h2>data_snack.entities.entity_meta module<a class="headerlink" href="#module-data_snack.entities.entity_meta" title="Link to this heading">¶</a></h2>
 <dl class="py class">
+<dt class="sig sig-object py" id="data_snack.entities.entity_meta.CompoundEntityMetaClass">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">data_snack.entities.entity_meta.</span></span><span class="sig-name descname"><span class="pre">CompoundEntityMetaClass</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bases</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dct</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#data_snack.entities.entity_meta.CompoundEntityMetaClass" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#data_snack.entities.entity_meta.MetaClass" title="data_snack.entities.entity_meta.MetaClass"><code class="xref py py-class docutils literal notranslate"><span class="pre">MetaClass</span></code></a></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="data_snack.entities.entity_meta.CompoundEntityMetaClass.meta_fields">
+<span class="sig-name descname"><span class="pre">meta_fields</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['sources']</span></em><a class="headerlink" href="#data_snack.entities.entity_meta.CompoundEntityMetaClass.meta_fields" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
 <dt class="sig sig-object py" id="data_snack.entities.entity_meta.EntityMetaClass">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">data_snack.entities.entity_meta.</span></span><span class="sig-name descname"><span class="pre">EntityMetaClass</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bases</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dct</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#data_snack.entities.entity_meta.EntityMetaClass" title="Link to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ABCMeta</span></code></p>
+<dd><p>Bases: <a class="reference internal" href="#data_snack.entities.entity_meta.MetaClass" title="data_snack.entities.entity_meta.MetaClass"><code class="xref py py-class docutils literal notranslate"><span class="pre">MetaClass</span></code></a></p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="data_snack.entities.entity_meta.EntityMetaClass.meta_fields">
 <span class="sig-name descname"><span class="pre">meta_fields</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['keys',</span> <span class="pre">'excluded_fields',</span> <span class="pre">'version']</span></em><a class="headerlink" href="#data_snack.entities.entity_meta.EntityMetaClass.meta_fields" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="data_snack.entities.entity_meta.MetaClass">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">data_snack.entities.entity_meta.</span></span><span class="sig-name descname"><span class="pre">MetaClass</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bases</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dct</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#data_snack.entities.entity_meta.MetaClass" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ABCMeta</span></code></p>
 </dd></dl>
 
 </section>
@@ -130,6 +91,12 @@
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
 </dd></dl>
 
+<dl class="py exception">
+<dt class="sig sig-object py" id="data_snack.entities.exceptions.SourceEntityFieldException">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">data_snack.entities.exceptions.</span></span><span class="sig-name descname"><span class="pre">SourceEntityFieldException</span></span><a class="headerlink" href="#data_snack.entities.exceptions.SourceEntityFieldException" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
+</dd></dl>
+
 </section>
 <section id="module-data_snack.entities.registry">
 <span id="data-snack-entities-registry-module"></span><h2>data_snack.entities.registry module<a class="headerlink" href="#module-data_snack.entities.registry" title="Link to this heading">¶</a></h2>
@@ -138,7 +105,7 @@
 <span id="data-snack-entities-schema-module"></span><h2>data_snack.entities.schema module<a class="headerlink" href="#module-data_snack.entities.schema" title="Link to this heading">¶</a></h2>
 <dl class="py function">
 <dt class="sig sig-object py" id="data_snack.entities.schema.get_entity_schema">
-<span class="sig-prename descclassname"><span class="pre">data_snack.entities.schema.</span></span><span class="sig-name descname"><span class="pre">get_entity_schema</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">entity_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Type</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#data_snack.entities.entity.Entity" title="data_snack.entities.entity.Entity"><span class="pre">Entity</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exclude_fields</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#data_snack.entities.schema.get_entity_schema" title="Link to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">data_snack.entities.schema.</span></span><span class="sig-name descname"><span class="pre">get_entity_schema</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">entity_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Type</span><span class="p"><span class="pre">[</span></span><span class="pre">Entity</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exclude_fields</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#data_snack.entities.schema.get_entity_schema" title="Link to this definition">¶</a></dt>
 <dd><p>Gets <cite>Entity</cite> schema, i.e. {field: data type} mapping. Allows excluding Entities excluded fields.
 :param entity_type: Entity definition (class)
 :param exclude_fields: excludes Entity excluded fields if True
