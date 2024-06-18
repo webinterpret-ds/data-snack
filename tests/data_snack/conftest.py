@@ -24,12 +24,13 @@ class Car(Entity):
 
 
 @dataclass
-class Person(Entity):
+class CarOwner(Entity):
     index: str
+    car_index: str
     name: Optional[str] = field(default=None)
 
     class Meta:
-        keys: List[str] = ["index"]
+        keys: List[str] = ["index", "car_index"]
         excluded_fields: List[str] = []
         version = 1
 
@@ -37,7 +38,7 @@ class Person(Entity):
 @dataclass
 class Registration(CompoundEntity):
     car_index: str
-    person_index: str
+    owner_index: str
     brand: Optional[str]
     name: Optional[str]
 
@@ -51,9 +52,10 @@ class Registration(CompoundEntity):
                 ]
             ),
             SourceEntity(
-                entity=Person,
+                entity=CarOwner,
                 entity_fields_mapping=[
-                    EntityFieldMapping(field="person_index", source_field="index"),
+                    EntityFieldMapping(field="owner_index", source_field="index"),
+                    EntityFieldMapping(field="car_index", source_field="car_index"),
                     EntityFieldMapping(field="name", source_field="name")
                 ]
             )
@@ -71,13 +73,13 @@ def example_car_entity() -> Car:
 
 
 @pytest.fixture
-def example_person_entity() -> Person:
-    return Person(index="1", name="Michael Brown")
+def example_car_owner_entity() -> CarOwner:
+    return CarOwner(index="1", car_index="1", name="Michael Brown")
 
 
 @pytest.fixture
 def example_registration_entity() -> Registration:
-    return Registration(car_index="1", person_index="1", brand="Volkswagen Passat", name="Michael Brown")
+    return Registration(car_index="1", owner_index="1", brand="Volkswagen Passat", name="Michael Brown")
 
 
 @pytest.fixture
@@ -89,18 +91,18 @@ def example_car_entities() -> List[Car]:
 
 
 @pytest.fixture
-def example_person_entities() -> List[Person]:
+def example_car_owner_entities() -> List[CarOwner]:
     return [
-        Person(index="1", name="Michael Brown"),
-        Person(index="2", name="John Smith"),
+        CarOwner(index="1", car_index="1", name="Michael Brown"),
+        CarOwner(index="2", car_index="2", name="John Smith"),
     ]
 
 
 @pytest.fixture
 def example_registration_entities() -> List[Registration]:
     return [
-        Registration(car_index="1", person_index="1", brand="Volkswagen Passat", name="Michael Brown"),
-        Registration(car_index="2", person_index="2", brand="Volkswagen Golf", name="John Smith"),
+        Registration(car_index="1", owner_index="1", brand="Volkswagen Passat", name="Michael Brown"),
+        Registration(car_index="2", owner_index="2", brand="Volkswagen Golf", name="John Smith"),
     ]
 
 
@@ -124,7 +126,7 @@ def example_car_entities_none() -> List[Optional[Car]]:
 @pytest.fixture
 def example_registration_entities_none() -> List[Optional[Registration]]:
     return [
-        Registration(car_index="1", person_index="1", brand="Volkswagen Passat", name="Michael Brown"),
+        Registration(car_index="1", owner_index="1", brand="Volkswagen Passat", name="Michael Brown"),
         None,
     ]
 
@@ -137,9 +139,9 @@ def example_car_entity_hash() -> bytes:
 
 
 @pytest.fixture
-def example_person_entity_hash() -> bytes:
+def example_car_owner_entity_hash() -> bytes:
     return (
-        b"x\x9c\x8bV7T\xd7QP\xf7\xcdL\xceHL\xcdQp*\xca/\xcfS\x8f\x05\x00E\x03\x06\xad"
+        b"x\x9c\x8bV7T\xd7Q\x80\x10\xbe\x99\xc9\x19\x89\xa99\nNE\xf9\xe5y\xea\xb1\x00Y\xea\x07x"
     )
 
 
@@ -152,10 +154,10 @@ def example_car_entities_hashes() -> List[bytes]:
 
 
 @pytest.fixture
-def example_person_entities_hashes() -> List[bytes]:
+def example_car_owner_entities_hashes() -> List[bytes]:
     return [
-        b"x\x9c\x8bV7T\xd7QP\xf7\xcdL\xceHL\xcdQp*\xca/\xcfS\x8f\x05\x00E\x03\x06\xad",
-        b"x\x9c\x8bV7R\xd7QP\xf7\xca\xcf\xc8S\x08\xce\xcd,\xc9P\x8f\x05\x001a\x05\x87",
+        b"x\x9c\x8bV7T\xd7Q\x80\x10\xbe\x99\xc9\x19\x89\xa99\nNE\xf9\xe5y\xea\xb1\x00Y\xea\x07x",
+        b"x\x9c\x8bV7R\xd7Q\x80\x10^\xf9\x19y\n\xc1\xb9\x99%\x19\xea\xb1\x00C\xfd\x06S",
     ]
 
 

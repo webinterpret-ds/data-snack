@@ -1,4 +1,3 @@
-from collections import ChainMap
 from dataclasses import dataclass, field
 from typing import Any, List, Optional, Type, Union
 
@@ -99,9 +98,9 @@ class Snack:
         :return: a retrieved CompoundEntity object
         """
         source_entities = []
-        for source in cls.Meta.sources:
+        for source in cls.Meta.sources:  # TODO: parallelize processing for multiple sources
             mapped_keys = map_values(source.fields_mapping, cls.get_keys())
-            mapped_key_values = [key_values[idx] for idx, key in enumerate(mapped_keys) if key]
+            mapped_key_values = [key_values[mapped_keys.index(key)] for key in source.entity.get_keys()]
             source_entities.append(self._get(source.entity, mapped_key_values))
         return cls.create_from_source_entities(source_entities) if all(source_entities) else None
 
@@ -162,7 +161,9 @@ class Snack:
         for source in cls.Meta.sources:
             mapped_keys = map_values(source.fields_mapping, cls.get_keys())
             mapped_keys_values = [
-                [key_values[index] for index, key in enumerate(mapped_keys) if key]
+                [
+                    key_values[mapped_keys.index(key)] for key in source.entity.get_keys()
+                ]
                 for key_values in keys_values
             ]
             source_entities.append(self._get_many(source.entity, mapped_keys_values))

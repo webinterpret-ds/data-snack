@@ -11,6 +11,7 @@ from data_snack.entities.exceptions import (
     NonExistingMetaError,
     MetaEmptyKeysException,
     SourceEntityFieldException,
+    DuplicatedFieldsException,
 )
 from data_snack.entities.models import SourceEntity, EntityFieldMapping
 
@@ -163,6 +164,165 @@ def test_compound_entity_sources_fields_no_mapped() -> None:
                         entity_fields_mapping=[
                             EntityFieldMapping(field="key", source_field="key"),
                             EntityFieldMapping(field="included", source_field="included")
+                        ]
+                    )
+                ]
+
+
+def test_compound_entity_duplicated_field_between_source_entities() -> None:
+    """Testing compound entity all fields between source entities unique."""
+    with pytest.raises(DuplicatedFieldsException):
+        @dataclass
+        class DummyEntity(Entity):
+            key: int
+            included: int
+
+            class Meta:
+                keys = ["key"]
+                excluded_fields = []
+                version = 1
+
+        @dataclass
+        class AnotherDummyEntity(Entity):
+            another_key: int
+            another_included: int
+
+            class Meta:
+                keys = ["another_key"]
+                excluded_fields = []
+                version = 1
+
+        @dataclass
+        class CompoundDummyEntity(CompoundEntity):
+            key: int
+            another_key: int
+            included: int
+
+            class Meta:
+                sources = [
+                    SourceEntity(
+                        entity=DummyEntity,
+                        entity_fields_mapping=[
+                            EntityFieldMapping(field="key", source_field="key"),
+                            EntityFieldMapping(field="included", source_field="included")
+                        ]
+                    ),
+                    SourceEntity(
+                        entity=AnotherDummyEntity,
+                        entity_fields_mapping=[
+                            EntityFieldMapping(field="another_key", source_field="another_key"),
+                            EntityFieldMapping(field="included", source_field="another_included")
+                        ]
+                    )
+                ]
+
+
+def test_compound_entity_duplicated_key_between_source_entities() -> None:
+    """Testing compound entity duplicated key between source entities."""
+    @dataclass
+    class DummyEntity(Entity):
+        key: int
+        included: int
+
+        class Meta:
+            keys = ["key"]
+            excluded_fields = []
+            version = 1
+
+    @dataclass
+    class AnotherDummyEntity(Entity):
+        another_key: int
+        another_included: int
+
+        class Meta:
+            keys = ["another_key"]
+            excluded_fields = []
+            version = 1
+
+    @dataclass
+    class CompoundDummyEntity(CompoundEntity):
+        key: int
+        included: int
+        another_included: int
+
+        class Meta:
+            sources = [
+                SourceEntity(
+                    entity=DummyEntity,
+                    entity_fields_mapping=[
+                        EntityFieldMapping(field="key", source_field="key"),
+                        EntityFieldMapping(field="included", source_field="included")
+                    ]
+                ),
+                SourceEntity(
+                    entity=AnotherDummyEntity,
+                    entity_fields_mapping=[
+                        EntityFieldMapping(field="key", source_field="another_key"),
+                        EntityFieldMapping(field="another_included", source_field="another_included")
+                    ]
+                )
+            ]
+
+
+def test_compound_entity_duplicated_source_entity_field() -> None:
+    """Testing compound entity all fields in source entity unique."""
+    with pytest.raises(DuplicatedFieldsException):
+        @dataclass
+        class DummyEntity(Entity):
+            key: int
+            included: int
+            another_included: int
+
+            class Meta:
+                keys = ["key"]
+                excluded_fields = []
+                version = 1
+
+        @dataclass
+        class CompoundDummyEntity(CompoundEntity):
+            key: int
+            included: int
+
+            class Meta:
+                sources = [
+                    SourceEntity(
+                        entity=DummyEntity,
+                        entity_fields_mapping=[
+                            EntityFieldMapping(field="key", source_field="key"),
+                            EntityFieldMapping(field="included", source_field="included"),
+                            EntityFieldMapping(field="included", source_field="another_included")
+                        ]
+                    )
+                ]
+
+
+def test_compound_entity_duplicated_source_entity_source_field() -> None:
+    """Testing compound entity all source fields in source entity unique."""
+    with pytest.raises(DuplicatedFieldsException):
+        @dataclass
+        class DummyEntity(Entity):
+            key: int
+            included: int
+
+            class Meta:
+                keys = ["key"]
+                excluded_fields = []
+                version = 1
+
+        @dataclass
+        class CompoundDummyEntity(CompoundEntity):
+            key: int
+            included: int
+            another_included: int
+
+            class Meta:
+                sources = [
+                    SourceEntity(
+                        entity=DummyEntity,
+                        entity_fields_mapping=[
+                            EntityFieldMapping(field="key", source_field="key"),
+                            EntityFieldMapping(field="included", source_field="included"),
+                            EntityFieldMapping(field="another_included", source_field="included")
                         ]
                     )
                 ]

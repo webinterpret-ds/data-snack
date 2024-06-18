@@ -1,4 +1,5 @@
 from abc import ABCMeta
+from collections import Counter, defaultdict
 from itertools import chain
 from typing import List
 
@@ -7,6 +8,7 @@ from data_snack.entities.exceptions import (
     MetaFieldsException,
     MetaEmptyKeysException,
     SourceEntityFieldException,
+    DuplicatedFieldsException,
 )
 
 
@@ -87,3 +89,60 @@ def validate_meta_sources_fields(entity_class: ABCMeta) -> None:
         for source in entity_class.Meta.sources
     ])):
         raise SourceEntityFieldException(f"Missing source entity fields: {missing_mappings}.")
+
+
+def validate_unique_fields_between_source_entities(entity_class: ABCMeta) -> None:
+    """
+    Validates if there are no duplicated fields between source entities except their keys.
+    :param entity_class: entity to validate
+    """
+    fields_count = defaultdict(lambda: 0)
+    for source in entity_class.Meta.sources:
+        _source_keys = source.entity.get_keys()
+        for mapping in source.entity_fields_mapping:
+            if mapping.source_field not in _source_keys:
+                fields_count[mapping.field] += 1
+
+    if duplicated_fields := [f for (f, c) in fields_count.items() if c > 1]:
+        raise DuplicatedFieldsException(f"Duplicated fields between source entities: {duplicated_fields}")
+
+
+def validate_unique_source_entities_fields(entity_class: ABCMeta) -> None:
+    """
+    Validates if there are no duplicated fields in source entities.
+    :param entity_class: entity to validate
+    """
+    if duplicated_source_fields := list(chain(*[
+        [
+            f"{source.entity.__name__}.{duplicated_field}"
+            for duplicated_field, count in Counter(
+                [
+                    mapping.field
+                    for mapping in source.entity_fields_mapping
+                ]
+            ).items() if count > 1
+        ]
+        for source in entity_class.Meta.sources
+    ])):
+        raise DuplicatedFieldsException(f"Duplicated fields in source entities: {duplicated_source_fields}")
+
+
+def validate_unique_source_entities_source_fields(entity_class: ABCMeta) -> None:
+    """
+    Validates if there are no duplicated source fields in source entities.
+    :param entity_class: entity to validate
+    """
+    if duplicated_source_fields := list(chain(*[
+        [
+            f"{source.entity.__name__}.{duplicated_source_field}"
+            for duplicated_source_field, count in Counter(
+                [
+                    mapping.source_field
+                    for mapping in source.entity_fields_mapping
+                ]
+            ).items() if count > 1
+        ]
+        for source in entity_class.Meta.sources
+    ])):
+        raise DuplicatedFieldsException(f"Duplicated source fields in source entities: {duplicated_source_fields}")
+

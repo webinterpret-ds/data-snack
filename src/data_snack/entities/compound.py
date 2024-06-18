@@ -2,12 +2,15 @@ from abc import ABC
 from collections import ChainMap
 from dataclasses import dataclass
 from itertools import chain
-from typing import List, Any, Type
+from typing import List, Any
 
 from data_snack.entities import Entity
 from data_snack.entities.entity_meta import CompoundEntityMetaClass
 from data_snack.entities.models import SourceEntity
-from data_snack.entities.utils import map_values, filter_missing_values
+from data_snack.entities.utils import map_values, filter_missing_values, get_unique_values
+
+
+_filter_mapped_values = lambda mapping, fields: filter_missing_values(map_values(mapping, fields))
 
 
 @dataclass
@@ -21,32 +24,32 @@ class CompoundEntity(ABC, metaclass=CompoundEntityMetaClass):
     @classmethod
     def get_all_fields(cls) -> List[str]:
         """Gets all CompoundEntity fields."""
-        return filter_missing_values(list(chain(*[
-            map_values(source.source_fields_mapping, source.entity.get_all_fields())
+        return get_unique_values(list(chain(*[
+            _filter_mapped_values(source.source_fields_mapping, source.entity.get_all_fields())
             for source in cls.Meta.sources
         ])))
 
     @classmethod
     def get_fields(cls) -> List[str]:
         """Gets CompoundEntity fields if not excluded."""
-        return filter_missing_values(list(chain(*[
-            map_values(source.source_fields_mapping, source.entity.get_fields())
+        return get_unique_values(list(chain(*[
+            _filter_mapped_values(source.source_fields_mapping, source.entity.get_fields())
             for source in cls.Meta.sources
         ])))
 
     @classmethod
     def get_excluded_fields(cls) -> List[str]:
         """Gets CompoundEntity excluded keys only."""
-        return filter_missing_values(list(chain(*[
-            map_values(source.source_fields_mapping, source.entity.get_excluded_fields())
+        return get_unique_values(list(chain(*[
+            _filter_mapped_values(source.source_fields_mapping, source.entity.get_excluded_fields())
             for source in cls.Meta.sources
         ])))
 
     @classmethod
     def get_keys(cls) -> List[str]:
         """Gets CompoundEntity keys only."""
-        return filter_missing_values(list(chain(*[
-            map_values(source.source_fields_mapping, source.entity.get_keys())
+        return get_unique_values(list(chain(*[
+            _filter_mapped_values(source.source_fields_mapping, source.entity.get_keys())
             for source in cls.Meta.sources
         ])))
 
