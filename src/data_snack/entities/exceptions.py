@@ -12,3 +12,7 @@ class MetaEmptyKeysException(Exception):
 
 class SourceEntityFieldException(Exception):
     ...
+
+
+class DuplicatedFieldsException(Exception):
+    ...

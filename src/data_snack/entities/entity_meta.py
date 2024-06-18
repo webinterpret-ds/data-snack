@@ -7,6 +7,9 @@ from data_snack.entities.validation import (
     validate_meta_sources,
     validate_meta_sources_fields,
     validate_meta_sources_keys,
+    validate_unique_fields_between_source_entities,
+    validate_unique_source_entities_fields,
+    validate_unique_source_entities_source_fields,
 )
 
 
@@ -41,4 +44,7 @@ class CompoundEntityMetaClass(MetaClass):
             validate_meta_sources(entity_class)
             validate_meta_sources_keys(entity_class)
             validate_meta_sources_fields(entity_class)
+            validate_unique_source_entities_fields(entity_class)
+            validate_unique_source_entities_source_fields(entity_class)
+            validate_unique_fields_between_source_entities(entity_class)
         return entity_class

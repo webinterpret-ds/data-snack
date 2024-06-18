@@ -8,13 +8,13 @@ from data_snack.connections import Connection
 from data_snack.exceptions import EntityAlreadyRegistered
 from data_snack.key_factories.cluster import ClusterKey
 from data_snack.serializers import DataclassSerializer
-from tests.data_snack.conftest import Car, Person, Registration
+from tests.data_snack.conftest import Car, CarOwner, Registration
 
 
 @pytest.fixture
 def snack_registration(snack: Snack) -> Snack:
     snack.register_entity(Car)
-    snack.register_entity(Person)
+    snack.register_entity(CarOwner)
     return snack
 
 
@@ -22,7 +22,7 @@ def snack_registration(snack: Snack) -> Snack:
 def snack_factory_key_cluster(db_connection: Connection) -> Snack:
     snack = Snack(connection=db_connection, key_factory=ClusterKey)
     snack.register_entity(Car)
-    snack.register_entity(Person)
+    snack.register_entity(CarOwner)
     return snack
 
 
@@ -75,13 +75,13 @@ def test__get_compound(
     snack_registration: Snack,
     example_registration_entity: Registration,
     example_car_entity_hash: bytes,
-    example_person_entity_hash: bytes,
+    example_car_owner_entity_hash: bytes,
 ) -> None:
-    snack_registration.connection.connection.get.side_effect = [example_car_entity_hash, example_person_entity_hash]
+    snack_registration.connection.connection.get.side_effect = [example_car_entity_hash, example_car_owner_entity_hash]
 
     entity = snack_registration.get(Registration, ["1", "1"])
     assert entity == example_registration_entity
-    snack_registration.connection.connection.get.assert_has_calls([call("Car-1-1"), call("Person-1-1")])
+    snack_registration.connection.connection.get.assert_has_calls([call("Car-1-1"), call("CarOwner-1-1_1")])
 
 
 def test__get__missing_key(snack_registration: Snack) -> None:
@@ -127,11 +127,11 @@ def test__get_many_compound(
     snack_registration: Snack,
     example_registration_entities: List[Registration],
     example_car_entities_hashes: List[bytes],
-    example_person_entities_hashes: List[bytes],
+    example_car_owner_entities_hashes: List[bytes],
 ) -> None:
     snack_registration.connection.connection.mget.side_effect = [
         example_car_entities_hashes,
-        example_person_entities_hashes,
+        example_car_owner_entities_hashes,
     ]
 
     entities = snack_registration.get_many(Registration, [["1", "1"], ["2", "2"]])
@@ -153,11 +153,11 @@ def test__get_many_compound___missing_data(
     snack_registration: Snack,
     example_registration_entities_none: List[Optional[Registration]],
     example_car_entities_hashes_none: List[Optional[bytes]],
-    example_person_entities_hashes: List[bytes],
+    example_car_owner_entities_hashes: List[bytes],
 ) -> None:
     snack_registration.connection.connection.mget.side_effect = [
         example_car_entities_hashes_none,
-        example_person_entities_hashes,
+        example_car_owner_entities_hashes,
     ]
 
     entities = snack_registration.get_many(Registration, [["1", "1"], ["2", "2"]])

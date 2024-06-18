@@ -27,12 +27,13 @@ def another_dummy_entity() -> Type[Entity]:
     @dataclass
     class AnotherDummyEntity(Entity):
         key: int
-        excluded: int
-        included: int
+        another_key: int
+        another_excluded: int
+        another_included: int
 
         class Meta:
-            keys = ["key"]
-            excluded_fields = ["excluded"]
+            keys = ["key", "another_key"]
+            excluded_fields = ["another_excluded"]
             version = 1
 
     return AnotherDummyEntity
@@ -62,9 +63,10 @@ def dummy_compound_entity(dummy_entity: Type[Entity], another_dummy_entity: Type
                 SourceEntity(
                     entity=another_dummy_entity,
                     entity_fields_mapping=[
-                        EntityFieldMapping(field="another_key", source_field="key"),
-                        EntityFieldMapping(field="another_excluded", source_field="excluded"),
-                        EntityFieldMapping(field="another_included", source_field="included"),
+                        EntityFieldMapping(field="key", source_field="key"),
+                        EntityFieldMapping(field="another_key", source_field="another_key"),
+                        EntityFieldMapping(field="another_excluded", source_field="another_excluded"),
+                        EntityFieldMapping(field="another_included", source_field="another_included"),
                     ]
                 )
             ]
