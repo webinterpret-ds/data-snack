@@ -102,7 +102,7 @@ class Snack:
             mapped_keys = map_values(source.fields_mapping, cls.get_keys())
             mapped_key_values = [key_values[mapped_keys.index(key)] for key in source.entity.get_keys()]
             source_entities.append(self._get(source.entity, mapped_key_values))
-        return cls.create_from_source_entities(source_entities) if all(source_entities) else None
+        return cls.create_from_source_entities(source_entities)
 
     def get(
             self, cls: Union[Type[Entity], Type[CompoundEntity]], key_values: List[Any]
@@ -167,10 +167,7 @@ class Snack:
                 for key_values in keys_values
             ]
             source_entities.append(self._get_many(source.entity, mapped_keys_values))
-        return [
-            cls.create_from_source_entities(entities) if all(entities) else None
-            for entities in zip(*source_entities)
-        ]
+        return [cls.create_from_source_entities(entities) for entities in zip(*source_entities)]
 
     def get_many(
         self, cls: Union[Type[Entity], Type[CompoundEntity]], keys_values: List[List[Any]]

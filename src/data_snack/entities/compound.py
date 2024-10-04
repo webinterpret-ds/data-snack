@@ -54,10 +54,13 @@ class CompoundEntity(ABC, metaclass=CompoundEntityMetaClass):
         ])))
 
     @classmethod
-    def create_from_source_entities(cls, entities: List[Entity]) -> "CompoundEntity":
+    def create_from_source_entities(cls, entities: List[Entity], key_values: List[Any]) -> "CompoundEntity":
         """Creates CompoundEntity from source entities."""
-        return cls(**dict(ChainMap(*[
-            {source.source_fields_mapping[field]: value for field, value in vars(entity).items()}
+        keys_with_values = dict(zip(cls.get_keys(), key_values))
+        empty_fields = dict.fromkeys(cls.get_all_fields())
+        fields_with_values = dict(ChainMap(*[
+            {mapping.field: getattr(entity, mapping.source_field) for mapping in source.entity_fields_mapping}
             for source in cls.Meta.sources
             for entity in entities if isinstance(entity, source.entity)
-        ])))
+        ]))
+        return cls(**{**empty_fields, **fields_with_values, **keys_with_values})
