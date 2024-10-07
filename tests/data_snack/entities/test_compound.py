@@ -1,6 +1,6 @@
 from abc import ABC
 from dataclasses import dataclass
-from typing import Type
+from typing import Type, List
 
 import pytest
 
@@ -45,7 +45,8 @@ def test_compound_entity_subclass_init() -> None:
             entity=DummyEntity,
             entity_fields_mapping=[
                 EntityFieldMapping(field="key", source_field="key")
-            ]
+            ],
+            optional=False
         )
     ]
 
@@ -94,7 +95,8 @@ def test_compound_entity_subclass_init_bad_meta_fields_names() -> None:
                         entity=DummyEntity,
                         entity_fields_mapping=[
                             EntityFieldMapping(field="key", source_field="key")
-                        ]
+                        ],
+                        optional=False
                     )
                 ]
 
@@ -135,7 +137,8 @@ def test_compound_entity_sources_keys_no_defined() -> None:
                         entity=DummyEntity,
                         entity_fields_mapping=[
                             EntityFieldMapping(field="included", source_field="included")
-                        ]
+                        ],
+                        optional=False
                     )
                 ]
 
@@ -164,7 +167,8 @@ def test_compound_entity_sources_fields_no_mapped() -> None:
                         entity_fields_mapping=[
                             EntityFieldMapping(field="key", source_field="key"),
                             EntityFieldMapping(field="included", source_field="included")
-                        ]
+                        ],
+                        optional=False
                     )
                 ]
 
@@ -205,14 +209,16 @@ def test_compound_entity_duplicated_field_between_source_entities() -> None:
                         entity_fields_mapping=[
                             EntityFieldMapping(field="key", source_field="key"),
                             EntityFieldMapping(field="included", source_field="included")
-                        ]
+                        ],
+                        optional=False
                     ),
                     SourceEntity(
                         entity=AnotherDummyEntity,
                         entity_fields_mapping=[
                             EntityFieldMapping(field="another_key", source_field="another_key"),
                             EntityFieldMapping(field="included", source_field="another_included")
-                        ]
+                        ],
+                        optional=False
                     )
                 ]
 
@@ -252,14 +258,16 @@ def test_compound_entity_duplicated_key_between_source_entities() -> None:
                     entity_fields_mapping=[
                         EntityFieldMapping(field="key", source_field="key"),
                         EntityFieldMapping(field="included", source_field="included")
-                    ]
+                    ],
+                    optional=False
                 ),
                 SourceEntity(
                     entity=AnotherDummyEntity,
                     entity_fields_mapping=[
                         EntityFieldMapping(field="key", source_field="another_key"),
                         EntityFieldMapping(field="another_included", source_field="another_included")
-                    ]
+                    ],
+                    optional=False
                 )
             ]
 
@@ -291,7 +299,8 @@ def test_compound_entity_duplicated_source_entity_field() -> None:
                             EntityFieldMapping(field="key", source_field="key"),
                             EntityFieldMapping(field="included", source_field="included"),
                             EntityFieldMapping(field="included", source_field="another_included")
-                        ]
+                        ],
+                        optional=False
                     )
                 ]
 
@@ -323,7 +332,8 @@ def test_compound_entity_duplicated_source_entity_source_field() -> None:
                             EntityFieldMapping(field="key", source_field="key"),
                             EntityFieldMapping(field="included", source_field="included"),
                             EntityFieldMapping(field="another_included", source_field="included")
-                        ]
+                        ],
+                        optional=False
                     )
                 ]
 
@@ -354,3 +364,53 @@ def test_compound_get_keys(dummy_compound_entity: Type[CompoundEntity]) -> None:
     expected = ["key", "another_key"]
     result = dummy_compound_entity.get_keys()
     assert result == expected
+
+def test_compound_create_from_all_source_entities(
+    dummy_entity: Type[Entity],
+    dummy_entity_fields_mapping: List[EntityFieldMapping],
+    another_dummy_entity: Type[Entity],
+    another_dummy_entity_fields_mapping: List[EntityFieldMapping],
+    dummy_compound_entity: Type[CompoundEntity]
+) -> None:
+    """Testing if compound entity is created correctly from all source entities"""
+    entity1 = dummy_entity(key=11, excluded=12, included=13)
+    entity2 = another_dummy_entity(key=11, another_key=21, another_excluded=22, another_included=23)
+    expected = dummy_compound_entity(key=11, excluded=12, included=13, another_key=21, another_excluded=22, another_included=23)
+    result = dummy_compound_entity.create_from_source_entities(
+        entities=[entity1, entity2],
+        entities_field_mappings=[dummy_entity_fields_mapping, another_dummy_entity_fields_mapping],
+        key_values=[11, 21]
+    )
+    assert expected == result
+
+
+def test_compound_create_from_some_source_entities(
+    dummy_entity: Type[Entity],
+    dummy_entity_fields_mapping: List[EntityFieldMapping],
+    another_dummy_entity_fields_mapping: List[EntityFieldMapping],
+    dummy_compound_entity: Type[CompoundEntity]
+) -> None:
+    """Testing if compound entity is created correctly from some source entities"""
+    entity1 = dummy_entity(key=11, excluded=12, included=13)
+    expected = dummy_compound_entity(key=11, excluded=12, included=13, another_key=21, another_excluded=None, another_included=None)
+    result = dummy_compound_entity.create_from_source_entities(
+        entities=[entity1, None],
+        entities_field_mappings=[dummy_entity_fields_mapping, another_dummy_entity_fields_mapping],
+        key_values=[11, 21]
+    )
+    assert expected == result
+
+
+def test_compound_create_from_none_source_entities(
+    dummy_entity_fields_mapping: List[EntityFieldMapping],
+    another_dummy_entity_fields_mapping: List[EntityFieldMapping],
+    dummy_compound_entity: Type[CompoundEntity]
+) -> None:
+    """Testing if compound entity is created correctly from missing source entities"""
+    expected = dummy_compound_entity(key=11, excluded=None, included=None, another_key=21, another_excluded=None, another_included=None)
+    result = dummy_compound_entity.create_from_source_entities(
+        entities=[None, None],
+        entities_field_mappings=[dummy_entity_fields_mapping, another_dummy_entity_fields_mapping],
+        key_values=[11, 21]
+    )
+    assert expected == result

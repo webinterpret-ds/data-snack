@@ -49,7 +49,8 @@ class Registration(CompoundEntity):
                 entity_fields_mapping=[
                     EntityFieldMapping(field="car_index", source_field="index"),
                     EntityFieldMapping(field="brand", source_field="brand")
-                ]
+                ],
+                optional=False
             ),
             SourceEntity(
                 entity=CarOwner,
@@ -57,7 +58,8 @@ class Registration(CompoundEntity):
                     EntityFieldMapping(field="owner_index", source_field="index"),
                     EntityFieldMapping(field="car_index", source_field="car_index"),
                     EntityFieldMapping(field="name", source_field="name")
-                ]
+                ],
+                optional=True
             )
         ]
 
@@ -83,6 +85,11 @@ def example_registration_entity() -> Registration:
 
 
 @pytest.fixture
+def example_registration_entity_no_car_owner() -> Registration:
+    return Registration(car_index="1", owner_index="1", brand="Volkswagen Passat", name=None)
+
+
+@pytest.fixture
 def example_car_entities() -> List[Car]:
     return [
         Car(index="1", brand="Volkswagen Passat"),
@@ -103,6 +110,13 @@ def example_registration_entities() -> List[Registration]:
     return [
         Registration(car_index="1", owner_index="1", brand="Volkswagen Passat", name="Michael Brown"),
         Registration(car_index="2", owner_index="2", brand="Volkswagen Golf", name="John Smith"),
+    ]
+
+@pytest.fixture
+def example_registration_entities_no_car_owner() -> List[Registration]:
+    return [
+        Registration(car_index="1", owner_index="1", brand="Volkswagen Passat", name="Michael Brown"),
+        Registration(car_index="2", owner_index="2", brand="Volkswagen Golf", name=None),
     ]
 
 
@@ -175,6 +189,14 @@ def example_car_entities_hashes_none() -> List[bytes]:
     return [
         b"x\x9c\x8bV7T\xd7QP\x0f\xcb\xcf\xc9..OLO\xcdS\x08H,.N,Q\x8f\x05\x00i&\x08\x7f",
         None,
+    ]
+
+
+@pytest.fixture
+def example_car_owner_entities_hashes_none() -> List[bytes]:
+    return [
+        b"x\x9c\x8bV7T\xd7Q\x80\x10\xbe\x99\xc9\x19\x89\xa99\nNE\xf9\xe5y\xea\xb1\x00Y\xea\x07x",
+        None
     ]
 
 

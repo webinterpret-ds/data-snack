@@ -2,7 +2,7 @@ from abc import ABC
 from collections import ChainMap
 from dataclasses import dataclass
 from itertools import chain
-from typing import List, Any
+from typing import List, Any, Optional
 
 from data_snack.entities import Entity
 from data_snack.entities.entity_meta import CompoundEntityMetaClass
@@ -56,7 +56,7 @@ class CompoundEntity(ABC, metaclass=CompoundEntityMetaClass):
     @classmethod
     def create_from_source_entities(
         cls,
-        entities: List[Entity],
+        entities: List[Optional[Entity]],
         entities_field_mappings: List[List[EntityFieldMapping]],
         key_values: List[Any]
     ) -> "CompoundEntity":
