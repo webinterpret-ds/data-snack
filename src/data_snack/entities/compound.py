@@ -2,11 +2,11 @@ from abc import ABC
 from collections import ChainMap
 from dataclasses import dataclass
 from itertools import chain
-from typing import List, Any
+from typing import List, Any, Optional
 
 from data_snack.entities import Entity
 from data_snack.entities.entity_meta import CompoundEntityMetaClass
-from data_snack.entities.models import SourceEntity
+from data_snack.entities.models import SourceEntity, EntityFieldMapping
 from data_snack.entities.utils import map_values, filter_missing_values, get_unique_values
 
 
@@ -54,10 +54,17 @@ class CompoundEntity(ABC, metaclass=CompoundEntityMetaClass):
         ])))
 
     @classmethod
-    def create_from_source_entities(cls, entities: List[Entity]) -> "CompoundEntity":
+    def create_from_source_entities(
+        cls,
+        entities: List[Optional[Entity]],
+        entities_field_mappings: List[List[EntityFieldMapping]],
+        key_values: List[Any]
+    ) -> "CompoundEntity":
         """Creates CompoundEntity from source entities."""
-        return cls(**dict(ChainMap(*[
-            {source.source_fields_mapping[field]: value for field, value in vars(entity).items()}
-            for source in cls.Meta.sources
-            for entity in entities if isinstance(entity, source.entity)
-        ])))
+        keys_with_values = dict(zip(cls.get_keys(), key_values))
+        empty_fields = dict.fromkeys(cls.get_all_fields())
+        fields_with_values = dict(ChainMap(*[
+            {mapping.field: getattr(entity, mapping.source_field) for mapping in entity_fields_mapping}
+            for entity, entity_fields_mapping in zip(entities, entities_field_mappings) if entity
+        ]))
+        return cls(**{**empty_fields, **fields_with_values, **keys_with_values})

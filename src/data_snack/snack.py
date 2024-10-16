@@ -12,6 +12,10 @@ from data_snack.utils import get_attribute_of_first_element_from_iterable
 from data_snack.wrap import EntityWrap
 
 
+def _apply_mask(values: List[Any], mask: List[bool]) -> List[Any]:
+    return [values[i] for i, m in enumerate(mask) if m]
+
+
 @dataclass
 class Snack:
     """
@@ -98,11 +102,18 @@ class Snack:
         :return: a retrieved CompoundEntity object
         """
         source_entities = []
+        source_entities_fields_mappings = []
+        mandatory_source_entities_mask = []
         for source in cls.Meta.sources:  # TODO: parallelize processing for multiple sources
             mapped_keys = map_values(source.fields_mapping, cls.get_keys())
             mapped_key_values = [key_values[mapped_keys.index(key)] for key in source.entity.get_keys()]
             source_entities.append(self._get(source.entity, mapped_key_values))
-        return cls.create_from_source_entities(source_entities) if all(source_entities) else None
+            source_entities_fields_mappings.append(source.entity_fields_mapping)
+            mandatory_source_entities_mask.append(not source.optional)
+        return (
+            cls.create_from_source_entities(source_entities, source_entities_fields_mappings, key_values)
+            if all(_apply_mask(source_entities, mandatory_source_entities_mask)) else None
+        )
 
     def get(
             self, cls: Union[Type[Entity], Type[CompoundEntity]], key_values: List[Any]
@@ -158,6 +169,8 @@ class Snack:
         :return: a list of retrieved CompoundEntity objects
         """
         source_entities = []
+        source_entities_fields_mappings = []
+        mandatory_source_entities_mask = []
         for source in cls.Meta.sources:
             mapped_keys = map_values(source.fields_mapping, cls.get_keys())
             mapped_keys_values = [
@@ -167,9 +180,12 @@ class Snack:
                 for key_values in keys_values
             ]
             source_entities.append(self._get_many(source.entity, mapped_keys_values))
+            source_entities_fields_mappings.append(source.entity_fields_mapping)
+            mandatory_source_entities_mask.append(not source.optional)
         return [
-            cls.create_from_source_entities(entities) if all(entities) else None
-            for entities in zip(*source_entities)
+            cls.create_from_source_entities(entities, source_entities_fields_mappings, key_values)
+            if all(_apply_mask(entities, mandatory_source_entities_mask)) else None
+            for entities, key_values in zip(zip(*source_entities), keys_values)
         ]
 
     def get_many(

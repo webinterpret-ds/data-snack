@@ -14,6 +14,7 @@ class EntityFieldMapping:
 class SourceEntity:
     entity: type(Entity)
     entity_fields_mapping: List[EntityFieldMapping]
+    optional: bool
 
     def __post_init__(self):
         self._fields_mapping = {mapping.field: mapping.source_field for mapping in self.entity_fields_mapping}

@@ -91,8 +91,22 @@ def test__get__missing_key(snack_registration: Snack) -> None:
     assert entity is None
 
 
-def test__get_compound__missing_key(snack_registration: Snack, example_car_entity_hash: bytes) -> None:
+def test__get_compound__missing_optional_source(
+    snack_registration: Snack,
+    example_registration_entity_no_car_owner: Registration,
+    example_car_entity_hash: bytes
+) -> None:
     snack_registration.connection.connection.get.side_effect = [example_car_entity_hash, None]
+
+    entity = snack_registration.get(Registration, ["1", "1"])
+    assert entity == example_registration_entity_no_car_owner
+
+
+def test__get_compound__missing_mandatory_source(
+    snack_registration: Snack,
+    example_car_owner_entity_hash: bytes
+) -> None:
+    snack_registration.connection.connection.get.side_effect = [None, example_car_owner_entity_hash]
 
     entity = snack_registration.get(Registration, ["1", "1"])
     assert entity is None
@@ -149,7 +163,7 @@ def test__get_many_missing_data(
     assert entities == example_car_entities_none
 
 
-def test__get_many_compound___missing_data(
+def test__get_many_compound___missing_mandatory_data(
     snack_registration: Snack,
     example_registration_entities_none: List[Optional[Registration]],
     example_car_entities_hashes_none: List[Optional[bytes]],
@@ -162,6 +176,21 @@ def test__get_many_compound___missing_data(
 
     entities = snack_registration.get_many(Registration, [["1", "1"], ["2", "2"]])
     assert entities == example_registration_entities_none
+
+
+def test__get_many_compound___missing_optional_data(
+    snack_registration: Snack,
+    example_registration_entities_no_car_owner: List[Registration],
+    example_car_entities_hashes: List[bytes],
+    example_car_owner_entities_hashes_none: List[Optional[bytes]],
+) -> None:
+    snack_registration.connection.connection.mget.side_effect = [
+        example_car_entities_hashes,
+        example_car_owner_entities_hashes_none,
+    ]
+
+    entities = snack_registration.get_many(Registration, [["1", "1"], ["2", "2"]])
+    assert entities == example_registration_entities_no_car_owner
 
 
 def test__set_many(
